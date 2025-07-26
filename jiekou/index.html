@@ -1,0 +1,78 @@
+  <script>//显示统计🍎新版TV🍎
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'JK/_000.txt', true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var fileContent = xhr.responseText;
+                document.getElementById('iii').innerHTML = "🌷" + fileContent + "。";
+            }  };
+        xhr.send();
+ </script>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="JK/jk.css">
+    <style>
+
+        .float {
+            position: fixed; top: 450px;   right: 20px; 
+            /*background-color: #007BFF;*/
+            background-color: rgba(0, 123, 255, 0.5); /* 半透明背景颜色 */
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0,0,255,0.5);
+            z-index: 1000;
+        }
+        .float:hover {
+            background-color: rgba(0, 125, 255, 0.5);
+        }
+    </style>
+<title>接口大全</title>
+</head>
+<body>
+  <script>
+        var titles = ['go.work.gd', '长按灯笼🎧换歌','go.work.gd',  '点击灯笼🎧放歌'];
+        var index = 0;
+        setInterval(function () {
+            document.title = titles[index];
+            index = (index + 1) % titles.length;
+        }, 2000); // 每2秒换标题
+    </script>
+    
+<script src="JK/lantern.js"></script>
+
+<audio id="myAudio" source src="http://music.163.com/song/media/outer/url?id=2031204435.mp3" type="audio/mpeg"></audio>
+<script src=JK/audio.js ></script >
+<script src=JK/audios.js ></script >
+
+  <center>
+    <h1>资源导航</h1>
+    <h4><a href=http://go.work.gd/_JK.htm>tv接口❶</a> <a href=http://zozo.myartsonline.com/>tv接口❷</a> 
+    <a href=http://go2.work.gd>tv接口𝟏</a> <a href=http://dago.atwebpages.com>tv接口𝟐</a> </h4>
+   
+<span style="//display: flex;">&nbsp;
+<div style="position: fixed; right: 20px; top: 6px; " id="iii"> 𓆝𓆟𓆜𓆞𓆡</div>
+™<a href=http://love.vmhost.cc>♤一起看看♤</a>
+™<a href=http://tools.jb51.net/code/ccode_html_css_json>♤代码格式化♤</a>
+™<a href=https://www.sojson.com/httpRequest/>♤接口模拟♤</a>
+™<a href=http://go.work.gd/3/TMRYS.php>♤接口加密♤</a>
+™<a href=http://go2.work.gd/m3u>♤TXT转M3U♤</a>
+™<a href=# onclick="document.getElementById('myAudio').play()" >♧音乐♧</a>
+<!--  过年倒计时ᵏ🐰
+「<div id="newY"></div>」 -->
+</span>  </center>
+
+<div id="gridContainer" class="grid"></div>
+<script type="text/javascript" src="JK/data00.js"></script>
+<script type="text/javascript" src="JK/jk.js"></script>
+  <!-- 过年
+    <script src=JK/newY.js></script> -->
+  <!-- 留言 -->
+<a href="http://go2.work.gd/comm/gb0.htm" class="float">留言</a>
+</body>
+</html>
+ <br>	
