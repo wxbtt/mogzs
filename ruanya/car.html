@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="圈小猫游戏 - 挑战经典益智游戏，考验你的策略思维">
+    <meta name="keywords" content="圈小猫, 益智游戏, 策略游戏">
+    <title>圈小猫游戏 - 软鸭PLAY</title>
+    <link rel="icon" href="https://57cool.oss-cn-chengdu.aliyuncs.com/SoftDuckResourceBank/file/home-bg.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script charset="UTF-8" id="LA_COLLECT" src="static/js/js-sdk-pro.min.js"></script>
+    <script>LA.init({id: "KrUbnfpzlAPd5saK",ck: "KrUbnfpzlAPd5saK", autoTrack: true, prefix: 'event'})</script>
+    <link href="static/css/duck.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            --texture: repeating-linear-gradient(
+                45deg,
+                rgba(0, 0, 0, 0.02),
+                rgba(0, 0, 0, 0.02) 1px,
+                transparent 1px,
+                transparent 6px
+            );
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2f5 0%, #d9e4f0 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--texture);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            /*padding: 20px;*/
+        }
+
+        /* 拟物化头部样式 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            cursor: pointer;
+            position: relative;
+            padding: 10px 20px;
+            border-radius: 18px;
+            background-color: #fff;
+            /*box-shadow:*/
+            /*    inset 0 -3px 10px rgba(0, 0, 0, 0.1),*/
+            /*    0 8px 20px rgba(0, 0, 0, 0.08);*/
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+            /*border: 2px solid rgba(255, 255, 255, 0.8);*/
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 16px;
+            /*background: linear-gradient(145deg, #ffffff, #f0f0f0);*/
+            z-index: -1;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 14px 28px;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            color: var(--dark) !important;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 8px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-btn:hover::before {
+            opacity: 1;
+        }
+
+        .nav-btn:active {
+            transform: translateY(1px);
+            box-shadow:
+                inset 0 3px 8px rgba(0, 0, 0, 0.15),
+                0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn span {
+            position: relative;
+            z-index: 1;
+            color: var(--primary);
+        }
+
+        .nav-btn i {
+            margin-right: 10px;
+            position: relative;
+            z-index: 1;
+            /*color: white;*/
+            color: var(--primary);
+        }
+
+        .nav-btn:hover span,
+        .nav-btn:hover i {
+            color: white;
+        }
+
+        /* 游戏标题 */
+        .game-header {
+            text-align: center;
+            margin: 30px 0 40px;
+        }
+
+        .game-title {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            font-weight: 800;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 6px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 4px;
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .game-subtitle {
+            color: var(--dark);
+            max-width: 800px;
+            margin: 5px auto 0;
+            font-size: 1.2rem;
+            font-weight: lighter;
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* 游戏区域 */
+        .game-container {
+            background: linear-gradient(145deg, #f5f7fa, #e4edf5);
+            border-radius: 24px;
+            box-shadow:
+                inset 0 -8px 25px rgba(0, 0, 0, 0.05),
+                0 15px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin: 40px auto;
+            max-width: 800px;
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .game-container::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #ffffff, #f0f4f9);
+            z-index: 0;
+            box-shadow:
+                inset 0 3px 10px rgba(0, 0, 0, 0.05),
+                0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        #catch-the-cat {
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            min-height: 310px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 35px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .control-btn {
+            padding: 16px 35px;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            color: var(--dark);
+            border: none;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 8px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .control-btn:hover::before {
+            opacity: 1;
+        }
+
+        .control-btn:active {
+            transform: translateY(2px);
+            box-shadow:
+                inset 0 3px 8px rgba(0, 0, 0, 0.15),
+                0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-btn span {
+            position: relative;
+            z-index: 1;
+            color: var(--dark);
+        }
+
+        .control-btn i {
+            position: relative;
+            z-index: 1;
+            color: var(--dark);
+        }
+
+        .control-btn:hover span,
+        .control-btn:hover i {
+            color: white;
+        }
+
+        .control-btn.reset::before {
+            background: linear-gradient(to right, var(--accent), #c0392b);
+        }
+
+        /* 游戏说明 */
+        .instructions {
+            background: linear-gradient(145deg, #f5f7fa, #e4edf5);
+            border-radius: 24px;
+            padding: 35px;
+            margin: 40px auto;
+            max-width: 800px;
+            box-shadow:
+                inset 0 -8px 25px rgba(0, 0, 0, 0.05),
+                0 15px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .instructions::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #ffffff, #f0f4f9);
+            z-index: 0;
+            box-shadow:
+                inset 0 3px 10px rgba(0, 0, 0, 0.05),
+                0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .instructions h3 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .instructions h3 i {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .instructions ul {
+            padding-left: 25px;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .instructions li {
+            margin-bottom: 15px;
+            line-height: 1.7;
+            font-size: 1.1rem;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        .instructions li::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+        }
+
+        .instructions li strong {
+            color: var(--primary);
+        }
+
+        .instructions p {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            position: relative;
+            z-index: 1;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        /* 装饰元素 */
+        .decoration {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .cat-paw {
+            position: absolute;
+            font-size: 6rem;
+            color: var(--dark);
+            transform: rotate(45deg);
+            opacity: 0.05;
+        }
+
+        .paw-1 {
+            top: 5%;
+            left: 5%;
+        }
+
+        .paw-2 {
+            top: 15%;
+            right: 7%;
+            transform: rotate(-25deg);
+        }
+
+        .paw-3 {
+            bottom: 15%;
+            left: 8%;
+            transform: rotate(15deg);
+        }
+
+        .paw-4 {
+            bottom: 10%;
+            right: 6%;
+            transform: rotate(-45deg);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .game-title {
+                font-size: 2.6rem;
+            }
+
+            .game-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2.2rem;
+            }
+
+            .game-container, .instructions {
+                padding: 30px;
+            }
+
+            .control-btn {
+                padding: 14px 30px;
+                font-size: 1rem;
+            }
+
+            .cat-paw {
+                font-size: 4rem;
+            }
+        }
+
+        @media (max-width: 580px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .game-title {
+                font-size: 1.9rem;
+            }
+
+            .game-subtitle {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .control-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .game-container {
+                padding: 25px 20px;
+            }
+
+            .instructions {
+                padding: 25px 20px;
+            }
+
+            .instructions h3 {
+                font-size: 1.5rem;
+            }
+
+            .cat-paw {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 装饰元素 -->
+    <i class="fas fa-paw cat-paw paw-1"></i>
+    <i class="fas fa-paw cat-paw paw-2"></i>
+    <i class="fas fa-paw cat-paw paw-3"></i>
+    <i class="fas fa-paw cat-paw paw-4"></i>
+
+    <div class="container">
+        <!-- 头部导航 -->
+        <header>
+            <div class="logo">软鸭PLAY</div>
+            <a href="/" class="nav-btn">
+                <i class="fas fa-home"></i>
+                <span>返回首页</span>
+            </a>
+        </header>
+
+        <!-- 游戏标题 -->
+        <div class="game-header">
+            <h2 class="game-title">圈小猫游戏</h2>
+            <p class="game-subtitle">挑战经典益智游戏，阻止小猫逃出包围圈！点击灰色圆点放置障碍，围住小猫</p>
+        </div>
+
+        <!-- 游戏区域 -->
+        <div class="game-container">
+            <div id="catch-the-cat">
+            </div>
+        </div>
+
+        <!-- 游戏说明 -->
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> 游戏说明</h3>
+            <ul>
+                <li><strong>游戏目标</strong>：通过放置障碍物围住小猫，阻止它逃出游戏区域</li>
+                <li><strong>操作方式</strong>：点击灰色圆点放置障碍物，小猫会自动向边缘移动</li>
+                <li><strong>获胜条件</strong>：成功围住小猫，使它无法移动到边缘</li>
+                <li><strong>失败条件</strong>：小猫成功逃到边缘</li>
+            </ul>
+            <p>提示：小猫会尝试找到通往边缘的最短路径，尝试预测它的行动并提前封锁路线！</p>
+        </div>
+    </div>
+
+    <script src="static/js/phaser.min.js"></script>
+    <script src="static/js/catch-the-cat.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const width = window.innerWidth;
+            const r = 20 * width / 700;
+            window.game = new CatchTheCatGame({
+                w: 11,
+                h: 11,
+                r: r > 22 ? 22 : r,
+                backgroundColor: 0xffffff,
+                parent: 'catch-the-cat',
+                statusBarAlign: 'center',
+                credit: '圈小猫'
+            });
+        });
+        // 模拟游戏加载状态
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const loadingBar = document.querySelector('[style*="animation: loading"]');
+        //     let progress = 0;
+        //
+        //     const simulateLoading = setInterval(() => {
+        //         progress += 5;
+        //         loadingBar.style.width = `${progress}%`;
+        //
+        //         if (progress >= 100) {
+        //             clearInterval(simulateLoading);
+        //             document.querySelector('#catch-the-cat').innerHTML = '<canvas id="game-canvas" width="500" height="500" style="max-width: 100%;"></canvas>';
+        //         }
+        //     }, 150);
+        //
+        //     // 控制按钮事件
+        //     const restartBtn = document.getElementById('restartBtn');
+        //     const resetBtn = document.getElementById('resetBtn');
+        //
+        //     restartBtn.addEventListener('click', () => {
+        //         alert('游戏重新开始！');
+        //         // 实际项目中调用游戏重启方法
+        //         // window.game.restart();
+        //     });
+        //
+        //     resetBtn.addEventListener('click', () => {
+        //         alert('游戏已重置！');
+        //         // 实际项目中调用游戏重置方法
+        //         // window.game.reset();
+        //     });
+        // });
+    </script>
+    <script src="static/js/cache-updater.js"></script>
+    <script charset="UTF-8"  src="static/js/main.min.js"></script>
+</body>
+</html>
