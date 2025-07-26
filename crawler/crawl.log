@@ -1,0 +1,34 @@
+
+===== New Crawl Session 2025-07-26 06:08:16 =====
+
+=== 2025-07-26 06:08:16 ===
+Starting crawl for: http://play.ruanyazyk.com/
+Output directory: ruanya
+[06:08:16] Starting crawl for http://play.ruanyazyk.com/
+[06:08:17] Saved: ruanya/index.html
+[06:08:19] Saved: ruanya/drama.html
+[06:08:20] Saved: ruanya/car.html
+[06:08:21] Saved: ruanya/watermark.html
+[06:08:23] Saved: ruanya/mao.html
+[06:08:24] Saved: ruanya/hot.html
+[06:08:25] Saved: ruanya/github.html
+[06:08:27] Saved: ruanya/vip.html
+[06:08:28] Saved: ruanya/salary.html
+[06:08:30] Saved: ruanya/mm.html
+[06:08:31] Finished. Visited 10 pages in 14.87s
+
+=== 2025-07-26 06:08:31 ===
+Starting crawl for: https://wmdz.com/
+Output directory: cangku
+[06:08:31] Starting crawl for https://wmdz.com/
+[06:08:33] Error crawling https://wmdz.com/: HTTPSConnectionPool(host='wmdz.com', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1147)')))
+[06:08:33] Finished. Visited 1 pages in 2.43s
+
+=== 2025-07-26 06:08:33 ===
+Starting crawl for: https://www.heimao.app/
+Output directory: heimao
+[06:08:33] Starting crawl for https://www.heimao.app/
+[06:08:33] Saved: heimao/index.html
+[06:08:34] Finished. Visited 1 pages in 1.10s
+
+All sites crawled at: 2025-07-26 06:08:34
