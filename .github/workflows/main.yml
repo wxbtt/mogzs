@@ -71,5 +71,5 @@ jobs:
         run: |
           # Remove the copied Python files from root directory
           rm -f ${{ github.workspace }}/config.py
-          rm -f ${{ github_workspace }}/main.py
+          rm -f ${{ github.workspace }}/main.py
           echo "Clean up completed - removed config.py and main.py"
