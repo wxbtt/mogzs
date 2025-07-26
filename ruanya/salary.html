@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="薪资实时计算器 - 精确计算每分钟和每秒的收入">
+    <meta name="keywords" content="薪资计算器, 工资计算, 收入计算">
+    <title>薪资实时计算器 - 软鸭PLAY</title>
+    <link rel="icon" href="https://57cool.oss-cn-chengdu.aliyuncs.com/SoftDuckResourceBank/file/home-bg.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script charset="UTF-8" id="LA_COLLECT" src="static/js/js-sdk-pro.min.js"></script>
+    <script>LA.init({id: "KrUbnfpzlAPd5saK",ck: "KrUbnfpzlAPd5saK", autoTrack: true, prefix: 'event'})</script>
+    <link href="static/css/duck.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --light-gray: #e0e6ed;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            --texture: repeating-linear-gradient(
+                45deg,
+                rgba(0, 0, 0, 0.02),
+                rgba(0, 0, 0, 0.02) 1px,
+                transparent 1px,
+                transparent 6px
+            );
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2f5 0%, #d9e4f0 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--texture);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 拟物化头部样式 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+
+        .footer {
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            cursor: pointer;
+            position: relative;
+            padding: 10px 20px;
+            border-radius: 18px;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 14px 28px;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            color: var(--dark) !important;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 8px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-btn:hover::before {
+            opacity: 1;
+        }
+
+        .nav-btn:active {
+            transform: translateY(1px);
+            box-shadow:
+                inset 0 3px 8px rgba(0, 0, 0, 0.15),
+                0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn span {
+            position: relative;
+            z-index: 1;
+            color: var(--primary);
+        }
+
+        .nav-btn i {
+            margin-right: 10px;
+            position: relative;
+            z-index: 1;
+            color: var(--primary);
+        }
+
+        .nav-btn:hover span,
+        .nav-btn:hover i {
+            color: white;
+        }
+
+        /* 工具标题 */
+        .tool-header {
+            text-align: center;
+            margin: 30px 0 40px;
+        }
+
+        .tool-title {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            font-weight: 800;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 6px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 4px;
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .tool-subtitle {
+            color: var(--dark);
+            max-width: 800px;
+            margin: 5px auto 0;
+            font-size: 1.2rem;
+            font-weight: lighter;
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* 主要内容 */
+        .main-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+
+        .settings-panel,
+        .display-panel {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(145deg, #f5f7fa, #e4edf5);
+            box-shadow:
+                inset 0 -8px 25px rgba(0, 0, 0, 0.05),
+                0 15px 40px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .settings-panel::before,
+        .display-panel::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #ffffff, #f0f4f9);
+            z-index: 0;
+            box-shadow:
+                inset 0 3px 10px rgba(0, 0, 0, 0.05),
+                0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .panel-title {
+            font-size: 1.6rem;
+            color: var(--dark);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .panel-title i {
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        label i {
+            color: var(--primary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 16px;
+            border: 2px solid #e0e6ed;
+            background: #f8fafc;
+            color: var(--dark);
+            font-size: 16px;
+            transition: var(--transition);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+                0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+                0 5px 15px rgba(0, 0, 0, 0.1),
+                0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e0e6ed;
+            transition: var(--transition);
+            margin-bottom: 0;
+            font-weight: 500;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+                0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .checkbox-group label:hover {
+            background: #edf2f7;
+            transform: translateY(-2px);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+                0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        .save-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            color: var(--dark);
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 8px 20px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+        }
+
+        .save-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .save-btn:hover::before {
+            opacity: 1;
+        }
+
+        .save-btn:active {
+            transform: translateY(2px);
+            box-shadow:
+                inset 0 3px 8px rgba(0, 0, 0, 0.15),
+                0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .save-btn span {
+            position: relative;
+            z-index: 1;
+            color: var(--primary);
+        }
+
+        .save-btn i {
+            position: relative;
+            z-index: 1;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .save-btn:hover span,
+        .save-btn:hover i {
+            color: white;
+        }
+
+        .income-card {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow:
+                inset 0 -8px 25px rgba(0, 0, 0, 0.05),
+                0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .income-card h3 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .income-amount {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            transition: var(--transition);
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .income-details {
+            margin-top: 10px;
+            color: var(--gray);
+            font-size: 1.1rem;
+            min-height: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow:
+                inset 0 -8px 25px rgba(0, 0, 0, 0.05),
+                0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                inset 0 -8px 25px rgba(0, 0, 0, 0.05),
+                0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 10px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .rest-day-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            z-index: 1;
+        }
+
+        /* 装饰元素 */
+        .decoration {
+            position: absolute;
+            z-index: 0;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .coin-icon {
+            position: absolute;
+            font-size: 6rem;
+            color: var(--dark);
+            opacity: 0.05;
+        }
+
+        .coin-1 {
+            top: 5%;
+            left: 5%;
+        }
+
+        .coin-2 {
+            top: 15%;
+            right: 7%;
+            transform: rotate(-25deg);
+        }
+
+        .coin-3 {
+            bottom: 15%;
+            left: 8%;
+            transform: rotate(15deg);
+        }
+
+        .coin-4 {
+            bottom: 10%;
+            right: 6%;
+            transform: rotate(-45deg);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .tool-title {
+                font-size: 2.2rem;
+            }
+
+            .tool-subtitle {
+                font-size: 1.1rem;
+                padding: 12px 20px;
+            }
+
+            .income-amount {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tool-title {
+                font-size: 1.9rem;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 580px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .tool-title {
+                font-size: 1.7rem;
+            }
+
+            .tool-subtitle {
+                font-size: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .coin-icon {
+                display: none;
+            }
+
+            .form-group > div {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 装饰元素 -->
+    <i class="fas fa-coins coin-icon coin-1"></i>
+    <i class="fas fa-coins coin-icon coin-2"></i>
+    <i class="fas fa-coins coin-icon coin-3"></i>
+    <i class="fas fa-coins coin-icon coin-4"></i>
+
+    <div class="container">
+        <!-- 头部导航 -->
+        <header>
+            <div class="logo">软鸭PLAY</div>
+            <a href="/" class="nav-btn">
+                <i class="fas fa-home"></i>
+                <span>返回首页</span>
+            </a>
+        </header>
+
+        <!-- 工具标题 -->
+        <div class="tool-header">
+            <h2 class="tool-title">薪资实时计算器</h2>
+            <p class="tool-subtitle">精确计算您的每分钟和每秒收入，让工作价值一目了然</p>
+        </div>
+
+        <!-- 主要内容 -->
+        <div class="main-content">
+            <div class="settings-panel">
+                <h3 class="panel-title"><i class="fas fa-cog"></i> 薪资设置</h3>
+
+                <div class="form-group">
+                    <label for="salary"><i class="fas fa-money-bill-wave"></i> 月薪 (元)</label>
+                    <input type="number" id="salary" placeholder="请输入您的月薪" value="15000">
+                </div>
+
+                <div class="form-group">
+                    <label for="workDays" title="会根据节假日计算"><i class="fas fa-calendar-day"></i> 本月工作天数</label>
+                    <input type="number" title="会根据节假日计算" id="workDays" placeholder="每月工作天数" value="22">
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-clock"></i> 每日工作时间</label>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <div style="flex: 1;">
+                            <label for="startTime">上班时间</label>
+                            <input type="time" id="startTime" value="09:00">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="endTime">下班时间</label>
+                            <input type="time" id="endTime" value="18:00">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-bed"></i> 休息日设置</label>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" id="saturday" checked> 星期六
+                        </label>
+                        <label>
+                            <input type="checkbox" id="sunday" checked> 星期日
+                        </label>
+                        <label>
+                            <input type="checkbox" id="holidays"> 节假日
+                        </label>
+                    </div>
+                </div>
+
+                <button id="saveBtn" class="save-btn">
+                    <i class="fas fa-play-circle"></i>
+                    <span>开始计算</span>
+                </button>
+            </div>
+
+            <div class="display-panel">
+                <div class="income-card" id="todayCard">
+                    <h3><i class="fas fa-sun"></i> 今日收入</h3>
+                    <div class="income-amount" id="todayIncome">¥0.00</div>
+                    <div class="income-details" id="todayDetails">今日还未开始工作</div>
+                </div>
+
+                <div class="income-card">
+                    <h3><i class="fas fa-calendar-alt"></i> 本月收入</h3>
+                    <div class="income-amount" id="monthIncome">¥0.00</div>
+                    <div class="income-details" id="monthDetails">本月还未开始工作</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-label">每秒收入</div>
+                        <div class="stat-value" id="perSecond">¥0.000</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">每分钟收入</div>
+                        <div class="stat-value" id="perMinute">¥0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">每小时收入</div>
+                        <div class="stat-value" id="perHour">¥0.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">每日收入</div>
+                        <div class="stat-value" id="perDay">¥0.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="footer">
+            <p style="font-size: 0.95rem;">© <span id="nowYear"></span> 软鸭PLAY - <a  style="color: #7f8c8d" target="_blank" href="https://ruanyazyk.com/">软鸭资源库</a> 保留所有权利</p>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // DOM元素
+        const salaryInput = document.getElementById('salary');
+        const workDaysInput = document.getElementById('workDays');
+        const startTimeInput = document.getElementById('startTime');
+        const endTimeInput = document.getElementById('endTime');
+        const saturdayCheckbox = document.getElementById('saturday');
+        const sundayCheckbox = document.getElementById('sunday');
+        const holidaysCheckbox = document.getElementById('holidays');
+        const saveBtn = document.getElementById('saveBtn');
+        const todayIncomeEl = document.getElementById('todayIncome');
+        const monthIncomeEl = document.getElementById('monthIncome');
+        const todayDetailsEl = document.getElementById('todayDetails');
+        const monthDetailsEl = document.getElementById('monthDetails');
+        const perSecondEl = document.getElementById('perSecond');
+        const perMinuteEl = document.getElementById('perMinute');
+        const perHourEl = document.getElementById('perHour');
+        const perDayEl = document.getElementById('perDay');
+        const todayCard = document.getElementById('todayCard');
+
+        // 全局变量
+        let salary = 0;
+        let workDays = 0;
+        let startTime = '09:00';
+        let endTime = '18:00';
+        let perSecondIncome = 0;
+        let lastWholeAmount = 0;
+        let animationId = null;
+        let restDays = {saturday: true, sunday: true, holidays: false};
+
+        getWorkDays();
+        // 加载保存的设置
+        loadSettings();
+
+        // 保存设置按钮事件
+        saveBtn.addEventListener('click', startCalculation);
+
+        function getDays() {
+            const date = new Date();
+            //将当前月份加1，下移到下一个月
+            date.setMonth(date.getMonth() + 1);
+            //将当前的日期置为0，
+            date.setDate(0);
+            //再获取天数即取上个月的最后一天的天数
+            return date.getDate();
+        }
+
+        function getWorkDays() {
+            const allDays = getDays();
+            const now = new Date();
+            let work = 0;
+            for (let day = 1; day <= allDays; day++) {
+                const date = new Date(now.getFullYear(), now.getMonth(), day);
+                const [restDay, dayText] = checkHoliday(restDays, date);
+                if (!restDay) {
+                    work++
+                }
+            }
+            workDaysInput.value = work;
+        }
+
+
+        // 开始计算
+        function startCalculation() {
+            // 计算本月天数
+            getWorkDays()
+            // 获取输入值
+            salary = parseFloat(salaryInput.value) || 0;
+            workDays = parseInt(workDaysInput.value) || 0;
+            startTime = startTimeInput.value;
+            endTime = endTimeInput.value;
+
+            // 更新休息日设置
+            restDays = {
+                saturday: saturdayCheckbox.checked,
+                sunday: sundayCheckbox.checked,
+                holidays: holidaysCheckbox.checked
+            };
+
+            // 验证输入
+            if (salary <= 0 || workDays <= 0) {
+                alert('请输入有效的月薪和工作天数');
+                return;
+            }
+            // 保存设置
+            saveSettings();
+
+            // 计算每秒收入
+            calculatePerSecondIncome();
+
+            // 开始实时更新
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            updateIncome();
+        }
+
+        // 计算每秒收入
+        function calculatePerSecondIncome() {
+            // 计算每日工作时间（秒）
+            const [startHour, startMinute] = startTime.split(':').map(Number);
+            const [endHour, endMinute] = endTime.split(':').map(Number);
+
+            const startSeconds = startHour * 3600 + startMinute * 60;
+            const endSeconds = endHour * 3600 + endMinute * 60;
+            const dailyWorkSeconds = endSeconds - startSeconds;
+
+            // 每月工作总秒数
+            const monthlyWorkSeconds = workDays * dailyWorkSeconds;
+
+            // 每秒收入
+            perSecondIncome = salary / monthlyWorkSeconds;
+
+            // 更新统计信息
+            perSecondEl.textContent = `¥${perSecondIncome.toFixed(3)}`;
+            perMinuteEl.textContent = `¥${(perSecondIncome * 60).toFixed(2)}`;
+            perHourEl.textContent = `¥${(perSecondIncome * 3600).toFixed(2)}`;
+            perDayEl.textContent = `¥${(perSecondIncome * dailyWorkSeconds).toFixed(2)}`;
+        }
+
+        // 检查今天是否是休息日
+        function isRestDay() {
+            const now = new Date();
+            const dayOfWeek = now.getDay(); // 0 = Sunday, 6 = Saturday
+
+            // 检查节假日
+            if (restDays.holidays) {
+                return true;
+            }
+
+            // 检查星期六
+            if (dayOfWeek === 6 && restDays.saturday) {
+                return true;
+            }
+
+            // 检查星期日
+            if (dayOfWeek === 0 && restDays.sunday) {
+                return true;
+            }
+
+            return false;
+        }
+
+        /**
+         * 判断当前是否在放假时间
+         * @param {Object} restDays - 用户设置的休息日配置
+         * @param today 日期
+         * @param {boolean} restDays.saturday - 周六是否休息
+         * @param {boolean} restDays.sunday - 周日是否休息
+         * @param {boolean} restDays.holidays - 法定节假日是否休息
+         * @returns {Array} [是否放假, 放假名称]
+         */
+        function checkHoliday(restDays, today) {
+            // ====================== 可更新的节假日配置 ======================
+            // 注意：每年需根据国务院公告更新此部分数据
+            const holidayConfig = {
+                // 法定节假日日期范围（格式：YYYY-MM-DD）
+                holidays: [
+                    {name: "元旦", dates: ["2025-01-01"]},
+                    {
+                        name: "春节",
+                        dates: ["2025-01-28", "2025-01-29", "2025-01-30", "2025-01-31", "2025-02-01", "2025-02-02", "2025-02-03", "2025-02-04"]
+                    },
+                    {name: "清明节", dates: ["2025-04-04", "2025-04-05", "2025-04-06"]},
+                    {name: "劳动节", dates: ["2025-05-01", "2025-05-02", "2025-05-03", "2025-05-04", "2025-05-05"]},
+                    {name: "端午节", dates: ["2025-05-31", "2025-06-01", "2025-06-02"]},
+                    {
+                        name: "国庆节",
+                        dates: ["2025-10-01", "2025-10-02", "2025-10-03", "2025-10-04", "2025-10-05", "2025-10-06", "2025-10-07", "2025-10-08"]
+                    }
+                ],
+                // 调休工作日（周末需上班的日期）
+                workWeekends: [
+                    "2025-01-26", // 春节调休
+                    "2025-02-08",
+                    "2025-04-27", // 劳动节调休
+                    "2025-09-28", // 国庆调休
+                    "2025-10-11"
+                ]
+            };
+            // ====================== 结束配置区域 ======================
+            if (!today) {
+                today = new Date();
+            }
+            // 获取当前日期（YYYY-MM-DD格式）
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const date = String(today.getDate()).padStart(2, '0');
+            const todayStr = `${year}-${month}-${date}`;
+            const dayOfWeek = today.getDay(); // 0=周日, 6=周六
+
+            // 1. 检查调休工作日
+            if (holidayConfig.workWeekends.includes(todayStr)) {
+                return [false, '']; // 调休日不算休息:cite[1]:cite[5]
+            }
+
+            // 2. 检查法定节假日
+            if (restDays.holidays) {
+                for (const holiday of holidayConfig.holidays) {
+                    if (holiday.dates.includes(todayStr)) {
+                        return [true, holiday.name]; // 匹配法定节假日:cite[3]:cite[5]
+                    }
+                }
+            }
+            // 3. 检查周末
+            if ((dayOfWeek === 6 && restDays.saturday) ||
+                (dayOfWeek === 0 && restDays.sunday)) {
+                return [true, dayOfWeek === 6 ? '周六' : '周日'];
+            }
+
+            return [false, '']; // 普通工作日
+        }
+
+        // 更新收入显示
+        function updateIncome() {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+            // 计算今日工作时间
+            const [startHour, startMinute] = startTime.split(':').map(Number);
+            const [endHour, endMinute] = endTime.split(':').map(Number);
+
+            const workStart = new Date(today);
+            workStart.setHours(startHour, startMinute, 0, 0);
+
+            const workEnd = new Date(today);
+            workEnd.setHours(endHour, endMinute, 0, 0);
+
+            // 计算今日收入
+            let todayIncome = 0;
+            let todayDetails = '';
+
+            // 检查是否是休息日
+            // const restDay = isRestDay();
+            const [restDay, dayText] = checkHoliday(restDays, null);
+
+            // 移除之前的休息日指示器
+            const existingIndicator = document.querySelector('.rest-day-indicator');
+            if (existingIndicator) {
+                existingIndicator.remove();
+            }
+
+            if (restDay) {
+                todayDetails = "今天是" + dayText;
+                todayCard.style.position = 'relative';
+
+                // 添加休息日指示器
+                const indicator = document.createElement('div');
+                indicator.classList.add('rest-day-indicator');
+                indicator.textContent = dayText || "休息日";
+                todayCard.appendChild(indicator);
+            } else if (now >= workStart && now <= workEnd) {
+                const secondsWorked = (now - workStart) / 1000;
+                todayIncome = secondsWorked * perSecondIncome;
+                todayDetails = `今日工作时间: ${formatTime(workStart)} - ${formatTime(workEnd)}`;
+            } else if (now < workStart) {
+                todayDetails = `今日工作尚未开始 (${formatTime(workStart)})`;
+            } else if (now > workEnd) {
+                todayIncome = perSecondIncome * ((workEnd - workStart) / 1000);
+                todayDetails = `今日工作已完成`;
+            }
+
+            // 计算本月收入
+            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            const daysPassed = now.getDate();
+            // 计算本月已工作天数（排除休息日）
+            let workDaysPassed = 0;
+            let restDayD = 0;
+            for (let day = 1; day <= daysPassed; day++) {
+                const date = new Date(now.getFullYear(), now.getMonth(), day);
+                // const dayOfWeek = date.getDay();
+
+                // 检查是否是休息日
+                // let isRest = false;
+                //
+                // // 检查节假日
+                // if (restDays.holidays && day === now.getDate()) {
+                //     isRest = true;
+                // }
+                //
+                // // 检查星期六
+                // if (dayOfWeek === 6 && restDays.saturday) {
+                //     isRest = true;
+                // }
+                //
+                // // 检查星期日
+                // if (dayOfWeek === 0 && restDays.sunday) {
+                //     isRest = true;
+                // }
+
+                const [restDay, dayText] = checkHoliday(restDays, date);
+                if (restDay) {
+                    restDayD++
+                }
+                if (!restDay) {
+                    workDaysPassed++;
+                }
+            }
+
+            // 确保不超过总工作天数
+            workDaysPassed = Math.min(workDaysPassed, workDays);
+
+            // 计算本月收入
+            const dailyIncome = perSecondIncome * ((workEnd - workStart) / 1000);
+            let monthIncome = (workDaysPassed * dailyIncome) + todayIncome;
+
+            // 更新显示
+            todayIncomeEl.textContent = `¥${todayIncome.toFixed(2)}`;
+            monthIncomeEl.textContent = `¥${monthIncome.toFixed(2)}`;
+            todayDetailsEl.textContent = todayDetails;
+            monthDetailsEl.textContent = `本月工作日: ${workDays}天, 已工作: ${workDaysPassed}天`;
+
+            // 继续更新
+            animationId = requestAnimationFrame(updateIncome);
+        }
+
+        // 辅助函数：格式化时间
+        function formatTime(date) {
+            return date.toTimeString().slice(0, 5);
+        }
+
+        // 保存设置
+        function saveSettings() {
+            const settings = {
+                salary: salary,
+                workDays: workDays,
+                startTime: startTime,
+                endTime: endTime,
+                restDays: restDays
+            };
+            localStorage.setItem('salaryCalculatorSettings', JSON.stringify(settings));
+        }
+
+        // 加载设置
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('salaryCalculatorSettings');
+            console.log(savedSettings)
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                salaryInput.value = settings.salary;
+                workDaysInput.value = settings.workDays;
+                startTimeInput.value = settings.startTime;
+                endTimeInput.value = settings.endTime;
+
+                // 加载休息日设置
+                if (settings.restDays) {
+                    restDays = settings.restDays;
+                    saturdayCheckbox.checked = restDays.saturday;
+                    sundayCheckbox.checked = restDays.sunday;
+                    holidaysCheckbox.checked = restDays.holidays;
+                }
+
+                // 自动开始计算
+                setTimeout(startCalculation, 500);
+            }
+        }
+    });
+</script>
+    <script src="static/js/cache-updater.js"></script>
+    <script charset="UTF-8"  src="static/js/main.min.js"></script>
+</body>
+</html>
