@@ -1,0 +1,99 @@
+name: Update
+
+on:
+  schedule:
+    - cron: '20 8,1 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.3'
+
+      - name: Install dependencies
+        run: pip install selenium requests futures eventlet aiohttp aiofiles asyncio
+
+      - name: Create directories
+        run: |
+          mkdir -p ${{ github.workspace }}/txt
+          mkdir -p ${{ github.workspace }}/data
+          mkdir -p ${{ github.workspace }}/Code
+          echo "Directories created"
+
+      - name: Checkout target repository
+        uses: actions/checkout@v3
+        with:
+          repository: 168xb/jd
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          path: target-repo
+
+      - name: Copy required files from target repository
+        run: |
+          # Copy jd.ip from target repo's jdip folder to current repo's data
+          if [ -f "target-repo/jdip/jd.ip" ]; then
+            cp target-repo/jdip/jd.ip $GITHUB_WORKSPACE/data/
+            echo "Copied jd.ip to data folder"
+          else
+            echo "Warning: target-repo/jdip/jd.ip not found"
+          fi
+          
+          # Copy main.py from target repo's Code to current repo's Code
+          if [ -f "target-repo/Code/main.py" ]; then
+            cp target-repo/Code/main.py $GITHUB_WORKSPACE/Code/
+            echo "Copied main.py to Code folder"
+          else
+            echo "Warning: target-repo/Code/main.py not found"
+          fi
+
+      - name: Run main.py
+        run: |
+          python ${{ github.workspace }}/Code/main.py
+          ls -l  # Check the generated file
+
+      - name: Clean up current repository files
+        run: |
+          # Delete .ip files from data folder
+          if [ -d "$GITHUB_WORKSPACE/data" ]; then
+            find "$GITHUB_WORKSPACE/data" -name "*.ip" -type f -delete
+            echo "Deleted .ip files from data folder"
+          fi
+          
+          # Delete .py files from Code folder
+          if [ -d "$GITHUB_WORKSPACE/Code" ]; then
+            find "$GITHUB_WORKSPACE/Code" -name "*.py" -type f -delete
+            echo "Deleted .py files from Code folder"
+          fi
+
+      - name: Update README.md with current time
+        run: |
+          echo "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" > README.md
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git commit -m "Update README.md with current timestamp"
+          git push
+
+      - name: Copy TXT files to target repository
+        run: |
+          # Create itv directory if it doesn't exist
+          mkdir -p target-repo/itv
+          # Copy all txt files from source to target
+          cp -r $GITHUB_WORKSPACE/txt/* target-repo/itv/
+          echo "Files copied to target repository"
+
+      - name: Commit and push to target repository
+        run: |
+          cd target-repo
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add itv/
+          git commit -m "Update multicast source files"
+          git push
