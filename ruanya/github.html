@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub文件镜像下载工具 - 软鸭PLAY</title>
+    <meta name="description" content="GitHub（Git Clone、Releases、Archive、Gist、Raw）文件加速访问，提升下载体验">
+    <meta name="keywords" content="GitHub, GitHub镜像站">
+    <link rel="icon" href="https://57cool.oss-cn-chengdu.aliyuncs.com/SoftDuckResourceBank/file/home-bg.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script charset="UTF-8" id="LA_COLLECT" src="static/js/js-sdk-pro.min.js"></script>
+    <script>LA.init({id: "KrUbnfpzlAPd5saK",ck: "KrUbnfpzlAPd5saK", autoTrack: true, prefix: 'event'})</script>
+    <link href="static/css/duck.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --light-gray: #e0e6ed;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            --texture: repeating-linear-gradient(
+                45deg,
+                rgba(0, 0, 0, 0.02),
+                rgba(0, 0, 0, 0.02) 1px,
+                transparent 1px,
+                transparent 6px
+            );
+            --green: #27ae60;
+            --orange: #f39c12;
+            --red: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2f5 0%, #d9e4f0 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--texture);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 拟物化头部样式 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            cursor: pointer;
+            position: relative;
+            padding: 10px 20px;
+            border-radius: 18px;
+            background-color: #fff;
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 14px 28px;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            color: var(--dark) !important;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 8px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            margin-left: 10px;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-btn:hover::before {
+            opacity: 1;
+        }
+
+        .nav-btn:active {
+            transform: translateY(1px);
+            box-shadow:
+                inset 0 3px 8px rgba(0, 0, 0, 0.15),
+                0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn span {
+            position: relative;
+            z-index: 1;
+            color: var(--primary);
+        }
+
+        .nav-btn i {
+            margin-right: 10px;
+            position: relative;
+            z-index: 1;
+            color: var(--primary);
+        }
+
+        .nav-btn:hover span,
+        .nav-btn:hover i {
+            color: white;
+        }
+
+        /* 工具标题 */
+        .tool-header {
+            text-align: center;
+            margin: 30px 0 40px;
+        }
+
+        .tool-title {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            font-weight: 800;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 6px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 4px;
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .tool-subtitle {
+            color: var(--dark);
+            max-width: 800px;
+            margin: 5px auto 0;
+            font-size: 1.2rem;
+            font-weight: lighter;
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* 输入区域 */
+        .input-container {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            position: relative;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .url-input {
+            flex: 1;
+            padding: 17px 25px;
+            border: none;
+            border-radius: 50px;
+            background: white;
+            color: var(--dark);
+            font-size: 1.1rem;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 8px 20px rgba(52, 152, 219, 0.2),
+                0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .url-input::placeholder {
+            color: var(--gray);
+        }
+
+        .generate-btn {
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            color: var(--dark);
+            border: none;
+            border-radius: 50px;
+            padding: 0 35px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 8px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .generate-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .generate-btn:hover::before {
+            opacity: 1;
+        }
+
+        .generate-btn:hover span, .generate-btn:hover i {
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .generate-btn:active {
+            transform: translateY(1px);
+            box-shadow:
+                inset 0 3px 8px rgba(0, 0, 0, 0.15),
+                0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .generate-btn span {
+            position: relative;
+            z-index: 1;
+            color: var(--primary);
+        }
+
+        .generate-btn i {
+            position: relative;
+            z-index: 1;
+            color: var(--primary);
+        }
+
+        /* 结果区域 */
+        .result-container {
+            background: linear-gradient(145deg, #f5f7fa, #e4edf5);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow:
+                inset 0 -8px 25px rgba(0, 0, 0, 0.05),
+                0 15px 40px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            display: none;
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .result-container::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #ffffff, #f0f4f9);
+            z-index: 0;
+            box-shadow:
+                inset 0 3px 10px rgba(0, 0, 0, 0.05),
+                0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .result-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-title i {
+            color: var(--primary);
+        }
+
+        .result-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-url {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 18px;
+            background: white;
+            color: var(--dark);
+            font-size: 1rem;
+            overflow-x: auto;
+            white-space: nowrap;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+                0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-btn {
+            padding: 16px 35px;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            color: var(--dark);
+            border: none;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 8px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-btn:hover::before {
+            opacity: 1;
+        }
+
+        .action-btn:hover span, .action-btn:hover i {
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .copy-btn::before {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .download-btn::before {
+            background: linear-gradient(to right, var(--green), #2ecc71);
+        }
+
+        /* 节点区域 */
+        .nodes-container {
+            background: linear-gradient(145deg, #f5f7fa, #e4edf5);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow:
+                inset 0 -8px 25px rgba(0, 0, 0, 0.05),
+                0 15px 40px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .nodes-container::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #ffffff, #f0f4f9);
+            z-index: 0;
+            box-shadow:
+                inset 0 3px 10px rgba(0, 0, 0, 0.05),
+                0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .nodes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nodes-title {
+            font-size: 1.4rem;
+            color: var(--dark);
+            font-weight: 700;
+        }
+
+        .nodes-stats {
+            color: var(--dark);
+            font-size: 1rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px 15px;
+            border-radius: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .nodes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .node-card {
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+                0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .node-card.selected {
+            border-color: var(--primary);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+                0 0 0 3px rgba(52, 152, 219, 0.2),
+                0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .node-card:hover {
+            transform: translateY(-8px);
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+                0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .node-card-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .node-url {
+            font-weight: 600;
+            color: var(--primary);
+            word-break: break-all;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .node-latency {
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+
+        .latency-low {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--green);
+        }
+
+        .latency-medium {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--orange);
+        }
+
+        .latency-high {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--red);
+        }
+
+        .select-node-btn {
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            color: var(--dark);
+            border: none;
+            padding: 12px;
+            border-radius: 18px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            text-align: center;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+                0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .select-node-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .select-node-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .select-node-btn:hover::before {
+            opacity: 1;
+        }
+
+        .select-node-btn:hover span, .select-node-btn:hover i {
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .selected-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(52, 152, 219, 0.1);
+            border-top: 6px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        /* 提示信息 */
+        .message {
+            padding: 15px 20px;
+            border-radius: 18px;
+            margin: 15px 0;
+            text-align: center;
+            display: none;
+            position: relative;
+            z-index: 1;
+            box-shadow:
+                inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+                0 5px 15px rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+        }
+
+        .error-message {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(231, 76, 60, 0.3);
+            color: var(--accent);
+        }
+
+        .success-message {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(46, 204, 113, 0.3);
+            color: var(--green);
+        }
+
+        /* 公益声明 */
+        .donation-notice {
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 装饰元素 */
+        .decoration {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .code-icon {
+            position: absolute;
+            font-size: 6rem;
+            color: var(--dark);
+            opacity: 0.05;
+        }
+
+        .code-1 {
+            top: 5%;
+            left: 5%;
+        }
+
+        .code-2 {
+            top: 15%;
+            right: 7%;
+            transform: rotate(-25deg);
+        }
+
+        .code-3 {
+            bottom: 15%;
+            left: 8%;
+            transform: rotate(15deg);
+        }
+
+        .code-4 {
+            bottom: 10%;
+            right: 6%;
+            transform: rotate(-45deg);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .tool-title {
+                font-size: 2.2rem;
+            }
+
+            .tool-subtitle {
+                font-size: 1.1rem;
+                padding: 12px 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tool-title {
+                font-size: 1.9rem;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .url-input, .generate-btn {
+                width: 100%;
+            }
+
+            .generate-btn {
+                padding: 17px;
+                justify-content: center;
+            }
+
+            .result-box {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+
+            .nodes-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .nodes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .node-card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .node-latency {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .node-url {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 580px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .tool-title {
+                font-size: 1.7rem;
+            }
+
+            .tool-subtitle {
+                font-size: 1rem;
+            }
+
+            .code-icon {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 装饰元素 -->
+    <i class="fas fa-code code-icon code-1"></i>
+    <i class="fas fa-code code-icon code-2"></i>
+    <i class="fas fa-code code-icon code-3"></i>
+    <i class="fas fa-code code-icon code-4"></i>
+
+    <div class="container">
+        <!-- 头部导航 -->
+        <header>
+            <div class="logo">软鸭PLAY</div>
+            <div>
+                <button class="nav-btn" id="refreshNodes">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>刷新节点</span>
+                </button>
+                <a href="/" class="nav-btn">
+                    <i class="fas fa-home"></i>
+                    <span>返回首页</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- 工具标题 -->
+        <div class="tool-header">
+            <h2 class="tool-title">GitHub文件镜像下载工具</h2>
+            <p class="tool-subtitle">
+                支持GitHub（Git Clone、Releases、Archive、Gist、Raw）文件加速访问，提升下载体验。
+                输入GitHub文件URL，选择镜像节点，生成加速下载链接。
+            </p>
+        </div>
+
+        <!-- 输入区域 -->
+        <div class="input-container">
+            <div class="input-group">
+                <input type="text" id="githubUrl" class="url-input"
+                       placeholder="输入GitHub文件URL（例如：https://github.com/***/ruanya.exe）">
+
+                <button id="generateBtn" class="generate-btn">
+                    <i class="fas fa-bolt"></i>
+                    <span>开始下载</span>
+                </button>
+            </div>
+
+            <div class="message error-message" id="errorMessage"></div>
+            <div class="message success-message" id="successMessage"></div>
+        </div>
+
+        <!-- 结果区域 -->
+        <div class="result-container" id="resultContainer">
+            <div class="result-title">
+                <i class="fas fa-link"></i>
+                <span>生成的镜像下载链接：</span>
+            </div>
+            <div class="result-box">
+                <div class="result-url" id="mirrorUrl">等待生成链接...</div>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn copy-btn" id="copyBtn">
+                    <i class="fas fa-copy"></i>
+                    <span>复制链接</span>
+                </button>
+                <button class="action-btn download-btn" id="downloadBtn">
+                    <i class="fas fa-download"></i>
+                    <span>打开下载</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 节点区域 -->
+        <div class="nodes-container" id="nodesSection">
+            <div class="nodes-header">
+                <h3 class="nodes-title">镜像节点列表</h3>
+                <div class="nodes-stats">
+                    总节点数：<span id="totalNodes">0</span> |
+                    可用节点：<span id="availableNodes">0</span>
+                </div>
+            </div>
+
+            <div class="loading" id="nodesLoading">
+                <div class="spinner"></div>
+                <p>正在加载镜像节点...</p>
+            </div>
+
+            <div class="nodes-grid" id="nodesGrid">
+                <!-- 节点卡片将通过JS动态填充 -->
+            </div>
+        </div>
+
+        <!-- 公益声明 -->
+        <div class="donation-notice">
+            <p style="font-size: 0.95rem;">© <span id="nowYear"></span> 软鸭PLAY - <a  style="color: #7f8c8d" target="_blank" href="https://ruanyazyk.com/">软鸭资源库</a> 保留所有权利</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("nowYear").innerHTML = new Date().getFullYear();
+        // DOM元素
+        const githubUrlInput = document.getElementById('githubUrl');
+        const generateBtn = document.getElementById('generateBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const mirrorUrlElement = document.getElementById('mirrorUrl');
+        const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const nodesGrid = document.getElementById('nodesGrid');
+        const totalNodesElement = document.getElementById('totalNodes');
+        const availableNodesElement = document.getElementById('availableNodes');
+        const nodesLoading = document.getElementById('nodesLoading');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const refreshNodesBtn = document.getElementById('refreshNodes');
+
+        // 全局变量
+        let mirrorNodes = [];
+        let selectedNode = null;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 绑定事件
+            generateBtn.addEventListener('click', generateMirrorUrl);
+            copyBtn.addEventListener('click', copyMirrorUrl);
+            downloadBtn.addEventListener('click', openDownloadLink);
+            refreshNodesBtn.addEventListener('click', fetchMirrorNodes);
+
+            // 初始加载镜像节点
+            fetchMirrorNodes();
+        });
+
+        // 获取镜像节点
+        async function fetchMirrorNodes() {
+            nodesLoading.style.display = 'block';
+            errorMessage.style.display = 'none';
+            nodesGrid.innerHTML = '';
+
+            try {
+                // 使用真实API
+                const response = await fetch('https://api.akams.cn/github');
+
+                if (!response.ok) {
+                    throw new Error(`HTTP错误! 状态: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.code === 200) {
+                    mirrorNodes = data.data;
+                    if(mirrorNodes && mirrorNodes.length>0){
+                        mirrorNodes.sort((a, b) => a.latency - b.latency);
+                    }
+                    renderNodesGrid();
+
+                    // 默认选择延迟最低的节点
+                    selectBestNode();
+
+                    // 更新节点统计
+                    updateNodesStats();
+                } else {
+                    throw new Error(data.msg || '获取镜像节点失败');
+                }
+
+            } catch (error) {
+                console.error('获取镜像节点出错:', error);
+                showError(`获取镜像节点失败: ${error.message}`);
+            } finally {
+                nodesLoading.style.display = 'none';
+            }
+        }
+
+        // 渲染节点网格
+        function renderNodesGrid() {
+            nodesGrid.innerHTML = '';
+
+            mirrorNodes.forEach(node => {
+                const isSelected = selectedNode && selectedNode.url === node.url;
+
+                // 确定延迟颜色类
+                let latencyClass = '';
+                if (node.latency < 500) {
+                    latencyClass = 'latency-low';
+                } else if (node.latency >= 500 && node.latency < 1000) {
+                    latencyClass = 'latency-medium';
+                } else {
+                    latencyClass = 'latency-high';
+                }
+
+                const card = document.createElement('div');
+                card.className = `node-card ${isSelected ? 'selected' : ''}`;
+                card.innerHTML = `
+                    <div class="node-card-header">
+                        <div class="node-url">${node.url}</div>
+                        <div class="node-latency ${latencyClass}">${node.latency} ms</div>
+                    </div>
+                    <button class="select-node-btn" data-url="${node.url}">
+                        <span>${isSelected ? '<i class="fas fa-check"></i> 已选择' : '选择此节点'}</span>
+                    </button>
+                `;
+
+                // if (isSelected) {
+                //     card.innerHTML += `<div class="selected-badge"><i class="fas fa-check"></i></div>`;
+                // }
+
+                nodesGrid.appendChild(card);
+            });
+
+            // 添加节点选择事件
+            document.querySelectorAll('.select-node-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const nodeUrl = btn.getAttribute('data-url');
+                    selectNode(nodeUrl);
+                });
+            });
+        }
+
+        // 选择最佳节点（延迟最低）
+        function selectBestNode() {
+            if (mirrorNodes.length === 0) return;
+
+            // 过滤掉延迟为0的节点
+            const validNodes = mirrorNodes.filter(node => node.latency > 0);
+
+            if (validNodes.length === 0) return;
+
+            const bestNode = [...validNodes].sort((a, b) => a.latency - b.latency)[0];
+            selectNode(bestNode.url);
+        }
+
+        // 选择特定节点
+        function selectNode(nodeUrl) {
+            selectedNode = mirrorNodes.find(node => node.url === nodeUrl);
+
+            // 重新渲染网格
+            renderNodesGrid();
+
+            // 如果有URL输入，重新生成镜像链接
+            if (githubUrlInput.value.trim()) {
+                generateMirrorUrl();
+            }
+        }
+
+        // 更新节点统计
+        function updateNodesStats() {
+            totalNodesElement.textContent = mirrorNodes.length;
+
+            // 计算可用节点数（延迟小于1500ms）
+            const availableCount = mirrorNodes.filter(node =>
+                node.latency > 0 && node.latency < 1500
+            ).length;
+
+            availableNodesElement.textContent = availableCount;
+        }
+
+        // 生成镜像链接
+        function generateMirrorUrl() {
+            let githubUrl = githubUrlInput.value.trim();
+
+            // 验证URL
+            if (!githubUrl) {
+                showError('请输入GitHub文件URL');
+                return;
+            }
+            githubUrl = modifyGithubUrl(githubUrl)
+            if (!isValidGitHubUrl(githubUrl)) {
+                showError('请输入有效的GitHub文件URL');
+                return;
+            }
+
+            if (!selectedNode) {
+                showError('请先选择镜像节点');
+                return;
+            }
+
+            // 生成镜像URL
+            const mirrorUrl = `${selectedNode.url}/${githubUrl}`;
+            mirrorUrlElement.textContent = mirrorUrl;
+            resultContainer.style.display = 'block';
+
+            // 滚动到结果区域
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 验证GitHub URL
+        function isValidGitHubUrl(url) {
+            const githubPattern = /^https?:\/\/github\.com\/.+/i;
+            return githubPattern.test(url);
+        }
+        function modifyGithubUrl(originalUrl) {
+            try {
+                const url = new URL(originalUrl);
+                if (url.hostname === 'bgithub.xyz') {
+                    url.hostname = 'github.com';
+                    return url.toString();
+                }
+            } catch (e) {
+                // 如果 URL 解析失败，返回原链接
+            }
+            return originalUrl;
+        }
+        // 复制镜像链接
+        function copyMirrorUrl() {
+            copyTextToClipboard(mirrorUrlElement.textContent);
+            showSuccess('链接已复制到剪贴板！');
+        }
+
+        // 复制文本到剪贴板
+        function copyTextToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error('复制失败:', err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        // 打开下载链接
+        function openDownloadLink() {
+            window.open(mirrorUrlElement.textContent, '_blank');
+        }
+
+        // 显示错误消息
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // 显示成功消息
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+    <script src="static/js/cache-updater.js"></script>
+    <script charset="UTF-8"  src="static/js/main.min.js"></script>
+</body>
+</html>
