@@ -1,4 +1,4 @@
-name: Update
+name: Auto Crawler
 
 on:
   schedule:
@@ -6,89 +6,100 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  execute-crawler:
     runs-on: ubuntu-latest
+    env:
+      MAX_PAGES: 10  # 默认爬取页数
+      OUTPUT_DIR: ${{ github.workspace }}/generated_data
 
     steps:
-      # 1. 检出当前仓库（用于后续保存结果）
-      - name: Checkout current repository
+      # 1. 准备环境
+      - name: Checkout current repo
         uses: actions/checkout@v4
-      
-      # 2. 设置Python环境
-      - name: Set up Python 3.9
+
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
-    
-      # 3. 安装依赖（假设requirements.txt在当前仓库）
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f "crawler/requirements.txt" ]; then
-            pip install -r crawler/requirements.txt
-          else
-            echo "Warning: requirements.txt not found, skipping install"
-          fi
+          python-version: "3.9"
 
-      # 4. 在工作目录内创建临时目录
-      - name: Create workspace
+      # 2. 创建隔离环境
+      - name: Prepare isolated environment
         run: |
-          mkdir -p ${{ github.workspace }}/temp_crawler
-          echo "Created workspace directory"
+          # 在内存中创建临时文件系统（完全隔离）
+          sudo mount -t tmpfs -o size=100M tmpfs /mnt/ramdisk
+          mkdir -p /mnt/ramdisk/crawler_workspace
+          echo "Isolated workspace ready"
 
-      # 5. 下载目标仓库的爬虫文件
+      # 3. 仅下载必要文件
       - name: Download crawler scripts
         uses: actions/checkout@v4
         with:
           repository: wxbtt/wz
           token: ${{ secrets.PRIVATE_REPO_TOKEN }}
-          path: ${{ github.workspace }}/temp_crawler/source
+          path: /mnt/ramdisk/crawler_workspace
           sparse-checkout: |
             crawler/config.py
             crawler/main.py
           clean: true
 
-      # 6. 执行爬虫
-      - name: Execute crawler
+      # 4. 安装依赖（通过环境变量传递配置）
+      - name: Setup dependencies
         run: |
-          cd ${{ github.workspace }}/temp_crawler/source/crawler
-          echo "Current directory: $(pwd)"
-          ls -l
+          cd /mnt/ramdisk/crawler_workspace/crawler
+          # 从当前仓库复制requirements.txt（如果存在）
+          cp $GITHUB_WORKSPACE/requirements.txt . 2>/dev/null || echo "No local requirements"
           
-          # 安装临时依赖（如果需要）
+          # 安装依赖（优先使用本地，其次用脚本自带的）
           if [ -f "requirements.txt" ]; then
             pip install -r requirements.txt
           fi
-          
-          # 运行爬虫（结果直接生成到当前仓库根目录）
-          python main.py --output-dir $GITHUB_WORKSPACE
-          
-          echo "Generated files in repo root:"
-          ls -l $GITHUB_WORKSPACE
 
-      # 7. 提交爬取结果
+      # 5. 安全执行爬虫
+      - name: Execute crawler
+        run: |
+          cd /mnt/ramdisk/crawler_workspace/crawler
+          
+          # 通过环境变量传递参数
+          export MAX_PAGES=$MAX_PAGES
+          export OUTPUT_DIR=$OUTPUT_DIR
+          mkdir -p $OUTPUT_DIR
+
+          # 执行原始脚本（不带任何参数）
+          python main.py
+
+          # 收集生成的文件（排除.py和临时文件）
+          find . -type f \( -not -name '*.py' -and -not -name '*.tmp' \) \
+            -exec cp --parents {} $OUTPUT_DIR \;
+
+          # 验证输出
+          echo "Generated files:"
+          tree $OUTPUT_DIR
+
+      # 6. 提交结果文件
       - name: Commit results
         run: |
-          cd $GITHUB_WORKSPACE
+          # 只移动数据文件到仓库根目录
+          find $OUTPUT_DIR -type f -exec cp {} $GITHUB_WORKSPACE \;
+          
           git config --local user.email "actions@github.com"
-          git config --local user.name "Automatic Updater"
+          git config --local user.name "Auto Crawler"
           
-          # 只添加非Python文件
-          find . -type f -not -name '*.py' -not -path './.git/*' -exec git add {} +
+          # 智能添加新文件（排除隐藏文件和脚本）
+          find . -type f \( -not -path '*/.*' -and -not -name '*.py' \) -exec git add {} +
           
-          git status
           if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Data update: $(date +'%Y-%m-%d %H:%M:%S')"
+            git commit -m "Data update: $(date +'%Y-%m-%d %T')"
             git push
-          else
-            echo "No changes to commit"
           fi
 
-      # 8. 清理临时文件
-      - name: Cleanup
+      # 7. 彻底清理（即使失败也执行）
+      - name: Nuclear cleanup
         if: always()
         run: |
-          echo "Performing cleanup..."
-          rm -rf ${{ github.workspace }}/temp_crawler
-          echo "Checking for leftover files:"
-          find $GITHUB_WORKSPACE -name '*.py' -not -path './.git/*' | grep -v requirements.txt || echo "No leftover files found"
+          sudo umount /mnt/ramdisk 2>/dev/null || true
+          rm -rf /mnt/ramdisk
+          rm -rf $OUTPUT_DIR
+          
+          # 最终安全检查
+          echo "Remaining Python files:"
+          find $GITHUB_WORKSPACE -name '*.py' | grep -v requirements.txt || echo "All clean"
