@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>热榜聚合 - 全网热点一网打尽</title>
+    <meta name="keywords" content="今日热榜,今日热榜官网,即时热榜,每日热榜,每日热搜,热搜,热榜,今日热搜,热点事件,今日头条,热门新闻,热词,热榜聚合,新闻聚合,摸鱼"/>
+    <meta name="description" content="全网热点一网打尽：知乎热榜、微博热搜、百度热搜、IT之家、36氪、少数派、豆瓣、小红书、百度贴吧、虎扑、虎嗅、天涯、哔哩哔哩、小众软件、抖音、吾爱破解、GitHub、技术期刊 全网热点 新闻 热词 排行榜 摸鱼神器"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://57cool.oss-cn-chengdu.aliyuncs.com/SoftDuckResourceBank/file/home-bg.png">
+    <script charset="UTF-8" id="LA_COLLECT" src="static/js/js-sdk-pro.min.js"></script>
+    <script>LA.init({id: "KrUbnfpzlAPd5saK", ck: "KrUbnfpzlAPd5saK", autoTrack: true, prefix: 'event'})</script>
+    <link href="static/css/duck.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --light-gray: #e0e6ed;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            --texture: repeating-linear-gradient(
+                    45deg,
+                    rgba(0, 0, 0, 0.02),
+                    rgba(0, 0, 0, 0.02) 1px,
+                    transparent 1px,
+                    transparent 6px
+            );
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2f5 0%, #d9e4f0 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--texture);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 头部导航 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            cursor: pointer;
+            position: relative;
+            padding: 10px 20px;
+            border-radius: 18px;
+            background-color: #fff;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 14px 28px;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            color: var(--dark) !important;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+            0 8px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+            0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-btn:hover::before {
+            opacity: 1;
+        }
+
+        .nav-btn:active {
+            transform: translateY(1px);
+            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.15),
+            0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn span {
+            position: relative;
+            z-index: 1;
+            color: var(--primary);
+        }
+
+        .nav-btn i {
+            margin-right: 10px;
+            position: relative;
+            z-index: 1;
+            color: var(--primary);
+        }
+
+        .nav-btn:hover span,
+        .nav-btn:hover i {
+            color: white;
+        }
+
+        /* 工具标题 */
+        .tool-header {
+            text-align: center;
+            margin: 30px 0 40px;
+        }
+
+        .tool-title {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            font-weight: 800;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 6px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 4px;
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .tool-subtitle {
+            color: var(--dark);
+            max-width: 800px;
+            margin: 5px auto 0;
+            font-size: 1.2rem;
+            font-weight: lighter;
+            padding: 15px 25px;
+            border-radius: 50px;
+        }
+
+        /* 时间筛选 */
+        .time-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0 30px;
+            flex-wrap: wrap;
+        }
+
+        .time-tab {
+            padding: 12px 24px;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            color: var(--dark);
+            border: none;
+            border-radius: 18px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+            box-shadow: inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+            0 8px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+        }
+
+        .time-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .time-tab:hover {
+            transform: translateY(-3px);
+            box-shadow: inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+            0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .time-tab:hover::before {
+            opacity: 1;
+        }
+
+        .time-tab:hover span,
+        .time-tab:hover i {
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .time-tab.active {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .time-tab.active i {
+            color: white;
+        }
+
+        /* 热榜卡片 */
+        .hot-card {
+            background: linear-gradient(145deg, #f5f7fa, #e4edf5);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: inset 0 -8px 25px rgba(0, 0, 0, 0.05),
+            0 15px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+
+        .hot-card::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #ffffff, #f0f4f9);
+            z-index: 0;
+            box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.05),
+            0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            padding: 18px 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            z-index: -1;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 4px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .update-time {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px 12px;
+            border-radius: 30px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 热榜列表 */
+        .hot-list {
+            padding: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hot-item {
+            padding: 14px 15px;
+            border-radius: 16px;
+            display: flex;
+            align-items: flex-start;
+            transition: var(--transition);
+            margin: 8px 0;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            box-shadow: inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+            0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .hot-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .hot-item:hover {
+            transform: translateY(-3px);
+            box-shadow: inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+            0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hot-item:hover::before {
+            opacity: 0.1;
+        }
+
+        .hot-item.read .hot-title a {
+            color: #7f8c8d;
+        }
+
+        .hot-rank {
+            font-weight: 700;
+            min-width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            border-radius: 10px;
+            margin-right: 15px;
+            font-size: 1rem;
+            color: var(--dark);
+            flex-shrink: 0;
+            transition: var(--transition);
+            box-shadow: inset 0 -3px 10px rgba(0, 0, 0, 0.05),
+            0 3px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hot-rank.top3 {
+            background: linear-gradient(135deg, var(--accent), #ff8c66);
+            color: white;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+        }
+
+        .hot-content {
+            flex-grow: 1;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hot-title {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            line-height: 1.45;
+        }
+
+        .hot-title a {
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            font-weight: 600;
+        }
+
+        .hot-title a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .hot-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .hot-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+
+        .source-tag {
+            background: #e8f4fc;
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .time-ago {
+            color: var(--gray);
+            font-style: italic;
+            margin-left: 15px;
+        }
+
+        .hot-value {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 30px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(52, 152, 219, 0.1);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading p {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .error-message {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px auto;
+            position: relative;
+            z-index: 1;
+            box-shadow: inset 0 -8px 25px rgba(0, 0, 0, 0.05),
+            0 15px 40px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .error-message i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .error-message p {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 回到顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* 装饰元素 */
+        .film-icon {
+            position: absolute;
+            font-size: 6rem;
+            color: var(--dark);
+            opacity: 0.05;
+        }
+
+        .film-1 {
+            top: 5%;
+            left: 5%;
+        }
+
+        .film-2 {
+            top: 15%;
+            right: 7%;
+            transform: rotate(-25deg);
+        }
+
+        .film-3 {
+            bottom: 15%;
+            left: 8%;
+            transform: rotate(15deg);
+        }
+
+        .film-4 {
+            bottom: 10%;
+            right: 6%;
+            transform: rotate(-45deg);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .tool-title {
+                font-size: 2.2rem;
+            }
+
+            .tool-subtitle {
+                font-size: 1.1rem;
+                padding: 12px 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tool-title {
+                font-size: 1.9rem;
+            }
+
+            .film-icon {
+                display: none;
+            }
+        }
+
+        @media (max-width: 580px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .tool-title {
+                font-size: 1.7rem;
+            }
+
+            .tool-subtitle {
+                font-size: 1rem;
+            }
+
+            .time-tab {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- 装饰元素 -->
+<i class="fas fa-fire film-icon film-1"></i>
+<i class="fas fa-fire film-icon film-2"></i>
+<i class="fas fa-fire film-icon film-3"></i>
+<i class="fas fa-fire film-icon film-4"></i>
+
+<div class="container">
+    <!-- 头部导航 -->
+    <header>
+        <div class="logo">软鸭PLAY</div>
+        <a href="/" class="nav-btn">
+            <i class="fas fa-home"></i>
+            <span>返回首页</span>
+        </a>
+    </header>
+
+    <!-- 工具标题 -->
+    <div class="tool-header">
+        <h2 class="tool-title">热榜聚合</h2>
+        <p class="tool-subtitle">全网热点一网打尽 • 实时追踪社交、新闻、科技、娱乐领域热门话题</p>
+    </div>
+
+    <!-- 时间筛选 -->
+    <div class="time-tabs">
+        <div class="time-tab active" data-tab="today">
+            <i class="fas fa-sun"></i>
+            <span>今日热门</span>
+        </div>
+        <div class="time-tab" data-tab="weekly">
+            <i class="fas fa-calendar-week"></i>
+            <span>本周热门</span>
+        </div>
+        <div class="time-tab" data-tab="monthly">
+            <i class="fas fa-calendar-alt"></i>
+            <span>本月热门</span>
+        </div>
+    </div>
+
+    <!-- 热榜卡片 -->
+    <div class="hot-card">
+        <div class="card-header">
+            <div>
+                <div class="card-title">全网热点排行榜</div>
+                <div class="card-subtitle">实时更新 • 全网热议话题</div>
+            </div>
+            <div class="update-time" id="update-time">--:--:-- 更新</div>
+        </div>
+
+        <!-- 热榜列表 -->
+        <div class="hot-list" id="hot-list">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>正在加载最新热点数据...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载更多提示 -->
+    <div id="loading-more" class="loading" style="display: none;">
+        <div class="spinner"></div>
+        <p>正在加载更多内容...</p>
+    </div>
+
+    <div class="footer">
+        <p>© <span id="nowYear"></span> 热榜聚合 • 保留所有权利</p>
+    </div>
+</div>
+
+<!-- 回到顶部按钮 -->
+<div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
+<script>
+    // 全局变量
+    let currentTab = 'today';
+    let currentPage = 1;
+    let totalPages = 1;
+    let readItems = [];
+    let isLoading = false;
+    let lastListTime = 0;
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+        // 设置年份
+        document.getElementById('nowYear').innerHTML = new Date().getFullYear();
+
+        // 从localStorage获取已读项
+        try {
+            const storedItems = localStorage.getItem('readItems');
+            if (storedItems) {
+                readItems = JSON.parse(storedItems);
+            }
+        } catch (e) {
+            console.log('无法读取本地存储，已重置已读列表');
+            readItems = [];
+        }
+
+        // 添加时间标签事件监听器
+        document.querySelectorAll('.time-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 更新UI
+                document.querySelectorAll('.time-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // 更新当前标签并获取数据
+                currentTab = tab.dataset.tab;
+                currentPage = 1;
+                document.getElementById('hot-list').innerHTML = `
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>正在加载最新热点数据...</p>
+                        </div>
+                    `;
+                fetchHotList();
+            });
+        });
+
+        // 初始加载数据
+        fetchHotList();
+
+        // 添加滚动监听
+        window.addEventListener('scroll', handleScroll);
+
+        // 添加回到顶部按钮事件
+        document.getElementById('backToTop').addEventListener('click', scrollToTop);
+    });
+
+    // 处理滚动事件
+    function handleScroll() {
+        // 显示/隐藏回到顶部按钮
+        const backToTopBtn = document.getElementById('backToTop');
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+
+        // 当滚动到底部时加载下一页
+        const scrollTop = window.scrollY;
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+
+        // 距离底部100px时加载
+        if (scrollTop + clientHeight >= scrollHeight - 100 && !isLoading && currentPage < totalPages) {
+            currentPage++;
+            document.getElementById('loading-more').style.display = 'block';
+            fetchHotList();
+        }
+    }
+
+    // 获取热榜数据
+    async function fetchHotList() {
+        isLoading = true;
+
+        try {
+            const apiUrl = `https://api.rebang.today/v1/items?tab=top&sub_tab=${currentTab}&page=${currentPage}&version=1`;
+            const response = await fetch(apiUrl);
+
+            if (!response.ok) {
+                throw new Error(`API请求失败: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.code !== 200) {
+                throw new Error(`API返回错误: ${data.msg}`);
+            }
+
+            // 处理数据
+            processData(data.data);
+        } catch (error) {
+            console.error('获取数据时出错:', error);
+            showError('加载数据失败: ' + error.message);
+        } finally {
+            isLoading = false;
+            document.getElementById('loading-more').style.display = 'none';
+        }
+    }
+
+    // 处理API返回的数据
+    function processData(data) {
+        // 更新页面信息
+        totalPages = data.total_page;
+        lastListTime = data.last_list_time;
+
+        // 更新统计信息
+        const itemList = JSON.parse(data.list);
+
+        // 更新刷新时间
+        updateRefreshTime(data.next_refresh_time);
+
+        // 渲染热榜列表
+        renderHotList(itemList);
+    }
+
+    // 渲染热榜列表
+    function renderHotList(items) {
+        const listContainer = document.getElementById('hot-list');
+
+        if (currentPage === 1) {
+            listContainer.innerHTML = '';
+        }
+
+        if (items.length === 0 && currentPage === 1) {
+            listContainer.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>暂无热门内容</p>
+                    </div>
+                `;
+            return;
+        }
+
+        let html = '';
+
+        items.forEach((item, index) => {
+            const rank = (currentPage - 1) * 20 + index + 1;
+            const isRead = readItems.includes(item.item_key);
+            const timeAgo = formatTimeAgo(item.first_time);
+            const heatValue = item.heat_num.toFixed(1);
+
+            // 格式化描述，避免空白描述
+            const desc = item.desc ? item.desc : '无描述';
+
+            html += `
+                    <div class="hot-item ${isRead ? 'read' : ''}" data-key="${item.item_key}">
+                        <div class="hot-rank ${rank <= 3 ? 'top3' : ''}">${rank}</div>
+                        <div class="hot-content">
+                            <div class="hot-title">
+                                <a href="${item.www_url}?ref=play.ruanyazyk.com" target="_blank">${item.title}</a>
+                            </div>
+                            <div class="hot-desc">${desc}</div>
+                            <div class="hot-footer">
+                                <div>
+
+                                <span class="source-tag">${formatSource(item.tab_key)}</span>
+                                <span class="time-ago">${timeAgo}</span>
+</div>
+                                <div class="hot-value">
+                                    <i class="fas fa-fire"></i>
+                                    ${heatValue}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+        });
+
+        // 添加新内容
+        listContainer.innerHTML += html;
+
+        // 添加点击事件
+        document.querySelectorAll('.hot-item').forEach(item => {
+            item.addEventListener('click', function () {
+                const itemKey = this.dataset.key;
+
+                // 标记为已读
+                if (!readItems.includes(itemKey)) {
+                    readItems.push(itemKey);
+                    try {
+                        localStorage.setItem('readItems', JSON.stringify(readItems));
+                    } catch (e) {
+                        console.log('无法写入本地存储');
+                    }
+                    this.classList.add('read');
+                }
+            });
+        });
+    }
+
+    // 格式化来源
+    function formatSource(source) {
+        const sources = {
+            'ithome': 'IT之家',
+            'zhihu': '知乎',
+            'weibo': '微博',
+            'hupu': '虎扑',
+            'tencent-news': '腾讯新闻',
+            "douban-community": "豆瓣社区",
+            "huxiu": "虎嗅",
+            "sspai": "少数派",
+            "thepaper": "澎湃新闻",
+            "xiaohongshu": "小红书",
+            "36kr": "36氪",
+            "toutiao": "今日头条",
+            "ifanr": "爱范儿",
+            "douban-media": "豆瓣书影音",
+            "smzdm": "什么值得买",
+            "baidu": "百度",
+            "penti": "喷嚏网",
+            "ne-news": "网易新闻",
+            "weread": "微信读书",
+            "zhihu-daily": "知乎日报",
+            "baidu-tieba": "百度贴吧",
+            "52pojie": "吾爱破解",
+            "guancha-user": "观风网",
+            "xueqiu": "雪球",
+            "landian": "蓝点网",
+            "appinn": "小众软件",
+            "apprcn": "反斗限免",
+            "zhibo8": "直播吧",
+            "douyin": "抖音",
+            "bilibili": "哔哩哔哩",
+            "xmyp": "小米有品",
+            "gamersky": "游民星空",
+            "juejin": "掘金",
+            "journal-tech": "技术期刊",
+            "github": "GitHub",
+        };
+        return sources[source] || source;
+    }
+
+    // 格式化时间差
+    function formatTimeAgo(timestamp) {
+        const now = Math.floor(Date.now() / 1000);
+        const diffSeconds = now - timestamp;
+
+        if (diffSeconds < 60) {
+            return `${diffSeconds}秒前`;
+        } else if (diffSeconds < 3600) {
+            return `${Math.floor(diffSeconds / 60)}分钟前`;
+        } else if (diffSeconds < 86400) {
+            return `${Math.floor(diffSeconds / 3600)}小时前`;
+        } else {
+            return `${Math.floor(diffSeconds / 86400)}天前`;
+        }
+    }
+
+    // 更新刷新时间
+    function updateRefreshTime(timestamp) {
+        const refreshDate = new Date(timestamp * 1000);
+        const hours = String(refreshDate.getHours()).padStart(2, '0');
+        const minutes = String(refreshDate.getMinutes()).padStart(2, '0');
+        const seconds = String(refreshDate.getSeconds()).padStart(2, '0');
+
+        document.getElementById('update-time').textContent = `${hours}:${minutes}:${seconds} 更新`;
+    }
+
+    // 显示错误信息
+    function showError(message) {
+        const container = document.getElementById('hot-list');
+        container.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>${message}</p>
+                    <button class="time-tab" style="margin-top: 15px;" onclick="fetchHotList()">
+                        <i class="fas fa-sync-alt"></i> 重新加载
+                    </button>
+                </div>
+            `;
+    }
+
+    // 回到顶部
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+</script>
+<script src="static/js/cache-updater.js"></script>
+<script charset="UTF-8"  src="static/js/main.min.js"></script>
+</body>
+</html>
