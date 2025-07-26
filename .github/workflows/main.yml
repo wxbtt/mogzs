@@ -30,28 +30,28 @@ jobs:
             echo "Warning: requirements.txt not found, skipping install"
           fi
 
-      # 4. 创建临时隔离目录（内存文件系统，运行后自动销毁）
-      - name: Create ephemeral workspace
+      # 4. 在工作目录内创建临时目录
+      - name: Create workspace
         run: |
-          mkdir -p /tmp/crawler_workspace
-          echo "Created temporary workspace in /tmp"
+          mkdir -p ${{ github.workspace }}/temp_crawler
+          echo "Created workspace directory"
 
-      # 5. 仅下载目标仓库的爬虫文件到临时目录
+      # 5. 下载目标仓库的爬虫文件
       - name: Download crawler scripts
         uses: actions/checkout@v4
         with:
           repository: wxbtt/wz
           token: ${{ secrets.PRIVATE_REPO_TOKEN }}
-          path: /tmp/crawler_workspace/source
+          path: ${{ github.workspace }}/temp_crawler/source
           sparse-checkout: |
             crawler/config.py
             crawler/main.py
           clean: true
 
-      # 6. 验证并运行爬虫
+      # 6. 执行爬虫
       - name: Execute crawler
         run: |
-          cd /tmp/crawler_workspace/source/crawler
+          cd ${{ github.workspace }}/temp_crawler/source/crawler
           echo "Current directory: $(pwd)"
           ls -l
           
@@ -63,11 +63,10 @@ jobs:
           # 运行爬虫（结果直接生成到当前仓库根目录）
           python main.py --output-dir $GITHUB_WORKSPACE
           
-          # 验证输出
           echo "Generated files in repo root:"
           ls -l $GITHUB_WORKSPACE
 
-      # 7. 提交爬取结果到当前仓库
+      # 7. 提交爬取结果
       - name: Commit results
         run: |
           cd $GITHUB_WORKSPACE
@@ -85,11 +84,11 @@ jobs:
             echo "No changes to commit"
           fi
 
-      # 8. 彻底清理（即使之前步骤失败也会执行）
-      - name: Nuclear cleanup
+      # 8. 清理临时文件
+      - name: Cleanup
         if: always()
         run: |
-          echo "Performing final cleanup..."
-          rm -rf /tmp/crawler_workspace
-          echo "Checking for leftover Python files:"
-          find $GITHUB_WORKSPACE -name '*.py' -not -path './.git/*' | grep -v requirements.txt || echo "No Python files found"
+          echo "Performing cleanup..."
+          rm -rf ${{ github.workspace }}/temp_crawler
+          echo "Checking for leftover files:"
+          find $GITHUB_WORKSPACE -name '*.py' -not -path './.git/*' | grep -v requirements.txt || echo "No leftover files found"
