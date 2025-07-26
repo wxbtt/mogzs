@@ -1,4 +1,0 @@
-# IPv4 Streams
-接口更新,http://8.138.7.223/tv/ptbtv.php?id=27
-
-# IPv6 Streams
