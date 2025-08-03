@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools - 黑猫工具箱</title>
+<meta name="keywords" content="Tools,工具箱,黑猫">
+<meta name="description" content="黑猫工具箱 - 实用工具集合">
+<link rel="shortcut icon" href="/favicon-yuanshen.ico" type="image/x-icon">
+<link rel="stylesheet" href="static/css/buttons.css">
+<link rel="stylesheet" href="static/css/app.css" type="text/css" media="all">
+<script type="text/javascript" src="static/js/jquery.js"></script>
+<script src="static/js/vue/vue.min-2.6.12.js"></script>
+<style>
+  .tools-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .tool-category {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    display: inline-block;
+    width: 30%;
+    min-width: 300px;
+    vertical-align: top;
+    margin-right: 20px;
+  }
+  .tool-category h2 {
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 10px;
+    margin-top: 0;
+  }
+  .tool-list {
+    list-style: none;
+    padding: 0;
+  }
+  .tool-list li {
+    margin-bottom: 10px;
+  }
+  .tool-list a {
+    display: block;
+    padding: 8px 15px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  .tool-list a:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateX(5px);
+  }
+</style>
+</head>
+<body class="home page" ondragstart="window.event.returnValue=false" oncontextmenu="window.event.returnValue=false" onselectstart="event.returnValue=false">
+<div class="jumbotron">
+  <div class="container">
+    <div class="splash">
+      <div class="content">
+        <img src="static/picture/9527.gif" alt="工作室专用" id="qq" class="wow fadeInDown animated" style="visibility: visible; animation-name: fadeInDown;">
+        <h1 class="wow fadeIn animated" data-wow-delay="750ms" style="visibility: visible; animation-delay: 750ms; animation-name: fadeIn; border-bottom:none;">黑猫工具箱</h1>
+        <p class="description wow fadeIn animated" data-wow-delay="1230ms" style="visibility: visible; animation-delay: 1230ms; animation-name: fadeIn;">实用工具集合</p>
+      </div>
+    </div>
+
+    <div id="app" class="tools-container wow fadeIn animated" data-wow-delay="1500ms">
+      <div class="tool-category">
+        <h2>Aria2</h2>
+        <ul class="tool-list">
+          <li><a href="aria2/AriaNg/">AriaNg</a></li>
+          <li><a href="aria2/webui/">WebUI</a></li>
+          <li><a href="aria2/yaaw/">Yaaw</a></li>
+        </ul>
+      </div>
+
+      <div class="tool-category">
+        <h2>工具</h2>
+        <ul class="tool-list">
+          <li><a href="file/tool/CharlesKeygen.html">Charles license 生成</a></li>
+          <li><a href="file/tool/MobaXtermKeygen.html">MobaXterm license 生成</a></li>
+          <li><a href="file/tool/editplus_code.html">EditPlus注册码生成</a></li>
+          <li><a href="file/tool/qrcode.html">二维码</a></li>
+          <li><a href="file/hostloc/hostloc.html">hostloc签到</a></li>
+          <li><a href="file/Core-Values-Encoder/index.html">24字价值观加密</a></li>
+          <li><a href="source/tool/ad/iAdRules.txt">ad</a></li>
+        </ul>
+      </div>
+
+      <div class="tool-category">
+        <h2>支付</h2>
+        <ul class="tool-list">
+          <li><a href="file/tool/AllQRCodePay.html">通用收款码</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <canvas id="canvas" width="1920" height="507"></canvas>
+</div>
+
+<script src="static/js/hovertreewelcome.js"></script>
+<script src="static/js/bg_window.js"></script>
+</body>
+</html>
