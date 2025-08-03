@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to my little nest</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="https://pt.98bbs.com" type="image/x-icon">
+</head>
+
+<body bgcolor="#fff" onload="newtext()">
+    <strong>
+        <marquee behavior="" direction="">Welcome to my little nest</marquee>
+    </strong>
+    <section>
+        <div>
+            <h1>DreamChaser Network</h1>
+            <h3>I am 13 years old this year</h3>
+            <p>Let the dream ship forge ahead bravely amidst the waves.</p>
+            <img src="https://profile-counter.glitch.me/stora/count.svg" alt="">
+            <br>
+            <a href="#!">Click in</a>
+        </div>
+        <div>
+            <h2>pursue one's dreams</h2>
+            <a href="#!" target="_blank" rel="noopener noreferrer">Dreams are like the rising sun</a>
+            <a href="#!" target="_blank" rel="noopener noreferrer">warm and bright. On the journey of pursuing them</a>
+            <a href="#!" target="_blank" rel="noopener noreferrer">they serve as your eternal lighthouse</a>
+            <a href="#!" target="_blank" rel="noopener noreferrer">Only by moving forward steadfastly</a>
+            <a href="#!" target="_blank" rel="noopener noreferrer">can one reach the destination</a>
+        </div>
+    </section>
+    <footer>
+        <p><a href="https://pt.98bbs.com" target="_blank" rel="noopener noreferrer">Copyright ©2024-2818 DreamChaser Network All rights reserved</a></p>
+        <p><a href="https://pt.98bbs.com" target="_blank" rel="noopener noreferrer">On the path of pursuing dreams, the youngster takes his dreams as his steed, journeying day and night without rest.</a></p>
+    </footer>
+    <script>
+        var text = document.title
+        var timerID
+        function newtext() {
+            clearTimeout(timerID)
+            document.title = text.substring(1, text.length) + text.substring(0, 1)
+            text = document.title.substring(0, text.length)
+            timerID = setTimeout("newtext()", 300)
+        };
+    </script>
+</body>
+
+</html>
