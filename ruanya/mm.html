@@ -1243,6 +1243,24 @@
             }
         }
 
+        async function fetchJsonVideo(url,apiData) {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP错误! 状态: ${response.status}`);
+            }
+            const data = await response.json();
+            state.currentVideo = handData(data,apiData);
+            playVideo();
+        }
+
+        function handData(data,apiData) {
+            let dataArr = apiData.data.split(".");
+            dataArr.forEach(item => {
+                data = data[item];
+            })
+            return data;
+        }
+
         // 播放视频
         function playVideo() {
             elements.videoPlayer.src = state.currentVideo;
@@ -1310,7 +1328,7 @@
     </script>
     <script src="static/js/cache-updater.js"></script>
 
-    <script charset="UTF-8"  src="static/js/main.min.js"></script>
+<!--    <script charset="UTF-8"  src="static/js/main.min.js"></script>-->
     <script charset="UTF-8"  src="static/js/notice.js"></script>
 </body>
 </html>
