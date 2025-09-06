@@ -634,18 +634,20 @@
 
         <!-- 功能卡片区 -->
         <div class="tools-grid">
+
             <div class="tool-card">
                 <div class="card-header">
                     <div class="card-icon">
-                        <i class="fas fa-map"></i>
+                        <i class="fas fa-calendar"></i>
                     </div>
-                    <h3 class="card-title">毛主席足迹地图</h3>
-                    <p class="card-desc">让我们共同追随伟人的脚步，触摸那段改变中国命运的历史脉搏。</p>
+                    <h3 class="card-title">每日分享</h3>
+                    <p class="card-desc"><span id="currentDate"></span><br/>每日分享免费的精选网站、软件资源！</p>
                 </div>
                 <div class="card-footer">
-                    <a target="_blank" href="mao.html" class="btn"><i class="fas fa-map"></i> 追随伟人</a>
+                    <a href="#" id="everyday" class="btn" target="_blank"><i class="fas fa-calendar"></i> 获取资源</a>
                 </div>
             </div>
+
             <div class="tool-card">
                 <div class="card-header">
                     <div class="card-icon">
@@ -744,6 +746,18 @@
                     <a href="watermark.html" class="btn"><i class="fas fa-universal-access"></i> 添加水印</a>
                 </div>
             </div>
+            <div class="tool-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-map"></i>
+                    </div>
+                    <h3 class="card-title">毛主席足迹地图</h3>
+                    <p class="card-desc">让我们共同追随伟人的脚步，触摸那段改变中国命运的历史脉搏。</p>
+                </div>
+                <div class="card-footer">
+                    <a target="_blank" href="mao.html" class="btn"><i class="fas fa-map"></i> 追随伟人</a>
+                </div>
+            </div>
         </div>
 
         <!-- 特色区 -->
@@ -813,6 +827,34 @@
         bubbles.forEach(bubble => {
             bubble.style.animationDelay = `-${Math.random() * 10}s`;
         });
+
+        function updateDateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1; // 月份从0开始，需要+1
+
+            // 格式化为YYYY年MM月
+            const formattedDate = `${year}年${month.toString().padStart(2, '0')}月`;
+
+            // 更新显示
+            document.getElementById('currentDate').textContent = formattedDate;
+        }
+        // 页面加载时立即更新
+        updateDateTime();
+
+        function getEveryDayLink() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const formattedDate = `${year}${month}`;
+
+// 更新id为everyday的a标签
+            const everydayLink = document.getElementById('everyday');
+            if (everydayLink) {
+                everydayLink.href = `https://ruanyazyk.com/everyday/${year}/${formattedDate}.html`;
+            }
+        }
+        getEveryDayLink();
     </script>
     <script src="static/js/cache-updater.js"></script>
 
