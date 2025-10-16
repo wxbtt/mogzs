@@ -889,12 +889,15 @@
             // 格式化描述，避免空白描述
             const desc = item.desc ? item.desc : '无描述';
 
+            console.log("++++++++++++++++++++++++++")
+            console.log(item)
+
             html += `
                     <div class="hot-item ${isRead ? 'read' : ''}" data-key="${item.item_key}">
                         <div class="hot-rank ${rank <= 3 ? 'top3' : ''}">${rank}</div>
                         <div class="hot-content">
                             <div class="hot-title">
-                                <a href="${item.www_url}?ref=play.ruanyazyk.com" target="_blank">${item.title}</a>
+                                <a href="${item.www_url}${item.tab_key!=='weibo'?'?ref=play.ruanyazyk.com':''}" target="_blank">${item.title}</a>
                             </div>
                             <div class="hot-desc">${desc}</div>
                             <div class="hot-footer">
@@ -1026,8 +1029,7 @@
     }
 </script>
 <script src="static/js/cache-updater.js"></script>
-
-    <script charset="UTF-8"  src="static/js/main.min.js"></script>
-    <script charset="UTF-8"  src="static/js/notice.js"></script>
+<script charset="UTF-8"  src="static/js/main.min.js"></script>
+<script charset="UTF-8"  src="static/js/notice.js"></script>
 </body>
 </html>
