@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>转换工具 - 黑猫来也</title>
+    <meta name="keywords" content="转换工具, 黑猫来也">
+    <meta name="description" content="多功能转换工具">
+    <link rel="shortcut icon" href="/favicon-yuanshen.ico" type="image/x-icon">
+    <link rel="stylesheet" href="static/css/buttons.css">
+    <link rel="stylesheet" href="static/css/app.css" type="text/css" media="all">
+    <script type="text/javascript" src="static/js/jquery.js"></script>
+    <style>
+        /* 转换工具特定样式 */
+        .tool-container {
+            background: rgba(30, 30, 46, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tool-title {
+            font-size: 1.5rem;
+            color: #ff7e5f;
+        }
+        
+        .tool-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b8c2cc;
+        }
+        
+        textarea, select, input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(20, 20, 35, 0.7);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        textarea:focus, select:focus, input:focus {
+            outline: none;
+            border-color: #ff7e5f;
+            box-shadow: 0 0 0 2px rgba(255, 126, 95, 0.3);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .conversion-options {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 15px;
+            align-items: center;
+            margin: 25px 0;
+        }
+        
+        .conversion-arrow {
+            font-size: 2rem;
+            color: #ff7e5f;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .conversion-options {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+            }
+            
+            .conversion-arrow {
+                transform: rotate(90deg);
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .button {
+                width: 100%;
+                max-width: 300px;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body class="home page" ondragstart="window.event.returnValue=false" oncontextmenu="window.event.returnValue=false" onselectstart="event.returnValue=false">
+    <div class="jumbotron">
+        <div class="container">
+            <div class="splash">
+                <div class="content">
+                    <div class="tool-container wow fadeIn animated" data-wow-delay="900ms">
+                        <div class="tool-header">
+                            <div class="tool-title">文本编码转换</div>
+                            <div class="tool-actions">
+                                <button class="button button-glow button-border button-rounded button-primary">
+                                    <i class="fas fa-history"></i> 历史记录
+                                </button>
+                                <button class="button button-glow button-border button-rounded button-action">
+                                    <i class="fas fa-cog"></i> 设置
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="inputText">输入文本</label>
+                            <textarea id="inputText" placeholder="请输入需要转换的文本..."></textarea>
+                        </div>
+                        
+                        <div class="conversion-options">
+                            <div class="input-group">
+                                <label for="fromFormat">从格式</label>
+                                <select id="fromFormat">
+                                    <option value="utf8">UTF-8</option>
+                                    <option value="gbk">GBK</option>
+                                    <option value="ascii">ASCII</option>
+                                    <option value="base64">Base64</option>
+                                    <option value="hex">十六进制</option>
+                                </select>
+                            </div>
+                            
+                            <div class="conversion-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="toFormat">到格式</label>
+                                <select id="toFormat">
+                                    <option value="utf8">UTF-8</option>
+                                    <option value="gbk">GBK</option>
+                                    <option value="ascii">ASCII</option>
+                                    <option value="base64" selected>Base64</option>
+                                    <option value="hex">十六进制</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="outputText">转换结果</label>
+                            <textarea id="outputText" placeholder="转换结果将显示在这里..." readonly></textarea>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="button button-glow button-border button-rounded button-highlight">
+                                <i class="fas fa-sync-alt"></i> 立即转换
+                            </button>
+                            <button class="button button-glow button-border button-rounded button-caution">
+                                <i class="fas fa-copy"></i> 复制结果
+                            </button>
+                            <button class="button button-glow button-border button-rounded button-royal">
+                                <i class="fas fa-download"></i> 下载文件
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 简单的转换功能演示
+        document.addEventListener('DOMContentLoaded', function() {
+            const convertBtn = document.querySelector('.button-highlight');
+            const inputText = document.getElementById('inputText');
+            const outputText = document.getElementById('outputText');
+            const fromFormat = document.getElementById('fromFormat');
+            const toFormat = document.getElementById('toFormat');
+            
+            convertBtn.addEventListener('click', function() {
+                if (!inputText.value.trim()) {
+                    outputText.value = "请输入需要转换的文本";
+                    return;
+                }
+                
+                // 模拟转换过程
+                outputText.value = "转换中...";
+                
+                setTimeout(() => {
+                    const from = fromFormat.value;
+                    const to = toFormat.value;
+                    
+                    if (from === 'utf8' && to === 'base64') {
+                        outputText.value = btoa(unescape(encodeURIComponent(inputText.value)));
+                    } else if (from === 'base64' && to === 'utf8') {
+                        try {
+                            outputText.value = decodeURIComponent(escape(atob(inputText.value)));
+                        } catch(e) {
+                            outputText.value = "Base64解码错误，请检查输入格式";
+                        }
+                    } else {
+                        outputText.value = `从 ${from.toUpperCase()} 到 ${to.toUpperCase()} 的转换结果:\n${inputText.value}`;
+                    }
+                }, 800);
+            });
+            
+            // 复制功能
+            const copyBtn = document.querySelector('.button-caution');
+            copyBtn.addEventListener('click', function() {
+                outputText.select();
+                document.execCommand('copy');
+                alert('转换结果已复制到剪贴板');
+            });
+        });
+    </script>
+    
+    <!-- 引入indexhm.html的脚本 -->
+    <script src="static/js/hovertreewelcome.js"></script>
+    <script src="static/js/bg_window.js"></script>
+</body>
+</html>

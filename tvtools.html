@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>转换工具 - 黑猫来也</title>
+    <meta name="keywords" content="转换工具, 黑猫来也">
+    <meta name="description" content="多功能转换工具">
+    <link rel="shortcut icon" href="/favicon-yuanshen.ico" type="image/x-icon">
+    <link rel="stylesheet" href="static/css/buttons.css">
+    <link rel="stylesheet" href="static/css/app.css" type="text/css" media="all">
+    <script type="text/javascript" src="static/js/jquery.js"></script>
+    <style>
+        /* 转换工具特定样式 */
+        .tool-container {
+            background: rgba(30, 30, 46, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tool-title {
+            font-size: 1.5rem;
+            color: #ff7e5f;
+        }
+        
+        .tool-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b8c2cc;
+        }
+        
+        textarea, select, input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(20, 20, 35, 0.7);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        textarea:focus, select:focus, input:focus {
+            outline: none;
+            border-color: #ff7e5f;
+            box-shadow: 0 0 0 2px rgba(255, 126, 95, 0.3);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .conversion-options {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 15px;
+            align-items: center;
+            margin: 25px 0;
+        }
+        
+        .conversion-arrow {
+            font-size: 2rem;
+            color: #ff7e5f;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        /* 转换器样式 */
+        .converter-container {
+            background: rgba(30, 30, 46, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .converter-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .converter-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .converter-subtitle {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: #ff7e5f;
+        }
+        
+        .converter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .converter-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(20, 20, 35, 0.7);
+            color: white;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .converter-input:focus {
+            outline: none;
+            border-color: #ff7e5f;
+            box-shadow: 0 0 0 2px rgba(255, 126, 95, 0.3);
+        }
+        
+        .converter-button {
+            width: 100%;
+            padding: 0.8rem;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+        
+        .converter-button-blue {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            border: 2px solid #3498db;
+        }
+        
+        .converter-button-blue:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .converter-button-green {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            border: 2px solid #2ecc71;
+        }
+        
+        .converter-button-green:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .conversion-options {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+            }
+            
+            .conversion-arrow {
+                transform: rotate(90deg);
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .button {
+                width: 100%;
+                max-width: 300px;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body class="home page" ondragstart="window.event.returnValue=false" oncontextmenu="window.event.returnValue=false" onselectstart="event.returnValue=false">
+    <div class="jumbotron">
+        <div class="container">
+            <div class="splash">
+                <div class="content">
+                    <img src="static/picture/9527.gif" alt="工作室专用" id="qq" class="wow fadeInDown animated" style="visibility: visible; animation-name: fadeInDown;">
+                    <h1 class="wow fadeIn animated" data-wow-delay="750ms" style="visibility: visible; animation-delay: 750ms; animation-name: fadeIn; border-bottom:none;">黑猫来也</h1>
+                    <p class="description wow fadeIn animated" data-wow-delay="1230ms" style="visibility: visible; animation-delay: 1230ms; animation-name: fadeIn;">欢迎您的到来</p>
+                    
+                    <div class="converter-container wow fadeIn animated" data-wow-delay="900ms">
+                        <div class="converter-section">
+                            <h3 class="converter-subtitle">M3U 转 TXT（保留分组信息）</h3>
+                            <form id="m3u-to-txt-form" class="converter-form">
+                                <input type="file" id="m3u-file" accept=".m3u" required class="converter-input">
+                                <button type="submit" class="converter-button converter-button-blue">转换</button>
+                            </form>
+                        </div>
+                        
+                        <div class="converter-section">
+                            <h3 class="converter-subtitle">TXT 转 M3U（保留分组信息）</h3>
+                            <form id="txt-to-m3u-form" class="converter-form">
+                                <input type="file" id="txt-file" accept=".txt" required class="converter-input">
+                                <input type="text" id="epg-url" placeholder="EPG URL (可选,默认为 https://epg.zbds.top)" class="converter-input">
+                                <button type="submit" class="converter-button converter-button-green">转换</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <p class="description wow fadeIn animated" data-wow-delay="1200ms">
+                        <a href="#" title="返回首页" class="mr15 button button-glow button-border button-rounded button-primary description">返回首页</a>
+                        <a href="#" title="更多工具" class="mr15 button button-glow button-border button-rounded button-action description">更多工具</a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="copyright description wow fadeIn animated" data-wow-delay="1500ms">
+                Copyright © 2025-2225 版权所有 | 转换工具 - 黑猫来也
+            </div>
+        </div>
+        
+        <!-- 背景效果 -->
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        // 转换功能实现
+        function parseM3UToTXT(m3uContent) {
+            console.log("Parsing M3U to TXT");
+            const lines = m3uContent.split('\n');
+            const channels = {};
+            let currentGroup = '未分组';
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line.startsWith('#EXTINF:-1')) {
+                    const groupMatch = line.match(/group-title="([^"]*)"/);
+                    const nameMatch = line.match(/tvg-name="([^"]*)"/);
+                    const group = groupMatch ? groupMatch[1] : currentGroup;
+                    const name = nameMatch ? nameMatch[1] : line.split(',').pop();
+                    const url = lines[i + 1] ? lines[i + 1].trim() : '';
+
+                    if (!channels[group]) {
+                        channels[group] = [];
+                    }
+                    channels[group].push(`${name},${url}`);
+                    currentGroup = group;
+                }
+            }
+
+            let txtContent = '';
+            for (const [group, channelList] of Object.entries(channels)) {
+                txtContent += `${group},#genre#\n`;
+                txtContent += channelList.join('\n') + '\n\n';
+            }
+
+            return txtContent;
+        }
+
+        function convertTXTToM3U(txtContent, epgUrl) {
+            console.log("Converting TXT to M3U");
+            const defaultEpgUrl = "https://epg.zbds.top";
+            const lines = txtContent.split('\n');
+            let m3uContent = `#EXTM3U x-tvg-url="${epgUrl || defaultEpgUrl}"\n`;
+            let currentGenre = '未分类';
+
+            for (const line of lines) {
+                const trimmedLine = line.trim();
+                if (trimmedLine.endsWith(',#genre#')) {
+                    currentGenre = trimmedLine.replace(',#genre#', '');
+                } else if (trimmedLine && !trimmedLine.startsWith('#')) {
+                    const [channelName, channelUrl] = trimmedLine.split(',');
+                    const tvgLogo = `https://livecdn.zbds.org/logo/${channelName}.png`;
+                    m3uContent += `#EXTINF:-1 group-title="${currentGenre}" tvg-name="${channelName}" tvg-logo="${tvgLogo}" epg-url="${epgUrl || defaultEpgUrl}",${channelName}\n`;
+                    m3uContent += `${channelUrl}\n`;
+                }
+            }
+
+            return m3uContent;
+        }
+
+        function downloadFile(content, filename) {
+            console.log("Downloading file:", filename);
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function getCurrentDateTime() {
+            const now = new Date();
+            return now.getFullYear() +
+                   ('0' + (now.getMonth() + 1)).slice(-2) +
+                   ('0' + now.getDate()).slice(-2) +
+                   ('0' + now.getHours()).slice(-2) +
+                   ('0' + now.getMinutes()).slice(-2) +
+                   ('0' + now.getSeconds()).slice(-2);
+        }
+
+        function getFileNameWithoutExtension(filename) {
+            return filename.split('.').slice(0, -1).join('.');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM fully loaded");
+
+            const m3uForm = document.getElementById('m3u-to-txt-form');
+            const txtForm = document.getElementById('txt-to-m3u-form');
+
+            if (m3uForm) {
+                m3uForm.addEventListener('submit', function(e) {
+                    console.log("M3U to TXT form submitted");
+                    e.preventDefault();
+                    const file = document.getElementById('m3u-file').files[0];
+                    if (!file) {
+                        console.error("No file selected");
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const m3uContent = e.target.result;
+                        const txtContent = parseM3UToTXT(m3uContent);
+                        const originalName = getFileNameWithoutExtension(file.name);
+                        const newFileName = `${originalName}_${getCurrentDateTime()}.txt`;
+                        downloadFile(txtContent, newFileName);
+                    };
+                    reader.readAsText(file);
+                });
+            } else {
+                console.error("M3U to TXT form not found");
+            }
+
+            if (txtForm) {
+                txtForm.addEventListener('submit', function(e) {
+                    console.log("TXT to M3U form submitted");
+                    e.preventDefault();
+                    const file = document.getElementById('txt-file').files[0];
+                    if (!file) {
+                        console.error("No file selected");
+                        return;
+                    }
+                    const epgUrl = document.getElementById('epg-url').value.trim() || "https://epg.zbds.top";
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const txtContent = e.target.result;
+                        const m3uContent = convertTXTToM3U(txtContent, epgUrl);
+                        const originalName = getFileNameWithoutExtension(file.name);
+                        const newFileName = `${originalName}_${getCurrentDateTime()}.m3u`;
+                        downloadFile(m3uContent, newFileName);
+                    };
+                    reader.readAsText(file);
+                });
+            } else {
+                console.error("TXT to M3U form not found");
+            }
+            
+            // 简单的背景效果
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // 创建粒子效果
+            const particles = [];
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 1,
+                    speedX: Math.random() * 0.5 - 0.25,
+                    speedY: Math.random() * 0.5 - 0.25,
+                    color: `rgba(255, ${Math.floor(Math.random() * 100 + 126)}, ${Math.floor(Math.random() * 100 + 95)}, ${Math.random() * 0.3 + 0.1})`
+                });
+            }
+            
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    
+                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                    
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                }
+                
+                requestAnimationFrame(animateParticles);
+            }
+            
+            animateParticles();
+        });
+    </script>
+    
+    <!-- 引入indexhm.html的脚本 -->
+    <script src="static/js/hovertreewelcome.js"></script>
+    <script src="static/js/bg_window.js"></script>
+</body>
+</html>
