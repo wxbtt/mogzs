@@ -1052,6 +1052,141 @@
             transform: rotate(-45deg);
         }
 
+        /* 提醒弹框样式 */
+        .alert-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .alert-modal-content {
+            background: linear-gradient(145deg, #f5f7fa, #e4edf5);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: inset 0 -8px 25px rgba(0, 0, 0, 0.05),
+            0 20px 50px rgba(0, 0, 0, 0.2);
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .alert-modal-content::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #ffffff, #f0f4f9);
+            z-index: 0;
+            box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.05),
+            0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .alert-modal-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .alert-modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+            position: relative;
+            z-index: 1;
+        }
+
+        .alert-modal-text {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: var(--dark);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .alert-modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .alert-modal-btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+            0 8px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+
+        .alert-modal-btn.download {
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            color: var(--primary);
+        }
+
+        .alert-modal-btn.close {
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            color: var(--dark);
+        }
+
+        .alert-modal-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .alert-modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: inset 0 -3px 10px rgba(0, 0, 0, 0.1),
+            0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .alert-modal-btn:hover::before {
+            opacity: 1;
+        }
+
+        .alert-modal-btn:hover span, .alert-modal-btn:hover i {
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
         /* 响应式设计 */
         @media (max-width: 900px) {
             .tool-title {
@@ -1100,6 +1235,14 @@
 
             .history-list {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .alert-modal-content {
+                padding: 30px 20px;
+            }
+
+            .alert-modal-buttons {
+                flex-direction: column;
             }
         }
 
@@ -1160,14 +1303,41 @@
 <i class="fas fa-film film-icon film-3"></i>
 <i class="fas fa-film film-icon film-4"></i>
 
+<!-- 提醒弹框 -->
+<div id="alertModal" class="alert-modal">
+    <div class="alert-modal-content">
+        <div class="alert-modal-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 class="alert-modal-title">温馨提示</h3>
+        <p class="alert-modal-text">当前接口不稳定，可能无法正常播放视频。为了获得更好的观看体验，请使用短剧APP端。</p>
+        <div class="alert-modal-buttons">
+            <a href="https://vedl.lxapp3.shop/spdj/01/dl.html?cId=d4640" class="alert-modal-btn download">
+                <i class="fas fa-download"></i>
+                <span>点击下载</span>
+            </a>
+            <button id="closeAlertBtn" class="alert-modal-btn close">
+                <i class="fas fa-times"></i>
+                <span>关闭</span>
+            </button>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <!-- 头部导航 -->
     <header>
         <div class="logo">软鸭PLAY</div>
-        <a href="/" class="nav-btn">
-            <i class="fas fa-home"></i>
-            <span>返回首页</span>
-        </a>
+        <div>
+            <a href="/" class="nav-btn">
+                <i class="fas fa-home"></i>
+                <span>返回首页</span>
+            </a>
+            <a href="https://vedl.lxapp3.shop/spdj/01/dl.html?cId=d4640" target="_blank" class="nav-btn">
+                <i class="fas fa-download"></i>
+                <span>下载APP端</span>
+            </a>
+        </div>
     </header>
 
     <!-- 工具标题 -->
@@ -1324,6 +1494,10 @@
     const historyList = document.getElementById('historyList');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
+    // 弹框相关元素
+    const alertModal = document.getElementById('alertModal');
+    const closeAlertBtn = document.getElementById('closeAlertBtn');
+
     // 初始化
     document.addEventListener('DOMContentLoaded', () => {
         // 绑定事件
@@ -1364,6 +1538,11 @@
 
         // 清空历史记录按钮事件
         clearHistoryBtn.addEventListener('click', clearHistory);
+
+        // 弹框关闭按钮事件
+        closeAlertBtn.addEventListener('click', () => {
+            alertModal.style.display = 'none';
+        });
 
         // 初始化时渲染历史记录
         renderHistory();
