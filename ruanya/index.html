@@ -644,7 +644,7 @@
                     <p class="card-desc"><span id="currentDate"></span><br/>每日分享免费的精选网站、软件资源！</p>
                 </div>
                 <div class="card-footer">
-                    <a href="#" id="everyday" class="btn" target="_blank"><i class="fas fa-calendar"></i> 获取资源</a>
+                    <a href="https://csjrb.top/" class="btn" target="_blank"><i class="fas fa-calendar"></i> 获取资源</a>
                 </div>
             </div>
 
@@ -854,19 +854,19 @@
         // 页面加载时立即更新
         updateDateTime();
 
-        function getEveryDayLink() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = (now.getMonth() + 1).toString().padStart(2, '0');
-            const formattedDate = `${year}${month}`;
-
-// 更新id为everyday的a标签
-            const everydayLink = document.getElementById('everyday');
-            if (everydayLink) {
-                everydayLink.href = `https://ruanyazyk.com/everyday/${year}/${formattedDate}.html`;
-            }
-        }
-        getEveryDayLink();
+//         function getEveryDayLink() {
+//             const now = new Date();
+//             const year = now.getFullYear();
+//             const month = (now.getMonth() + 1).toString().padStart(2, '0');
+//             const formattedDate = `${year}${month}`;
+//
+// // 更新id为everyday的a标签
+//             const everydayLink = document.getElementById('everyday');
+//             if (everydayLink) {
+//                 everydayLink.href = `https://ruanyazyk.com/everyday/${year}/${formattedDate}.html`;
+//             }
+//         }
+//         getEveryDayLink();
     </script>
     <script src="static/js/cache-updater.js"></script>
 
