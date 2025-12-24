@@ -1304,25 +1304,25 @@
 <i class="fas fa-film film-icon film-4"></i>
 
 <!-- 提醒弹框 -->
-<div id="alertModal" class="alert-modal">
-    <div class="alert-modal-content">
-        <div class="alert-modal-icon">
-            <i class="fas fa-exclamation-triangle"></i>
-        </div>
-        <h3 class="alert-modal-title">温馨提示</h3>
-        <p class="alert-modal-text">当前接口不稳定，可能无法正常播放视频。为了获得更好的观看体验，请使用短剧APP端。</p>
-        <div class="alert-modal-buttons">
-            <a href="https://vedl.lxapp3.shop/spdj/01/dl.html?cId=d4640" class="alert-modal-btn download">
-                <i class="fas fa-download"></i>
-                <span>点击下载</span>
-            </a>
-            <button id="closeAlertBtn" class="alert-modal-btn close">
-                <i class="fas fa-times"></i>
-                <span>关闭</span>
-            </button>
-        </div>
-    </div>
-</div>
+<!--<div id="alertModal" class="alert-modal">-->
+<!--    <div class="alert-modal-content">-->
+<!--        <div class="alert-modal-icon">-->
+<!--            <i class="fas fa-exclamation-triangle"></i>-->
+<!--        </div>-->
+<!--        <h3 class="alert-modal-title">温馨提示</h3>-->
+<!--        <p class="alert-modal-text">当前接口不稳定，可能无法正常播放视频。为了获得更好的观看体验，请使用短剧APP端。</p>-->
+<!--        <div class="alert-modal-buttons">-->
+<!--            <a href="https://vedl.lxapp3.shop/spdj/01/dl.html?cId=d4640" class="alert-modal-btn download">-->
+<!--                <i class="fas fa-download"></i>-->
+<!--                <span>点击下载</span>-->
+<!--            </a>-->
+<!--            <button id="closeAlertBtn" class="alert-modal-btn close">-->
+<!--                <i class="fas fa-times"></i>-->
+<!--                <span>关闭</span>-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <div class="container">
     <!-- 头部导航 -->
@@ -1494,8 +1494,8 @@
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
     // 弹框相关元素
-    const alertModal = document.getElementById('alertModal');
-    const closeAlertBtn = document.getElementById('closeAlertBtn');
+    // const alertModal = document.getElementById('alertModal');
+    // const closeAlertBtn = document.getElementById('closeAlertBtn');
 
     // 初始化
     document.addEventListener('DOMContentLoaded', () => {
@@ -1538,10 +1538,10 @@
         // 清空历史记录按钮事件
         clearHistoryBtn.addEventListener('click', clearHistory);
 
-        // 弹框关闭按钮事件
-        closeAlertBtn.addEventListener('click', () => {
-            alertModal.style.display = 'none';
-        });
+        // // 弹框关闭按钮事件
+        // closeAlertBtn.addEventListener('click', () => {
+        //     alertModal.style.display = 'none';
+        // });
 
         // 初始化时渲染历史记录
         renderHistory();
@@ -1988,7 +1988,7 @@
     }
 </script>
 <script src="static/js/cache-updater.js"></script>
-<script charset="UTF-8" src="static/js/main.min.js"></script>
+<!--<script charset="UTF-8" src="static/js/main.min.js"></script>-->
 <script charset="UTF-8" src="static/js/notice-251202.js"></script>
 </body>
 </html>
