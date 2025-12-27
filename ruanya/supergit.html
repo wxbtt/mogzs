@@ -1,0 +1,915 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>SuperGit - Github国内加速助手</title>
+		<meta name="description"
+			content="专治国内Github访问慢、图片加载失败、文件下载缓慢等问题！SuperGit能自动将您的所有GitHub及资源请求重定向至高速镜像站，并在您右击下载文件时提供多个高速镜像节点一键加速。">
+		<meta name="keywords" content="GitHub, GitHub镜像站">
+		<link rel="icon" href="https://pic1.imgdb.cn/item/6930043a4c455cbabc969f1a.png">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+		<!-- 51.LA 网站统计代码 -->
+		<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+		<script>
+			LA.init({
+				id: "L0okFgwFFwvZrgsK",
+				ck: "L0okFgwFFwvZrgsK"
+			})
+		</script>
+		<style>
+			:root {
+				--primary: #2d6df6;
+				--primary-light: #5a8bf7;
+				--secondary: #00d9c9;
+				--accent: #ff6b9d;
+				--dark: #1a1a2e;
+				--light: #f8f9ff;
+				--gray: #6c757d;
+				--gray-light: #e9ecef;
+				--border-radius: 12px;
+				--box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+				--transition: all 0.3s ease;
+			}
+
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+			}
+
+			body {
+				background-color: #f5f7ff;
+				color: #333;
+				line-height: 1.6;
+				overflow-x: hidden;
+			}
+
+			.container {
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 0 20px;
+			}
+
+			/* 头部样式 */
+			header {
+				background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+				color: white;
+				padding: 80px 0 120px;
+				position: relative;
+				overflow: hidden;
+			}
+
+			header::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+				background-size: cover;
+			}
+
+			.header-content {
+				position: relative;
+				z-index: 2;
+				text-align: center;
+			}
+
+			.logo {
+				font-size: 3.5rem;
+				margin-bottom: 20px;
+				display: inline-flex;
+				align-items: center;
+				gap: 15px;
+				background: rgba(255, 255, 255, 0.1);
+				padding: 15px 30px;
+				border-radius: var(--border-radius);
+				backdrop-filter: blur(10px);
+				border: 1px solid rgba(255, 255, 255, 0.2);
+			}
+
+			.logo i {
+				color: var(--secondary);
+			}
+
+			h1 {
+				font-size: 3rem;
+				margin-bottom: 15px;
+				font-weight: 800;
+			}
+
+			.tagline {
+				font-size: 1.3rem;
+				max-width: 800px;
+				margin: 0 auto 40px;
+				opacity: 0.9;
+			}
+
+			.download-buttons {
+				display: flex;
+				justify-content: center;
+				flex-wrap: wrap;
+				gap: 25px;
+				margin-top: 40px;
+			}
+
+			.download-btn {
+				background: rgba(255, 255, 255, 0.15);
+				padding: 16px 30px;
+				border-radius: 50px;
+				font-weight: 600;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				backdrop-filter: blur(5px);
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				transition: var(--transition);
+				text-decoration: none;
+				color: white;
+				font-size: 1.1rem;
+				min-width: 220px;
+				justify-content: center;
+			}
+
+			.download-btn:hover {
+				background: rgba(255, 255, 255, 0.25);
+				transform: translateY(-5px);
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+			}
+
+			.download-btn.quark {
+				background: linear-gradient(135deg, rgba(255, 107, 0, 0.9), rgba(255, 153, 0, 0.9));
+			}
+
+			.download-btn.baidu {
+				background: linear-gradient(135deg, rgba(52, 120, 246, 0.9), rgba(88, 154, 255, 0.9));
+			}
+
+			.download-btn.xunlei {
+				background: linear-gradient(135deg, rgba(0, 157, 255, 0.9), rgba(0, 217, 201, 0.9));
+			}
+
+			.download-btn i {
+				font-size: 1.3rem;
+			}
+
+			/* 主要内容区域 */
+			section {
+				padding: 80px 0;
+			}
+
+			.section-title {
+				text-align: center;
+				margin-bottom: 50px;
+			}
+
+			.section-title h2 {
+				font-size: 2.5rem;
+				color: var(--dark);
+				margin-bottom: 15px;
+				position: relative;
+				display: inline-block;
+			}
+
+			.section-title h2::after {
+				content: "";
+				position: absolute;
+				bottom: -10px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 80px;
+				height: 4px;
+				background: linear-gradient(to right, var(--primary), var(--secondary));
+				border-radius: 2px;
+			}
+
+			.section-title p {
+				color: var(--gray);
+				max-width: 700px;
+				margin: 0 auto;
+				font-size: 1.1rem;
+			}
+
+			/* 介绍部分 */
+			.intro-cards {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: 30px;
+				margin-bottom: 60px;
+			}
+
+			.intro-card {
+				background: white;
+				border-radius: var(--border-radius);
+				padding: 40px 30px;
+				box-shadow: var(--box-shadow);
+				transition: var(--transition);
+				text-align: center;
+				border-top: 5px solid var(--primary);
+			}
+
+			.intro-card:hover {
+				transform: translateY(-10px);
+				box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+			}
+
+			.intro-card i {
+				font-size: 3rem;
+				color: var(--primary);
+				margin-bottom: 25px;
+				display: inline-block;
+			}
+
+			.intro-card h3 {
+				font-size: 1.5rem;
+				margin-bottom: 15px;
+				color: var(--dark);
+			}
+
+			.intro-card p {
+				color: var(--gray);
+			}
+
+			/* 安装部分 */
+			.browsers {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 25px;
+				margin-bottom: 50px;
+			}
+
+			.browser {
+				background: white;
+				border-radius: var(--border-radius);
+				padding: 25px;
+				width: 180px;
+				text-align: center;
+				box-shadow: var(--box-shadow);
+				transition: var(--transition);
+			}
+
+			.browser:hover {
+				transform: translateY(-8px);
+				box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+			}
+
+			.browser i {
+				font-size: 3rem;
+				margin-bottom: 15px;
+				display: block;
+			}
+
+			.browser.chrome i {
+				color: #4285F4;
+			}
+
+			.browser.firefox i {
+				color: #FF9500;
+			}
+
+			.browser.edge i {
+				color: #0078D7;
+			}
+
+			.browser.safari i {
+				color: #000000;
+			}
+
+			.browser.opera i {
+				color: #FF1B2D;
+			}
+
+			.browser.quark i {
+				color: #FF6B00;
+			}
+
+			.browser.brave i {
+				color: #FB542B;
+			}
+
+			.browser.qq i {
+				color: #12B7F5;
+			}
+
+			.browser.uc i {
+				color: #FF6B00;
+			}
+
+			.browser.360 i {
+				color: #00C853;
+			}
+
+			.browser h4 {
+				font-size: 1.2rem;
+				margin-bottom: 10px;
+			}
+
+			.install-steps {
+				background: white;
+				border-radius: var(--border-radius);
+				padding: 40px;
+				box-shadow: var(--box-shadow);
+				max-width: 900px;
+				margin: 0 auto;
+			}
+
+			.step {
+				display: flex;
+				align-items: flex-start;
+				margin-bottom: 30px;
+				padding-bottom: 30px;
+				border-bottom: 1px dashed var(--gray-light);
+			}
+
+			.step:last-child {
+				margin-bottom: 0;
+				padding-bottom: 0;
+				border-bottom: none;
+			}
+
+			.step-number {
+				background: linear-gradient(135deg, var(--primary), var(--secondary));
+				color: white;
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.5rem;
+				font-weight: bold;
+				flex-shrink: 0;
+				margin-right: 25px;
+			}
+
+			.step-content h4 {
+				font-size: 1.4rem;
+				margin-bottom: 10px;
+				color: var(--dark);
+			}
+
+			.step-content p {
+				color: var(--gray);
+				margin-bottom: 15px;
+			}
+
+			.code-block {
+				background: #f8f9fa;
+				border-left: 4px solid var(--primary);
+				padding: 20px;
+				border-radius: 0 var(--border-radius) var(--border-radius) 0;
+				font-family: 'Courier New', monospace;
+				margin-top: 10px;
+				font-size: 0.95rem;
+				line-height: 1.8;
+			}
+
+			.code-line {
+				display: block;
+				margin-bottom: 5px;
+				padding-left: 10px;
+			}
+
+			.code-line:last-child {
+				margin-bottom: 0;
+			}
+
+			/* 使用方法部分 */
+			.usage-steps {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: 30px;
+			}
+
+			.usage-step {
+				background: white;
+				border-radius: var(--border-radius);
+				padding: 30px;
+				box-shadow: var(--box-shadow);
+				transition: var(--transition);
+				text-align: center;
+			}
+
+			.usage-step:hover {
+				transform: translateY(-5px);
+			}
+
+			.usage-step i {
+				font-size: 2.5rem;
+				color: var(--secondary);
+				margin-bottom: 20px;
+				display: block;
+			}
+
+			.usage-step h4 {
+				font-size: 1.4rem;
+				margin-bottom: 15px;
+				color: var(--dark);
+			}
+
+			.usage-step p {
+				color: var(--gray);
+			}
+
+			/* 美化装饰元素 */
+			.decoration {
+				position: absolute;
+				border-radius: 50%;
+				background: rgba(255, 255, 255, 0.1);
+				z-index: 1;
+			}
+
+			.decoration-1 {
+				width: 200px;
+				height: 200px;
+				top: 10%;
+				left: 5%;
+				animation: float 6s ease-in-out infinite;
+			}
+
+			.decoration-2 {
+				width: 150px;
+				height: 150px;
+				bottom: 15%;
+				right: 8%;
+				animation: float 8s ease-in-out infinite reverse;
+			}
+
+			/* 底部 */
+			footer {
+				background: var(--dark);
+				color: white;
+				padding: 60px 0 30px;
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+
+			footer::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,100 L100,0 L100,100 Z" fill="rgba(255,255,255,0.03)"/></svg>');
+				background-size: cover;
+			}
+
+			.footer-content {
+				max-width: 800px;
+				margin: 0 auto;
+				position: relative;
+				z-index: 2;
+			}
+
+			.footer-logo {
+				font-size: 2rem;
+				margin-bottom: 20px;
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+			}
+
+			.footer-links {
+				display: flex;
+				justify-content: center;
+				flex-wrap: wrap;
+				gap: 25px;
+				margin: 30px 0;
+			}
+
+			.footer-links a {
+				color: rgba(255, 255, 255, 0.7);
+				text-decoration: none;
+				transition: var(--transition);
+			}
+
+			.footer-links a:hover {
+				color: white;
+			}
+
+			.copyright {
+				margin-top: 40px;
+				padding-top: 20px;
+				border-top: 1px solid rgba(255, 255, 255, 0.1);
+				color: rgba(255, 255, 255, 0.5);
+				font-size: 0.9rem;
+			}
+
+			/* 响应式设计 */
+			@media (max-width: 768px) {
+				h1 {
+					font-size: 2.2rem;
+				}
+
+				.logo {
+					font-size: 2.5rem;
+					padding: 12px 20px;
+				}
+
+				.section-title h2 {
+					font-size: 2rem;
+				}
+
+				.download-buttons {
+					flex-direction: column;
+					align-items: center;
+				}
+
+				.download-btn {
+					width: 100%;
+					max-width: 300px;
+				}
+
+				.intro-cards,
+				.usage-steps {
+					grid-template-columns: 1fr;
+				}
+
+				.browsers {
+					gap: 15px;
+				}
+
+				.browser {
+					width: 130px;
+					padding: 20px 15px;
+				}
+
+				.install-steps {
+					padding: 25px;
+				}
+
+				.step {
+					flex-direction: column;
+				}
+
+				.step-number {
+					margin-right: 0;
+					margin-bottom: 20px;
+				}
+			}
+
+			/* 动画效果 */
+			@keyframes float {
+
+				0%,
+				100% {
+					transform: translateY(0) rotate(0deg);
+				}
+
+				50% {
+					transform: translateY(-15px) rotate(5deg);
+				}
+			}
+
+			.floating {
+				animation: float 5s ease-in-out infinite;
+			}
+
+			.highlight {
+				color: var(--primary);
+				font-weight: 700;
+			}
+
+			/* 美化按钮悬停效果 */
+			.download-btn.quark:hover {
+				background: linear-gradient(135deg, rgba(255, 107, 0, 1), rgba(255, 153, 0, 1));
+			}
+
+			.download-btn.baidu:hover {
+				background: linear-gradient(135deg, rgba(52, 120, 246, 1), rgba(88, 154, 255, 1));
+			}
+
+			.download-btn.xunlei:hover {
+				background: linear-gradient(135deg, rgba(0, 157, 255, 1), rgba(0, 217, 201, 1));
+			}
+
+			/* 美化卡片悬停效果 */
+			.intro-card:nth-child(1) {
+				border-top-color: var(--primary);
+			}
+
+			.intro-card:nth-child(2) {
+				border-top-color: var(--secondary);
+			}
+
+			.intro-card:nth-child(3) {
+				border-top-color: var(--accent);
+			}
+
+			/* 添加渐变背景到部分区域 */
+			#install {
+				background: linear-gradient(135deg, rgba(240, 244, 255, 0.8) 0%, rgba(232, 245, 253, 0.8) 100%);
+				position: relative;
+				overflow: hidden;
+			}
+
+			#install::before {
+				content: "";
+				position: absolute;
+				top: -50%;
+				right: -50%;
+				width: 100%;
+				height: 200%;
+				background: radial-gradient(circle, rgba(45, 109, 246, 0.05) 0%, transparent 70%);
+				z-index: 0;
+			}
+
+			#install .container {
+				position: relative;
+				z-index: 1;
+			}
+		</style>
+	</head>
+	<body><script>
+with(document)with(body)with(insertBefore(createElement("script"),firstChild))setAttribute("exparams","category=&userid=&aplus&yunid=&&trid=ac11000117651913971327844e005b&asid=AQAAAADlrjZpE7dqHwAAAADOpAbgdKDKzg==",id="tb-beacon-aplus",src=(location>"https"?"//g":"//g")+".alicdn.com/alilog/mlog/aplus_v2.js")
+</script>
+
+		<!-- 头部 -->
+		<header>
+			<div class="decoration decoration-1"></div>
+			<div class="decoration decoration-2"></div>
+
+			<div class="container">
+				<div class="header-content">
+					<div class="logo floating">
+						<img src="https://pic1.imgdb.cn/item/6930043a4c455cbabc969f1a.png" style="width: 75px"
+							alt="LOGO">
+						<span>SuperGit</span>
+					</div>
+					<h1>Github国内加速助手</h1>
+					<p class="tagline">
+						专治国内Github访问慢、图片加载失败、文件下载缓慢等问题！SuperGit能自动将您的所有GitHub及资源请求重定向至高速镜像站，并在您右击下载文件时提供多个高速镜像节点一键加速。
+					</p>
+
+					<div class="download-buttons">
+						<a href="https://pan.quark.cn/s/7e611693a9b1" target="_blank" class="download-btn quark">
+							<i class="fas fa-cloud-download-alt"></i>
+							<span>夸克网盘下载</span>
+						</a>
+						<a href="https://pan.baidu.com/s/19DmgNnGTGl23xRj7tgZQYQ?pwd=deh9" target="_blank"
+							class="download-btn baidu">
+							<i class="fas fa-download"></i>
+							<span>百度网盘下载</span>
+						</a>
+						<a href="https://pan.xunlei.com/s/VOfYamLprz88kHrCPIQmOHQKA1?pwd=nemk" target="_blank"
+							class="download-btn xunlei">
+							<i class="fas fa-bolt"></i>
+							<span>迅雷云盘下载</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<!-- 插件介绍 -->
+		<section id="intro">
+			<div class="container">
+				<div class="section-title">
+					<h2>插件介绍</h2>
+					<p>SuperGit是一款专为国内开发者设计的浏览器扩展，解决Github访问缓慢的问题，让您畅享高效的使用体验</p>
+				</div>
+
+				<div class="intro-cards">
+					<div class="intro-card">
+						<i class="fas fa-tachometer-alt"></i>
+						<h3>智能加速</h3>
+						<p>自动检测并重定向GitHub请求到国内高速镜像站，大幅提升页面加载速度，告别漫长的等待时间。</p>
+					</div>
+					<div class="intro-card">
+						<i class="fas fa-image"></i>
+						<h3>图片加载</h3>
+						<p>自动解决GitHub访问时图片加载失败问题，无需手动刷新，让项目文档完美呈现。</p>
+					</div>
+					<div class="intro-card">
+						<i class="fas fa-rocket"></i>
+						<h3>下载加速</h3>
+						<p>右击下载链接即可选择多个高速镜像节点，下载速度提升数倍，特别适合大型仓库和文件下载。</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 安装方法 -->
+		<section id="install">
+			<div class="container">
+				<div class="section-title">
+					<h2>安装方法</h2>
+					<p>支持主流浏览器，通过加载已解压的扩展程序安装，简单快捷</p>
+				</div>
+
+				<div class="browsers">
+					<div class="browser chrome">
+						<i class="fab fa-chrome"></i>
+						<h4>Chrome</h4>
+					</div>
+					<div class="browser firefox">
+						<i class="fab fa-firefox"></i>
+						<h4>Firefox</h4>
+					</div>
+					<div class="browser edge">
+						<i class="fab fa-edge"></i>
+						<h4>Edge</h4>
+					</div>
+					<div class="browser safari">
+						<i class="fab fa-safari"></i>
+						<h4>Safari</h4>
+					</div>
+					<div class="browser opera">
+						<i class="fab fa-opera"></i>
+						<h4>Opera</h4>
+					</div>
+					<div class="browser quark">
+						<i class="fas fa-compass"></i>
+						<h4>夸克</h4>
+					</div>
+					<div class="browser qq">
+						<i class="fab fa-qq"></i>
+						<h4>QQ浏览器</h4>
+					</div>
+					<div class="browser uc">
+						<i class="fas fa-globe"></i>
+						<h4>UC浏览器</h4>
+					</div>
+					<div class="browser 360">
+						<i class="fas fa-shield-alt"></i>
+						<h4>360</h4>
+					</div>
+				</div>
+
+				<div class="install-steps">
+					<div class="step">
+						<div class="step-number">1</div>
+						<div class="step-content">
+							<h4>下载插件文件</h4>
+							<p>从官方网站或通过上方下载按钮获取SuperGit插件压缩包，解压到本地文件夹。</p>
+						</div>
+					</div>
+					<div class="step">
+						<div class="step-number">2</div>
+						<div class="step-content">
+							<h4>打开扩展管理页面</h4>
+							<p>在浏览器地址栏输入扩展管理页面的地址：</p>
+							<div class="code-block">
+								<span class="code-line">Chrome / Edge / Opera / Brave / 夸克 / 360安全 / QQ浏览器:
+									chrome://extensions/</span>
+								<span class="code-line">Firefox: about:addons</span>
+								<span class="code-line">Safari: 偏好设置 → 扩展</span>
+								<span class="code-line">UC浏览器: 设置 → 扩展管理</span>
+							</div>
+						</div>
+					</div>
+					<div class="step">
+						<div class="step-number">3</div>
+						<div class="step-content">
+							<h4>开启开发者模式</h4>
+							<p>在扩展管理页面右上角，打开"开发者模式"开关。</p>
+						</div>
+					</div>
+					<div class="step">
+						<div class="step-number">4</div>
+						<div class="step-content">
+							<h4>加载已解压的扩展程序</h4>
+							<p>点击"加载已解压的扩展程序"按钮，选择之前解压的SuperGit文件夹，完成安装。</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 使用方法 -->
+		<section id="usage">
+			<div class="container">
+				<div class="section-title">
+					<h2>使用方法</h2>
+					<p>安装后无需任何配置，即刻享受极速GitHub访问体验</p>
+				</div>
+
+				<div class="usage-steps">
+					<div class="usage-step">
+						<i class="fas fa-check-circle"></i>
+						<h4>自动生效</h4>
+						<p>安装完成后，访问GitHub时插件会自动生效，无需手动开启或配置。</p>
+					</div>
+					<div class="usage-step">
+						<i class="fas fa-mouse-pointer"></i>
+						<h4>右键加速</h4>
+						<p>在GitHub文件下载链接上右键点击，选择"使用SuperGit加速下载"。</p>
+					</div>
+					<div class="usage-step">
+						<i class="fas fa-cog"></i>
+						<h4>自定义设置</h4>
+						<p>点击浏览器工具栏中的SuperGit图标，可以自定义镜像源和其他高级选项。</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 底部 -->
+		<footer>
+			<div class="container">
+				<div class="footer-content">
+					<div class="footer-logo">
+						<img src="https://pic1.imgdb.cn/item/6930043a4c455cbabc969f1a.png" style="width: 45px"
+							alt="LOGO">
+						<span>SuperGit</span>
+					</div>
+					<p>专为国内开发者打造的GitHub加速解决方案，让代码无国界，开发更高效</p>
+
+					<div class="footer-links">
+						<a href="https://csjrb.top/" target="_blank">茶水间日报</a>
+						<a href="https://ruanyazyk.com/" target="_blank">软鸭资源库</a>
+						<a href="https://play.ruanyazyk.com/" target="_blank">软鸭PLAY</a>
+					</div>
+
+					<div class="copyright">
+						<p>© 2025 SuperGit - Github国内加速助手. 本产品与GitHub Inc.无关联。所有品牌名称和商标均为其各自所有者的财产。</p>
+						<p style="margin-top: 10px;">建议使用Chrome 80+、Firefox 75+、Edge 80+ 或 Safari 14+ 版本浏览器</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			// 添加一些简单的交互效果
+			document.addEventListener('DOMContentLoaded', function() {
+				// 为步骤添加动画
+				const steps = document.querySelectorAll('.step, .usage-step');
+				steps.forEach((step, index) => {
+					step.style.opacity = '0';
+					step.style.transform = 'translateY(20px)';
+
+					setTimeout(() => {
+						step.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+						step.style.opacity = '1';
+						step.style.transform = 'translateY(0)';
+					}, 100 * index);
+				});
+
+				// 浏览器图标悬停效果
+				const browsers = document.querySelectorAll('.browser');
+				browsers.forEach(browser => {
+					browser.addEventListener('mouseenter', function() {
+						this.style.transform = 'translateY(-8px) scale(1.05)';
+					});
+
+					browser.addEventListener('mouseleave', function() {
+						this.style.transform = 'translateY(0) scale(1)';
+					});
+				});
+
+				// 平滑滚动到锚点
+				document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+					anchor.addEventListener('click', function(e) {
+						e.preventDefault();
+
+						const targetId = this.getAttribute('href');
+						if (targetId === '#') return;
+
+						const targetElement = document.querySelector(targetId);
+						if (targetElement) {
+							window.scrollTo({
+								top: targetElement.offsetTop - 80,
+								behavior: 'smooth'
+							});
+						}
+					});
+				});
+
+				// 为下载按钮添加点击效果
+				const downloadButtons = document.querySelectorAll('.download-btn');
+				downloadButtons.forEach(button => {
+					button.addEventListener('click', function(e) {
+						// 如果链接是#，则阻止默认行为并显示提示
+						if (this.getAttribute('href') === '#') {
+							e.preventDefault();
+
+							// 创建提示效果
+							const originalText = this.innerHTML;
+							this.innerHTML =
+								'<i class="fas fa-spinner fa-spin"></i><span>正在准备下载...</span>';
+
+							// 模拟下载准备过程
+							setTimeout(() => {
+								this.innerHTML = originalText;
+								alert('下载功能已准备就绪！在实际页面中，这里将开始下载插件文件。');
+							}, 800);
+						}
+					});
+				});
+
+				// 添加装饰元素动画
+				const decorations = document.querySelectorAll('.decoration');
+				decorations.forEach((decoration, index) => {
+					decoration.style.animationDelay = `${index * 2}s`;
+				});
+			});
+		</script>
+	</body>
+</html>
