@@ -52,7 +52,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             color: var(--dark);
             min-height: 100vh;
             line-height: 1.6;
@@ -69,9 +69,9 @@
             width: 100%;
             height: 100%;
             background:
-                    radial-gradient(circle at 10% 20%, rgba(173, 216, 230, 0.1) 0%, transparent 20%),
-                    radial-gradient(circle at 90% 80%, rgba(144, 202, 249, 0.1) 0%, transparent 20%),
-                    radial-gradient(circle at 30% 60%, rgba(179, 229, 252, 0.08) 0%, transparent 20%);
+                    radial-gradient(circle at 10% 20%, rgba(231, 76, 60, 0.1) 0%, transparent 20%),
+                    radial-gradient(circle at 90% 80%, rgba(52, 152, 219, 0.1) 0%, transparent 20%),
+                    radial-gradient(circle at 30% 60%, rgba(46, 204, 113, 0.08) 0%, transparent 20%);
             z-index: -1;
         }
 
@@ -84,11 +84,48 @@
             animation: float 15s infinite ease-in-out;
         }
 
+        /* 2026新年气泡 */
+        .new-year-bubble {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 20s infinite ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .new-year-bubble::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            filter: blur(5px);
+            z-index: -1;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
             z-index: 2;
+        }
+
+        /* 烟花画布 */
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
         /* PWA 安装提示条样式 */
@@ -209,7 +246,7 @@
         .logo {
             font-size: 2.5rem;
             font-weight: 800;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background: linear-gradient(to right, #e74c3c, #f39c12, #f1c40f, #2ecc71, #3498db);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -231,12 +268,12 @@
             transform: translateX(-50%);
             width: 140px;
             height: 5px;
-            background: radial-gradient(ellipse at center, rgba(52, 152, 219, 0.2) 0%, transparent 80%);
+            background: radial-gradient(ellipse at center, rgba(231, 76, 60, 0.3) 0%, transparent 80%);
             z-index: -1;
         }
 
         .subtitle {
-            color: var(--dark);
+            color: white;
             font-size: 1.1rem;
             margin-bottom: 15px;
             max-width: 500px;
@@ -245,8 +282,8 @@
             position: relative;
             display: inline-block;
             padding: 6px 20px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 50px;
             backdrop-filter: blur(8px);
             box-shadow: var(--shadow-sm);
@@ -261,7 +298,7 @@
         }
 
         .tool-card {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 18px;
             overflow: hidden;
             transition: var(--transition);
@@ -284,7 +321,8 @@
             box-shadow:
                     var(--shadow-lg),
                     inset 0 0 12px rgba(255, 255, 255, 0.7),
-                    inset 0 0 5px rgba(255, 255, 255, 0.8);
+                    inset 0 0 5px rgba(255, 255, 255, 0.8),
+                    0 0 20px rgba(231, 76, 60, 0.3);
         }
 
         .card-header {
@@ -296,7 +334,7 @@
         .card-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(145deg, var(--primary), var(--secondary));
+            background: linear-gradient(145deg, #e74c3c, #f39c12);
             border-radius: 15px;
             display: flex;
             align-items: center;
@@ -305,7 +343,7 @@
             color: white;
             font-size: 24px;
             box-shadow:
-                    0 5px 12px rgba(52, 152, 219, 0.2),
+                    0 5px 12px rgba(231, 76, 60, 0.3),
                     inset 2px 2px 4px rgba(255, 255, 255, 0.4),
                     inset -2px -2px 4px rgba(0, 0, 0, 0.1);
             transition: var(--transition);
@@ -327,7 +365,7 @@
         .tool-card:hover .card-icon {
             transform: scale(1.05) rotate(5deg);
             box-shadow:
-                    0 6px 16px rgba(52, 152, 219, 0.3),
+                    0 6px 16px rgba(231, 76, 60, 0.4),
                     inset 2px 2px 5px rgba(255, 255, 255, 0.5),
                     inset -2px -2px 5px rgba(0, 0, 0, 0.1);
         }
@@ -351,7 +389,7 @@
             transform: translateX(-50%);
             width: 40px;
             height: 3px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background: linear-gradient(to right, #e74c3c, #f39c12);
             border-radius: 3px;
         }
 
@@ -379,7 +417,7 @@
         .btn {
             display: inline-block;
             padding: 12px 28px;
-            background: linear-gradient(145deg, var(--primary), var(--secondary));
+            background: linear-gradient(145deg, #e74c3c, #f39c12);
             color: white;
             border: none;
             border-radius: 14px;
@@ -389,7 +427,7 @@
             transition: var(--transition);
             text-decoration: none;
             box-shadow:
-                    0 5px 12px rgba(52, 152, 219, 0.2),
+                    0 5px 12px rgba(231, 76, 60, 0.3),
                     0 2px 4px rgba(255, 255, 255, 0.7);
             position: relative;
             overflow: hidden;
@@ -405,7 +443,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(145deg, var(--secondary), var(--primary));
+            background: linear-gradient(145deg, #f39c12, #e74c3c);
             opacity: 0;
             transition: var(--transition);
             z-index: -1;
@@ -414,7 +452,7 @@
         .btn:hover {
             transform: translateY(-3px);
             box-shadow:
-                    0 7px 16px rgba(52, 152, 219, 0.3),
+                    0 7px 16px rgba(231, 76, 60, 0.4),
                     0 4px 8px rgba(255, 255, 255, 0.7);
         }
 
@@ -425,7 +463,7 @@
         .btn:active {
             transform: translateY(1px);
             box-shadow:
-                    0 3px 6px rgba(52, 152, 219, 0.2),
+                    0 3px 6px rgba(231, 76, 60, 0.3),
                     inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -442,12 +480,13 @@
 
         .section-title {
             font-size: 2rem;
-            color: var(--dark);
+            color: white;
             margin-bottom: 15px;
             position: relative;
             display: inline-block;
             font-weight: 800;
             font-family: 'Poppins', sans-serif;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .section-title::after {
@@ -458,7 +497,7 @@
             transform: translateX(-50%);
             width: 70px;
             height: 4px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background: linear-gradient(to right, #e74c3c, #f39c12);
             border-radius: 3px;
         }
 
@@ -470,7 +509,7 @@
         }
 
         .feature-card {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 18px;
             padding: 25px 22px;
             text-align: center;
@@ -488,13 +527,14 @@
             box-shadow:
                     var(--shadow-lg),
                     inset 0 0 12px rgba(255, 255, 255, 0.7),
-                    inset 0 0 5px rgba(255, 255, 255, 0.8);
+                    inset 0 0 5px rgba(255, 255, 255, 0.8),
+                    0 0 15px rgba(231, 76, 60, 0.2);
         }
 
         .feature-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(145deg, var(--primary), var(--secondary));
+            background: linear-gradient(145deg, #e74c3c, #f39c12);
             border-radius: 15px;
             display: flex;
             align-items: center;
@@ -503,7 +543,7 @@
             color: white;
             font-size: 24px;
             box-shadow:
-                    0 5px 12px rgba(52, 152, 219, 0.2),
+                    0 5px 12px rgba(231, 76, 60, 0.3),
                     inset 2px 2px 4px rgba(255, 255, 255, 0.4),
                     inset -2px -2px 4px rgba(0, 0, 0, 0.1);
             transition: var(--transition);
@@ -533,7 +573,7 @@
             text-align: center;
             padding: 40px 0 30px;
             margin-top: 60px;
-            color: var(--gray);
+            color: rgba(255, 255, 255, 0.8);
             position: relative;
         }
 
@@ -545,13 +585,13 @@
             transform: translateX(-50%);
             width: 80%;
             height: 1px;
-            background: linear-gradient(to right, transparent, rgba(52, 152, 219, 0.25), transparent);
+            background: linear-gradient(to right, transparent, rgba(231, 76, 60, 0.5), transparent);
         }
 
         .footer-logo {
             font-size: 2.2rem;
             font-weight: 800;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background: linear-gradient(to right, #e74c3c, #f39c12, #f1c40f, #2ecc71, #3498db);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -575,13 +615,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(145deg, var(--primary), var(--secondary));
+            background: linear-gradient(145deg, #e74c3c, #f39c12);
             color: white;
             font-size: 1.2rem;
             transition: var(--transition);
             text-decoration: none;
             box-shadow:
-                    0 5px 12px rgba(52, 152, 219, 0.2),
+                    0 5px 12px rgba(231, 76, 60, 0.3),
                     0 2px 4px rgba(255, 255, 255, 0.7);
             position: relative;
             overflow: hidden;
@@ -595,7 +635,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(145deg, var(--secondary), var(--primary));
+            background: linear-gradient(145deg, #f39c12, #e74c3c);
             opacity: 0;
             transition: var(--transition);
             z-index: -1;
@@ -604,7 +644,7 @@
         .social-link:hover {
             transform: translateY(-4px) scale(1.05);
             box-shadow:
-                    0 7px 16px rgba(52, 152, 219, 0.3),
+                    0 7px 16px rgba(231, 76, 60, 0.4),
                     0 4px 8px rgba(255, 255, 255, 0.7);
         }
 
@@ -632,13 +672,28 @@
 
         @keyframes float {
             0% {
-                transform: translateY(0px);
+                transform: translateY(0px) rotate(0deg);
             }
             50% {
-                transform: translateY(-8px);
+                transform: translateY(-20px) rotate(5deg);
             }
             100% {
-                transform: translateY(0px);
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        @keyframes newYearFloat {
+            0% {
+                transform: translateY(0px) rotate(0deg) scale(1);
+            }
+            33% {
+                transform: translateY(-15px) rotate(120deg) scale(1.1);
+            }
+            66% {
+                transform: translateY(10px) rotate(240deg) scale(0.9);
+            }
+            100% {
+                transform: translateY(0px) rotate(360deg) scale(1);
             }
         }
 
@@ -834,17 +889,28 @@
     </div>
 </div>
 
+<!-- 烟花画布 -->
+<canvas id="fireworksCanvas"></canvas>
+
 <!-- 背景气泡 -->
 <div class="bubble" style="width: 80px; height: 80px; top: 10%; left: 5%;"></div>
 <div class="bubble" style="width: 60px; height: 60px; top: 20%; right: 10%;"></div>
 <div class="bubble" style="width: 90px; height: 90px; bottom: 15%; left: 15%;"></div>
 <div class="bubble" style="width: 70px; height: 70px; bottom: 25%; right: 20%;"></div>
 
+<!-- 2026新年气泡 -->
+<div class="new-year-bubble" style="width: 100px; height: 100px; top: 15%; right: 15%; background: radial-gradient(circle, #e74c3c, #c0392b); font-size: 1.8rem; animation-delay: -2s;">2026</div>
+<div class="new-year-bubble" style="width: 70px; height: 70px; top: 40%; left: 10%; background: radial-gradient(circle, #f39c12, #d35400); font-size: 1.2rem; animation-delay: -5s;">新年</div>
+<div class="new-year-bubble" style="width: 85px; height: 85px; bottom: 30%; right: 10%; background: radial-gradient(circle, #2ecc71, #27ae60); font-size: 1.4rem; animation-delay: -7s;">快乐</div>
+<div class="new-year-bubble" style="width: 65px; height: 65px; top: 60%; right: 25%; background: radial-gradient(circle, #3498db, #2980b9); font-size: 1.1rem; animation-delay: -10s;">吉祥</div>
+<div class="new-year-bubble" style="width: 90px; height: 90px; bottom: 20%; left: 25%; background: radial-gradient(circle, #9b59b6, #8e44ad); font-size: 1.5rem; animation-delay: -12s;">福</div>
+<div class="new-year-bubble" style="width: 75px; height: 75px; top: 25%; left: 20%; background: radial-gradient(circle, #f1c40f, #f39c12); font-size: 1.3rem; animation-delay: -15s;">旺</div>
+
 <div class="container">
     <!-- 头部 -->
     <header>
         <div class="logo floating">软鸭PLAY</div>
-        <p class="subtitle">嘎~</p>
+        <p class="subtitle">嘎~ 喜迎2026新年！</p>
     </header>
 
     <!-- 功能卡片区 -->
@@ -1039,7 +1105,7 @@
     <!-- 特色区 -->
     <div class="features">
         <h2 class="section-title">我们的特色</h2>
-        <p>嘎~ 嘎~ 嘎~</p>
+        <p style="color: rgba(255,255,255,0.8)">嘎~ 嘎~ 嘎~ 喜迎2026新年！</p>
 
         <div class="features-grid">
             <div class="feature-card">
@@ -1081,7 +1147,7 @@
 <footer>
     <div class="container">
         <div class="footer-logo">软鸭PLAY</div>
-        <p>嘎~ 乐就对了</p>
+        <p>嘎~ 乐就对了 • 2026新年快乐！</p>
 
         <div class="social-links">
             <a href="https://mp.weixin.qq.com/s/4n0gWoYLbKFB8zjeSmOOBA" target="_blank" class="social-link"><i
@@ -1090,9 +1156,9 @@
                class="social-link"><i class="fas fa-sim-card"></i></a>
             <a href="https://ruanyazyk.com/" target="_blank" class="social-link"><i class="fab fa-at"></i></a>
         </div>
-        <p class="copyright"><a href="https://beian.miit.gov.cn/" target="_blank" style="color: #7f8c8d">陕ICP备2021012221号-2</a>
+        <p class="copyright"><a href="https://beian.miit.gov.cn/" target="_blank" style="color: rgba(255,255,255,0.8)">陕ICP备2021012221号-2</a>
         </p>
-        <p style="font-size: 0.9rem;margin-top: 5px">© <span id="nowYear"></span> 软鸭PLAY - <a  style="color: #7f8c8d" target="_blank" href="https://ruanyazyk.com/">软鸭资源库</a> 保留所有权利</p>
+        <p style="font-size: 0.9rem;margin-top: 5px">© <span id="nowYear"></span> 软鸭PLAY - <a  style="color: rgba(255,255,255,0.8)" target="_blank" href="https://ruanyazyk.com/">软鸭资源库</a> 保留所有权利</p>
     </div>
 </footer>
 
@@ -1100,9 +1166,14 @@
     document.getElementById("nowYear").innerHTML = new Date().getFullYear();
 
     // 添加浮动动画
-    const bubbles = document.querySelectorAll('.bubble');
+    const bubbles = document.querySelectorAll('.bubble, .new-year-bubble');
     bubbles.forEach(bubble => {
-        bubble.style.animationDelay = `-${Math.random() * 10}s`;
+        bubble.style.animationDelay = `-${Math.random() * 15}s`;
+    });
+
+    // 为新年气泡添加旋转动画
+    document.querySelectorAll('.new-year-bubble').forEach(bubble => {
+        bubble.style.animation = 'newYearFloat 20s infinite ease-in-out';
     });
 
     function updateDateTime() {
@@ -1118,6 +1189,181 @@
     }
     // 页面加载时立即更新
     updateDateTime();
+</script>
+
+<!-- 烟花效果脚本 -->
+<script>
+    // 烟花效果
+    (function() {
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        const particles = [];
+        const particleCount = 400;
+        
+        // 新年主题颜色
+        const colors = [
+            '#e74c3c', // 红色
+            '#f39c12', // 橙色
+            '#f1c40f', // 黄色
+            '#2ecc71', // 绿色
+            '#3498db', // 蓝色
+            '#9b59b6', // 紫色
+            '#1abc9c', // 青色
+            '#e67e22'  // 深橙色
+        ];
+        
+        // 调整背景渐变
+        document.body.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)';
+        
+        // 粒子类
+        class Particle {
+            constructor(x, y, color, isFirework = false) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.life = 100;
+                this.gravity = 0.05;
+                this.friction = 0.99;
+                this.alpha = 1;
+                this.isFirework = isFirework;
+                this.trail = [];
+                this.trailLength = 5;
+            }
+            
+            update() {
+                this.speedX *= this.friction;
+                this.speedY *= this.friction;
+                this.speedY += this.gravity;
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life--;
+                this.alpha = this.life / 100;
+                
+                // 保存轨迹
+                this.trail.push({x: this.x, y: this.y});
+                if (this.trail.length > this.trailLength) {
+                    this.trail.shift();
+                }
+            }
+            
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 绘制轨迹
+                if (this.trail.length > 1) {
+                    ctx.strokeStyle = this.color;
+                    ctx.lineWidth = this.size * 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(this.trail[0].x, this.trail[0].y);
+                    for (let i = 1; i < this.trail.length; i++) {
+                        ctx.lineTo(this.trail[i].x, this.trail[i].y);
+                    }
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+        }
+        
+        // 创建烟花爆炸
+        function createFirework(x, y, color) {
+            const particleCount = 80 + Math.random() * 50;
+            for (let i = 0; i < particleCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 2;
+                const particle = new Particle(
+                    x, y, 
+                    color,
+                    false
+                );
+                particle.speedX = Math.cos(angle) * speed;
+                particle.speedY = Math.sin(angle) * speed;
+                particle.size = Math.random() * 3 + 1;
+                particle.gravity = 0.05;
+                particles.push(particle);
+            }
+        }
+        
+        // 创建上升的烟花
+        function createRisingFirework() {
+            const x = Math.random() * width;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const firework = new Particle(
+                x, height,
+                color,
+                true
+            );
+            firework.speedY = -Math.random() * 10 - 8;
+            firework.speedX = Math.random() * 2 - 1;
+            firework.size = 3;
+            firework.gravity = 0.2;
+            firework.life = 150;
+            particles.push(firework);
+        }
+        
+        // 动画循环
+        function animate() {
+            // 创建半透明黑色背景，实现拖尾效果
+            ctx.fillStyle = 'rgba(10, 10, 20, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+            
+            // 随机创建新的上升烟花
+            if (Math.random() < 0.03) {
+                createRisingFirework();
+            }
+            
+            // 更新和绘制所有粒子
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                // 如果是上升烟花且速度变为正（开始下落），则爆炸
+                if (particles[i].isFirework && particles[i].speedY >= 0) {
+                    createFirework(particles[i].x, particles[i].y, particles[i].color);
+                    particles.splice(i, 1);
+                    i--;
+                }
+                // 移除生命结束的粒子
+                else if (particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // 初始创建一些烟花
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                createRisingFirework();
+            }, i * 500);
+        }
+        
+        // 窗口大小调整
+        window.addEventListener('resize', function() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+        
+        // 开始动画
+        animate();
+        
+        // 点击页面创建烟花
+        canvas.addEventListener('click', function(e) {
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            createFirework(e.clientX, e.clientY, color);
+        });
+    })();
 </script>
 
 <!-- PWA 安装功能脚本 -->
