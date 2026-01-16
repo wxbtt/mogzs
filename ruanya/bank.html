@@ -12,17 +12,259 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="./static/css/style.css">
     <link rel="stylesheet" href="./static/css/root.css">
-    <script charset="UTF-8" id="LA_COLLECT" src="static/js/js-sdk-pro.min.js"></script>
-    <script>LA.init({id: "KrUbnfpzlAPd5saK",ck: "KrUbnfpzlAPd5saK", autoTrack: true, prefix: 'event'})</script>
+    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>LA.init({id:"KrUbnfpzlAPd5saK",ck:"KrUbnfpzlAPd5saK"})</script>
+    <style>
+        /* ???? - ????? */
+        .project-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
 
+        .project-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: 300;
+            color: #333;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.15);
+            transform: rotate(90deg);
+            color: #000;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #222;
+            padding-right: 40px;
+            line-height: 1.3;
+        }
+
+        .modal-description {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-link-item {
+            display: block;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-link-item:hover {
+            background: rgba(0, 123, 255, 0.9);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2);
+            border-color: rgba(0, 123, 255, 0.3);
+        }
+
+        .modal-link-item .link-title {
+            display: block;
+            font-size: 16px;
+            color: #0d0d0d;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .modal-link-item .link-url {
+            display: block;
+            font-size: 13px;
+            color: #666;
+            opacity: 0.8;
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        .modal-link-item:hover .link-url {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* ???????? */
+        .projectItemLeft p {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4;
+            max-height: 1.4em;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                padding: 25px 20px;
+                border-radius: 16px;
+            }
+
+            .modal-title {
+                font-size: 22px;
+            }
+
+            .modal-description {
+                font-size: 15px;
+            }
+
+            .modal-link-item {
+                padding: 14px 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                width: 96%;
+                padding: 20px 16px;
+                border-radius: 14px;
+            }
+
+            .modal-title {
+                font-size: 20px;
+            }
+
+            .modal-close {
+                width: 36px;
+                height: 36px;
+                font-size: 22px;
+                top: 12px;
+                right: 12px;
+            }
+        }
+
+        /* ?????? */
+        @media (prefers-color-scheme: dark) {
+            .modal-content {
+                background: rgba(30, 30, 30, 0.85);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: #eee;
+            }
+
+            .modal-title {
+                color: #fff;
+            }
+
+            .modal-description {
+                color: #ccc;
+                border-bottom-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .modal-close {
+                background: rgba(255, 255, 255, 0.1);
+                color: #eee;
+            }
+
+            .modal-close:hover {
+                background: rgba(255, 255, 255, 0.15);
+                color: #fff;
+            }
+
+            .modal-link-item {
+                background: rgba(40, 40, 40, 0.7);
+                color: #ddd;
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .modal-link-item .link-url {
+                color: #aaa;
+            }
+
+            .modal-link-item:hover {
+                background: rgba(0, 123, 255, 0.9);
+            }
+        }
+    </style>
 </head>
 
 <body>
-<div id="zyyo-loading">
-    <div id="zyyo-loading-center">
+<!--<div id="zyyo-loading">-->
+<!--    <div id="zyyo-loading-center">-->
+<!--    </div>-->
+<!--</div>-->
+<div class="zyyo-filter"></div>
+
+<!-- ???? -->
+<div id="projectModal" class="project-modal">
+    <div class="modal-content">
+        <div class="modal-close" onclick="closeProjectModal()">�</div>
+        <h2 class="modal-title" id="modalTitle">????</h2>
+        <div class="modal-description" id="modalDescription"></div>
+        <div class="modal-links" id="modalLinks"></div>
     </div>
 </div>
-<div class="zyyo-filter"></div>
 
 <div class="zyyo-main">
     <div class="zyyo-left">
@@ -39,39 +281,39 @@
                     <path d="M512 39.152941c-216.847059 0-391.529412 174.682353-391.529412 391.529412 0 349.364706 391.529412 572.235294 391.529412 572.235294s391.529412-222.870588 391.529412-572.235294c0-216.847059-174.682353-391.529412-391.529412-391.529412z m0 891.482353C424.658824 873.411765 180.705882 686.682353 180.705882 430.682353c0-183.717647 147.576471-331.294118 331.294118-331.294118s331.294118 147.576471 331.294118 331.294118c0 256-243.952941 442.729412-331.294118 499.952941z"
                           p-id="1480"></path>
                 </svg>
-                China · Chengdu
+                China � Chengdu
             </div>
             <!--				<div class="left-des-item"><svg t="1705773906032" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2474"><path d="M729.6 234.666667H294.4V157.866667a51.2 51.2 0 0 1 51.2-51.2h332.8a51.2 51.2 0 0 1 51.2 51.2v76.8z m179.2 51.2a51.2 51.2 0 0 1 51.2 51.2v512a51.2 51.2 0 0 1-51.2 51.2H115.2a51.2 51.2 0 0 1-51.2-51.2v-512a51.2 51.2 0 0 1 51.2-51.2h793.557333z m-768 172.032c0 16.384 13.312 29.696 29.696 29.696h683.008a29.696 29.696 0 1 0 0-59.392H170.410667a29.696 29.696 0 0 0-29.696 29.696z m252.416 118.784c0 16.384 13.312 29.696 29.696 29.696h178.176a29.696 29.696 0 1 0 0-59.392H422.912a29.738667 29.738667 0 0 0-29.696 29.696z" p-id="2475"></path></svg>Sias</div>-->
         </div>
         <div class="left-div left-tag">
-            <div class="left-tag-item">90后
+            <div class="left-tag-item">90?
             </div>
-            <div class="left-tag-item">创业者
+            <div class="left-tag-item">???
             </div>
         </div>
         <div class="left-div left-time">
             <ul id="line">
                 <li>
                     <div class="focus"></div>
-                    <div>茶水间日报
+                    <div>?????
                     </div>
                     <div>2025.12</div>
                 </li>
                 <li>
                     <div class="focus"></div>
-                    <div>软鸭PLAY
+                    <div>??PLAY
                     </div>
                     <div>2025.6</div>
                 </li>
                 <li>
                     <div class="focus"></div>
-                    <div>软鸭资源库
+                    <div>?????
                     </div>
                     <div>2025.5</div>
                 </li>
                 <li>
                     <div class="focus"></div>
-                    <div>57号同学
+                    <div>57???
                     </div>
                     <div>2021</div>
                 </li>
@@ -81,16 +323,16 @@
     <div class="zyyo-right">
         <header>
             <div class="index-logo" style="background-image: url(./static/img/logo.png);">
-<!--                <img style="position: absolute;top:-15%;left:-10%;width: 120%; aspect-ratio: 1/1;"-->
-<!--                     src="./static/img/logokuang.png">-->
+                <!--                <img style="position: absolute;top:-15%;left:-10%;width: 120%; aspect-ratio: 1/1;"-->
+                <!--                     src="./static/img/logokuang.png">-->
             </div>
             <div class="welcome">
                 Hello I' m <span class="gradientText">
 						oldchen </span>
             </div>
-            <div class="description">👦 A post-90s <span class="purpleText">entrepreneur</span>
+            <div class="description">? A post-90s <span class="purpleText">entrepreneur</span>
             </div>
-            <!--				<div class="description">📝 The only way to do <span class="purpleText textBackground">great</span> is-->
+            <!--				<div class="description">? The only way to do <span class="purpleText textBackground">great</span> is-->
             <!--					to <span class="purpleText textBackground">love</span> what you do. </div>-->
 
             <div class="iconContainer">
@@ -104,13 +346,13 @@
                         <path d="M683.431724 427.431724v-70.62069h-38.311724l30.190345-30.190344-49.964138-49.964138-62.49931 62.49931h-6.002759L494.344828 276.656552l-49.787587 49.964138 30.013793 30.190344h-38.311724v70.62069h88.275862v35.310345h-88.275862v70.62069h88.275862v52.965517h70.62069v-52.965517h88.275862v-70.62069h-88.275862v-35.310345z"
                               p-id="4990"></path>
                     </svg>
-                    <div class="iconTip">赞助</div>
+                    <div class="iconTip">??</div>
                 </a>
                 <a class="iconItem" onclick="pop('./static/img/qq.jpg')" href="javascript:void(0)">
                     <svg t="1766822666873" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2293">
-                        <path  d="M691.537 318.713c11.305 0 22.491 0.83 33.587 2.065-30.178-140.519-180.417-244.922-351.905-244.922-191.721 0-348.77 130.677-348.77 296.612 0 95.781 52.25 174.437 139.561 235.444l-34.884 104.916 121.923-61.138c43.628 8.634 78.631 17.513 122.168 17.513 10.945 0 21.796-0.541 32.559-1.386-6.814-23.317-10.762-47.739-10.762-73.080 0.001-152.368 130.849-276.023 296.521-276.023zM504.010 224.153c26.261 0 43.659 17.277 43.659 43.52 0 26.139-17.396 43.655-43.659 43.655-26.14 0-52.371-17.516-52.371-43.655 0-26.244 26.229-43.52 52.371-43.52zM259.918 311.328c-26.137 0-52.519-17.516-52.519-43.655 0-26.243 26.381-43.52 52.519-43.52 26.139 0 43.537 17.277 43.537 43.52 0 26.139-17.397 43.655-43.537 43.655zM1009.856 590.545c0-139.436-139.534-253.094-296.248-253.094-165.943 0-296.639 113.657-296.639 253.094 0 139.675 130.698 253.094 296.639 253.094 34.733 0 69.765-8.758 104.646-17.501l95.663 52.383-26.229-87.157c70.007-52.52 122.167-122.164 122.167-200.819zM617.43 546.905c-17.365 0-34.884-17.277-34.884-34.897 0-17.377 17.518-34.879 34.884-34.879 26.381 0 43.659 17.501 43.659 34.879 0 17.622-17.278 34.897-43.659 34.897zM809.273 546.905c-17.247 0-34.643-17.277-34.643-34.897 0-17.377 17.396-34.879 34.643-34.879 26.139 0 43.654 17.501 43.654 34.879 0.001 17.622-17.514 34.897-43.654 34.897z" fill="#fff" p-id="2294"></path>
+                        <path  d="M691.537 318.713c11.305 0 22.491 0.83 33.587 2.065-30.178-140.519-180.417-244.922-351.905-244.922-191.721 0-348.77 130.677-348.77 296.612 0 95.781 52.25 174.437 139.561 235.444l-34.884 104.916l121.923-61.138c43.628 8.634 78.631 17.513 122.168 17.513 10.945 0 21.796-0.541 32.559-1.386-6.814-23.317-10.762-47.739-10.762-73.080 0-152.368 130.849-276.023 296.521-276.023zM504.010 224.153c26.261 0 43.659 17.277 43.659 43.52 0 26.139-17.396 43.655-43.659 43.655-26.14 0-52.371-17.516-52.371-43.655 0-26.244 26.229-43.52 52.371-43.52zM259.918 311.328c-26.137 0-52.519-17.516-52.519-43.655 0-26.243 26.381-43.52 52.519-43.52 26.139 0 43.537 17.277 43.537 43.52 0 26.139-17.397 43.655-43.537 43.655zM1009.856 590.545c0-139.436-139.534-253.094-296.248-253.094-165.943 0-296.639 113.657-296.639 253.094 0 139.675 130.698 253.094 296.639 253.094 34.733 0 69.765-8.758 104.646-17.501l95.663 52.383-26.229-87.157c70.007-52.520 122.167-122.164 122.167-200.819zM617.43 546.905c-17.365 0-34.884-17.277-34.884-34.897 0-17.377 17.518-34.879 34.884-34.879 26.381 0 43.659 17.501 43.659 34.879 0 17.622-17.278 34.897-43.659 34.897zM809.273 546.905c-17.247 0-34.643-17.277-34.643-34.897 0-17.377 17.396-34.879 34.643-34.879 26.139 0 43.654 17.501 43.654 34.879 0.001 17.622-17.514 34.897-43.654 34.897z" fill="#fff" p-id="2294"></path>
                     </svg>
-                    <div class="iconTip">公众号</div>
+                    <div class="iconTip">???</div>
                 </a>
                 <a class="iconItem" onclick="" href="mailto:a57cool@163.com">
                     <svg t="1704870588438" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -118,7 +360,7 @@
                         <path d="M926.47619 355.644952V780.190476a73.142857 73.142857 0 0 1-73.142857 73.142857H170.666667a73.142857 73.142857 0 0 1-73.142857-73.142857V355.644952l304.103619 257.828572a170.666667 170.666667 0 0 0 220.745142 0L926.47619 355.644952zM853.333333 170.666667a74.044952 74.044952 0 0 1 26.087619 4.778666 72.704 72.704 0 0 1 30.622477 22.186667 73.508571 73.508571 0 0 1 10.678857 17.67619c3.169524 7.509333 5.12 15.652571 5.607619 24.210286L926.47619 243.809524v24.380952L559.469714 581.241905a73.142857 73.142857 0 0 1-91.306666 2.901333l-3.632762-2.925714L97.52381 268.190476v-24.380952a72.899048 72.899048 0 0 1 40.155428-65.292191A72.97219 72.97219 0 0 1 170.666667 170.666667h682.666666z"
                               p-id="3175"></path>
                     </svg>
-                    <div class="iconTip">邮箱</div>
+                    <div class="iconTip">??</div>
                 </a>
                 <a class="switch" href="javascript:void(0)">
                     <div class="onoffswitch">
@@ -145,58 +387,74 @@
                     <path d="M629.333333 202.666667v213.333333h277.333334v448h-512v-213.333333h-277.333334v-448h512z m213.333334 277.333333h-213.333334v170.666667h-170.666666v149.333333h384v-320z m-277.333334-213.333333h-384v320h213.333334v-170.666667h170.666666v-149.333333z m0 213.333333h-106.666666v106.666667h106.666666v-106.666667z"
                           p-id="1892"></path>
                 </svg>
-                影视短剧
+                ????
             </div>
             <div class="projectList">
                 <a class="projectItem b" target="_blank"
                    href="https://vedl.lxapp3.shop/spdj/01/dl.html?cId=d4640">
                     <div class="projectItemLeft">
-                        <h1>碎片短剧</h1>
-                        <p>免费短剧软件</p>
+                        <h1>????</h1>
+                        <p>??????</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://pic1.imgdb.cn/item/694b5267b65a54c49ff504dc.png" alt="碎片短剧">
+                        <img src="https://pic1.imgdb.cn/item/694b5267b65a54c49ff504dc.png" alt="????">
+                    </div>
+                </a>
+                <a class="projectItem b" target="_blank" href="https://d.prnscg.com/tpl1/D2583">
+                    <div class="projectItemLeft">
+                        <h1>????</h1>
+                        <p>??????</p>
+                    </div>
+                    <div class="projectItemRight">
+                        <img src="https://pic1.imgdb.cn/item/6969cc2da771d3eac159314f.png" alt="????">
                     </div>
                 </a>
                 <a class="projectItem b" target="_blank" href="https://vedl.lxapp3.shop/hkan/01/dl.html?cId=d1261">
                     <div class="projectItemLeft">
-                        <h1>好好看</h1>
-                        <p>全网免费影视</p>
+                        <h1>???</h1>
+                        <p>??????</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://pic1.imgdb.cn/item/694f7f16161224305eb2f0cb.png" alt="好好看">
+                        <img src="https://pic1.imgdb.cn/item/694f7f16161224305eb2f0cb.png" alt="???">
                     </div>
-
                 </a>
                 <a class="projectItem b" target="_blank" href="https://vedl.lxapp3.shop/ncat/01/dl.html?cId=d1260">
                     <div class="projectItemLeft">
-                        <h1>网飞猫</h1>
-                        <p>全网免费影视+18</p>
+                        <h1>???</h1>
+                        <p>??????+18</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://pic1.imgdb.cn/item/694f7fbb161224305eb2f0e7.png" alt="网飞猫">
+                        <img src="https://pic1.imgdb.cn/item/694f7fbb161224305eb2f0e7.png" alt="???">
                     </div>
 
                 </a>
                 <a class="projectItem b" target="_blank" href="https://vedl.lxapp3.shop/kkdy/01/dl.html?cId=d1259">
                     <div class="projectItemLeft">
-                        <h1>可可影视</h1>
-                        <p>全网免费影视+18</p>
+                        <h1>????</h1>
+                        <p>??????+18</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://pic1.imgdb.cn/item/694f8042161224305eb2f0fa.png" alt="可可影视">
+                        <img src="https://pic1.imgdb.cn/item/694f8042161224305eb2f0fa.png" alt="????">
                     </div>
 
                 </a>
                 <a class="projectItem b" target="_blank" href="https://share.feijipan.com/s/ChZQzScW">
                     <div class="projectItemLeft">
-                        <h1>乌云影视</h1>
-                        <p>综合影视软件</p>
+                        <h1>????</h1>
+                        <p>??????</p>
                     </div>
                     <div class="projectItemRight">
                         <img src="https://pic1.imgdb.cn/item/694f80cd161224305eb2f119.png" alt="">
                     </div>
-
+                </a>
+                <a class="projectItem b" target="_blank" href="https://share.feijipan.com/s/ypVu1y76">
+                    <div class="projectItemLeft">
+                        <h1>TV121</h1>
+                        <p>??????</p>
+                    </div>
+                    <div class="projectItemRight">
+                        <img src="https://www.tv121.tv/macplus/img/logo.svg" alt="">
+                    </div>
                 </a>
             </div>
 
@@ -206,32 +464,70 @@
                     <path d="M629.333333 202.666667v213.333333h277.333334v448h-512v-213.333333h-277.333334v-448h512z m213.333334 277.333333h-213.333334v170.666667h-170.666666v149.333333h384v-320z m-277.333334-213.333333h-384v320h213.333334v-170.666667h170.666666v-149.333333z m0 213.333333h-106.666666v106.666667h106.666666v-106.666667z"
                           p-id="1892"></path>
                 </svg>
-                AI工具
+                iOS??????
+            </div>
+
+            <div class="projectList">
+                <!-- ???????????? -->
+                <a class="projectItem b" target="_blank" href="https://apps.apple.com/cn/app/id6757801895"
+                   data-popup="true"
+                   data-description="???????????1.??????????[????]?2.?????D1259????[??]???3.?????5????????????"
+                   data-links='[{"title":"App Store??","link":"https://apps.apple.com/cn/app/id6757801895"}]'>
+                    <div class="projectItemLeft">
+                        <h1>??????</h1>
+                        <p>??????</p>
+                    </div>
+                    <div class="projectItemRight">
+                        <img src="https://pic1.imgdb.cn/item/696a23cfa771d3eac15abcd3.png" alt="??????">
+                    </div>
+                </a>
+                <!-- ?????????? -->
+                <a class="projectItem b" target="_blank" href="https://d.prnscg.com/tpl1/D2677"
+                   data-popup="true"
+                   data-description="??????????????????????D2677?????????????"
+                   data-links='[{"title":"App Store??","link":"https://apps.apple.com/cn/app/id6757894465"},{"title":"??","link":"https://d.prnscg.com/tpl1/D2677"}]'>
+                    <div class="projectItemLeft">
+                        <h1>????</h1>
+                        <p>??????</p>
+                    </div>
+                    <div class="projectItemRight">
+                        <img src="https://pic1.imgdb.cn/item/6969cc2da771d3eac159314f.png" alt="????">
+                    </div>
+                </a>
+            </div>
+
+            <div class="title">
+                <svg t="1705257422086" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                     xmlns="http://www.w3.org/2000/svg" p-id="1891">
+                    <path d="M629.333333 202.666667v213.333333h277.333334v448h-512v-213.333333h-277.333334v-448h512z m213.333334 277.333333h-213.333334v170.666667h-170.666666v149.333333h384v-320z m-277.333334-213.333333h-384v320h213.333334v-170.666667h170.666666v-149.333333z m0 213.333333h-106.666666v106.666667h106.666666v-106.666667z"
+                          p-id="1892"></path>
+                </svg>
+                AI??
             </div>
             <div class="projectList">
                 <a class="projectItem b" target="_blank" href="https://www.aipyaipy.com/?referral=BJHAQ6M">
                     <div class="projectItemLeft">
-                        <h1>爱派AiPy</h1>
-                        <p>AI牛马智能体工厂</p>
+                        <h1>??AiPy</h1>
+                        <p>AI???????</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://www.aipyaipy.com/image/logo.webp" alt="爱派AiPy">
+                        <img src="https://www.aipyaipy.com/image/logo.webp" alt="??AiPy">
                     </div>
 
                 </a>
                 <a class="projectItem b" target="_blank" href="https://www.wenxiaobai.com/?forceLogin=true&source=ruanyazyk&ad_source=ruanyazyk">
                     <div class="projectItemLeft">
-                        <h1>问小白</h1>
-                        <p>DeepSeek满血版</p>
+                        <h1>???</h1>
+                        <p>DeepSeek???</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://pic1.imgdb.cn/item/694f83ad161224305eb2f18d.png" alt="问小白">
+                        <img src="https://pic1.imgdb.cn/item/694f83ad161224305eb2f18d.png" alt="???">
                     </div>
                 </a>
                 <a class="projectItem b" target="_blank" href="https://www.keevx.com/main/home?utm_source=ruanzyk&utm_medium=affiliate&utm_campaign=whkj">
                     <div class="projectItemLeft">
                         <h1>Keevx</h1>
-                        <p>AI数字人</p>
+                        <p>AI???</p>
                     </div>
                     <div class="projectItemRight">
                         <img src="https://pic1.imgdb.cn/item/694f841b161224305eb2f19d.png" alt="">
@@ -239,48 +535,48 @@
                 </a>
                 <a class="projectItem b" target="_blank" href="https://turbodesk.xfyun.cn/?channelid=aitool56">
                     <div class="projectItemLeft">
-                        <h1>讯飞绘文</h1>
-                        <p>AI内容运营工具</p>
+                        <h1>????</h1>
+                        <p>AI??????</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://pic1.imgdb.cn/item/694f84bc161224305eb2f1d2.png" alt="讯飞绘文">
+                        <img src="https://pic1.imgdb.cn/item/694f84bc161224305eb2f1d2.png" alt="????">
                     </div>
                 </a>
 
                 <a class="projectItem b" target="_blank" href="https://xinghuo.xfyun.cn/desk?ch=xh_1M7AI">
                     <div class="projectItemLeft">
-                        <h1>讯飞星火</h1>
-                        <p>深度推理</p>
+                        <h1>????</h1>
+                        <p>????</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://pic1.imgdb.cn/item/694f852d161224305eb2f1e7.png" alt="讯飞星火">
+                        <img src="https://pic1.imgdb.cn/item/694f852d161224305eb2f1e7.png" alt="????">
                     </div>
                 </a>
                 <a class="projectItem b" target="_blank" href="https://zhiwen.xfyun.cn/home?from=aitool52">
                     <div class="projectItemLeft">
-                        <h1>讯飞智文</h1>
-                        <p>AI办公学习工具</p>
+                        <h1>????</h1>
+                        <p>AI??????</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://pic1.imgdb.cn/item/694f8577161224305eb2f1f1.png" alt="讯飞智文">
+                        <img src="https://pic1.imgdb.cn/item/694f8577161224305eb2f1f1.png" alt="????">
                     </div>
                 </a>
                 <a class="projectItem b" target="_blank" href="https://www.xiaohuanxiong.com/login?utm_source=blmay59">
                     <div class="projectItemLeft">
-                        <h1>商汤小浣熊</h1>
-                        <p>商汤自研大语言模型</p>
+                        <h1>?????</h1>
+                        <p>?????????</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://www.xiaohuanxiong.com/logo.svg" alt="商汤小浣熊">
+                        <img src="https://www.xiaohuanxiong.com/logo.svg" alt="?????">
                     </div>
                 </a>
                 <a class="projectItem b" target="_blank" href="https://wawawriter.com/app/?utm_source=aiweb52">
                     <div class="projectItemLeft">
-                        <h1>蛙蛙写作</h1>
-                        <p>AI小说写作助手</p>
+                        <h1>????</h1>
+                        <p>AI??????</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://pic1.imgdb.cn/item/694f8600161224305eb2f209.png" alt="蛙蛙写作">
+                        <img src="https://pic1.imgdb.cn/item/694f8600161224305eb2f209.png" alt="????">
                     </div>
                 </a>
 
@@ -292,26 +588,26 @@
                     <path d="M629.333333 202.666667v213.333333h277.333334v448h-512v-213.333333h-277.333334v-448h512z m213.333334 277.333333h-213.333334v170.666667h-170.666666v149.333333h384v-320z m-277.333334-213.333333h-384v320h213.333334v-170.666667h170.666666v-149.333333z m0 213.333333h-106.666666v106.666667h106.666666v-106.666667z"
                           p-id="1892"></path>
                 </svg>
-                其他工具
+                ????
             </div>
             <div class="projectList">
                 <a class="projectItem b" target="_blank"
                    href="https://universalbus.cn/?s=hvA7WR03xD">
                     <div class="projectItemLeft">
-                        <h1>环球巴士</h1>
-                        <p>租号平台，折扣码：NO57</p>
+                        <h1>????</h1>
+                        <p>?????????NO57</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://universalbus.cn/favicon.ico" alt="环球巴士">
+                        <img src="https://universalbus.cn/favicon.ico" alt="????">
                     </div>
                 </a>
                 <a class="projectItem b" target="_blank" href="https://bgithub.xyz/ZYYO666/homepage">
                     <div class="projectItemLeft">
                         <h1>ZYYO</h1>
-                        <p>本界面框架</p>
+                        <p>?????</p>
                     </div>
                     <div class="projectItemRight">
-                        <img src="https://pic1.imgdb.cn/item/694f7d1e161224305eb2f07c.png" alt="茶水间日报">
+                        <img src="https://pic1.imgdb.cn/item/694f7d1e161224305eb2f07c.png" alt="?????">
                     </div>
                 </a>
             </div>
@@ -328,4 +624,131 @@
 </body>
 <script src="./static/js/script.js"></script>
 <script charset="UTF-8"  src="../static/js/notice-251202.js"></script>
+<script>
+    // ????
+    document.addEventListener('DOMContentLoaded', function() {
+        // ????projectItem??
+        const projectItems = document.querySelectorAll('.projectItem.b');
+
+        projectItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                // ?????????
+                const hasPopup = this.getAttribute('data-popup') === 'true';
+
+                if (hasPopup) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // ??????
+                    const title = this.querySelector('h1').textContent;
+                    const description = this.getAttribute('data-description') ||
+                        this.querySelector('p').textContent;
+                    const linksJson = this.getAttribute('data-links');
+
+                    // ????
+                    showProjectModal(title, description, linksJson);
+                }
+                // ?????????????????target="_blank"?
+            });
+        });
+
+        // ????????
+        document.getElementById('projectModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProjectModal();
+            }
+        });
+
+        // ESC?????
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeProjectModal();
+            }
+        });
+    });
+
+    // ??????
+    function showProjectModal(title, description, linksJson) {
+        const modal = document.getElementById('projectModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalLinks = document.getElementById('modalLinks');
+
+        // ???????
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+
+        // ???????
+        modalLinks.innerHTML = '';
+
+        // ???????
+        try {
+            const links = JSON.parse(linksJson);
+            if (Array.isArray(links) && links.length > 0) {
+                links.forEach(link => {
+                    if (link.title && link.link) {
+                        const linkElement = document.createElement('a');
+                        linkElement.href = link.link;
+                        linkElement.target = '_blank';
+                        linkElement.className = 'modal-link-item';
+                        linkElement.innerHTML = `
+                            <span class="link-title">${link.title}</span>
+                            <span class="link-url">${link.link}</span>
+                        `;
+                        modalLinks.appendChild(linkElement);
+                    }
+                });
+            } else {
+                // ?????????????
+                const originalLink = document.querySelector(`[data-description="${description}"]`).href;
+                const linkElement = document.createElement('a');
+                linkElement.href = originalLink;
+                linkElement.target = '_blank';
+                linkElement.className = 'modal-link-item';
+                linkElement.innerHTML = `
+                    <span class="link-title">????</span>
+                    <span class="link-url">${originalLink}</span>
+                `;
+                modalLinks.appendChild(linkElement);
+            }
+        } catch (e) {
+            console.error('????????:', e);
+            // ????????????
+            const originalLink = document.querySelector(`[data-description="${description}"]`).href;
+            const linkElement = document.createElement('a');
+            linkElement.href = originalLink;
+            linkElement.target = '_blank';
+            linkElement.className = 'modal-link-item';
+            linkElement.innerHTML = `
+                <span class="link-title">????</span>
+                <span class="link-url">${originalLink}</span>
+            `;
+            modalLinks.appendChild(linkElement);
+        }
+
+        // ????
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // ??????
+    function closeProjectModal() {
+        const modal = document.getElementById('projectModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // ??pop???????
+    if (typeof pop === 'undefined') {
+        window.pop = function(url) {
+            // ??????
+            const tc = document.querySelector('.tc');
+            const tcImg = document.querySelector('.tc-img');
+            if (tc && tcImg) {
+                tcImg.src = url;
+                tc.style.display = 'flex';
+            }
+        };
+    }
+</script>
 </html>
