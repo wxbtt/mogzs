@@ -819,9 +819,9 @@
     // ==================== 工具数据 ====================
     // 图标全部使用 Font Awesome 6.4.0 的 fas/fab 前缀
     var tools = [
-        { id:'toolbox',  name:'工具库',               desc:'博主自用工具集合，有需要的朋友自取',                      icon:'fa-solid fa-toolbox',           color:'blue',    cat:'dev',   url:'bank',             badge:'update',  featured:true, featuredSize:'lg', featuredTheme:'blue',    featuredTag:'工具箱'  },
+        { id:'toolbox',  name:'工具库',               desc:'博主自用工具集合，有需要的朋友自取',                      icon:'fa-solid fa-toolbox',           color:'blue',    cat:'dev',   url:'bank.html',             badge:'update',  featured:true, featuredSize:'lg', featuredTheme:'blue',    featuredTag:'工具箱'  },
         { id:'sim',      name:'大额流量卡',           desc:'移动、电信、联通、广电官方授权超值大额流量卡',               icon:'fas fa-sim-card',          color:'cyan',    cat:'life',  url:'sim.html',         badge:'new',     featured:true, featuredSize:'sm', featuredTheme:'violet',  featuredTag:'福利' },
-        { id:'supergit', name:'SuperGit',      desc:'通过浏览器扩展方案，解决国内GitHub访问/下载缓慢问题',    icon:'fas fa-tachometer-alt',    color:'cyan',    cat:'dev',   url:'supergit.html',    badge:'update',      featured:true , featuredSize:'sm', featuredTheme:'amber',   featuredTag:'Github' },
+        { id:'supergit', name:'SuperGit',      desc:'通过浏览器扩展方案，解决国内GitHub访问/下载缓慢问题',    icon:'fas fa-tachometer-alt',    color:'cyan',    cat:'dev',   url:'supergit.html',    badge:null,      featured:true , featuredSize:'sm', featuredTheme:'amber',   featuredTag:'Github' },
         { id:'github',   name:'GitHub 文件镜像下载', desc:'加速下载 GitHub 文件，自动选择最优镜像节点',               icon:'fab fa-github',            color:'indigo',  cat:'dev',   url:'github.html',      badge:null,      featured:true, featuredSize:'sm', featuredTheme:'indigo',   featuredTag:'Github'  },
         { id:'cat',      name:'圈小猫',             desc:'经典益智游戏，用策略围堵小猫，阻止它逃出包围圈',            icon:'fas fa-cat',               color:'amber',   cat:'game',  url:'car.html',         badge:null,      featured:false },
         { id:'cl-music',     name:'全平台音乐搜索',      desc:'聚合12个主流音乐平台资源，在线搜索、试听播放、歌词展示、高品质下载',   icon:'fas fa-music',              color:'blue',    cat:'media',  url:'/cl-music',            badge:'new',     featured:false},
@@ -859,20 +859,20 @@
             var catTools = tools.filter(function(t) { return t.cat === cat.key; });
             html += '<div class="nav-cat">' +
                 '<button class="nav-cat-trigger">' +
-                    '<i class="' + cat.icon + ' cat-icon"></i>' +
-                    '<span>' + cat.label + '</span>' +
-                    '<i class="fas fa-chevron-down"></i>' +
+                '<i class="' + cat.icon + ' cat-icon"></i>' +
+                '<span>' + cat.label + '</span>' +
+                '<i class="fas fa-chevron-down"></i>' +
                 '</button>' +
                 '<div class="nav-cat-dropdown">' +
-                    catTools.map(function(t) {
-                        var iconStyle = iconBgMap[t.color] || iconBgMap.blue;
-                        return '<a href="' + t.url + '" target="_blank">' +
-                            '<i class="' + t.icon + '" style="' + iconStyle + '"></i>' +
-                            '<span>' + t.name + '</span>' +
+                catTools.map(function(t) {
+                    var iconStyle = iconBgMap[t.color] || iconBgMap.blue;
+                    return '<a href="' + t.url + '" target="_blank">' +
+                        '<i class="' + t.icon + '" style="' + iconStyle + '"></i>' +
+                        '<span>' + t.name + '</span>' +
                         '</a>';
-                    }).join('') +
+                }).join('') +
                 '</div>' +
-            '</div>';
+                '</div>';
         });
         html += '<a href="https://csjrb.top" target="_blank" class="nav-btn">' +
             '<i class="fas fa-calendar-alt"></i><span>每日分享</span></a>' +
@@ -899,7 +899,7 @@
                 '<h3>' + t.name + '</h3>' +
                 '<p>' + t.desc + '</p>' +
                 '<div class="fc-tag"><i class="fas fa-tag"></i> ' + t.featuredTag + '</div>' +
-            '</a>';
+                '</a>';
         }).join('');
     }
 
@@ -931,13 +931,13 @@
             }
             return '<a href="' + tool.url + '" target="_blank" class="tool-card" data-tool-id="' + tool.id + '">' +
                 '<div class="tool-card-top">' +
-                    '<div class="tool-icon ' + tool.color + '"><i class="' + tool.icon + '"></i></div>' +
-                    badgeHTML +
+                '<div class="tool-icon ' + tool.color + '"><i class="' + tool.icon + '"></i></div>' +
+                badgeHTML +
                 '</div>' +
                 '<h3>' + tool.name + '</h3>' +
                 '<p>' + tool.desc + '</p>' +
                 '<div class="tool-card-arrow">打开工具 <i class="fas fa-arrow-right"></i></div>' +
-            '</a>';
+                '</a>';
         }).join('');
 
         document.querySelectorAll('.tool-card').forEach(function(card) {
@@ -1010,8 +1010,8 @@
     var pwaBar = document.getElementById('pwaBar');
     function isPWAInstalled() {
         return window.matchMedia('(display-mode: standalone)').matches ||
-               window.navigator.standalone ||
-               document.referrer.includes('android-app://');
+            window.navigator.standalone ||
+            document.referrer.includes('android-app://');
     }
     function shouldShowPrompt() {
         var last = localStorage.getItem('pwaPromptLastShown');
