@@ -687,7 +687,7 @@
 
         <div class="hero-stats">
             <div class="stat-item">
-                <div class="stat-num"><span class="accent">19</span>+</div>
+                <div class="stat-num"><span class="accent">20</span>+</div>
                 <div class="stat-label">工具收录</div>
             </div>
             <div class="stat-item">
@@ -778,7 +778,7 @@
             </div>
             <div class="footer-links">
                 <a href="https://ruanyazyk.com/" target="_blank">软鸭资源库</a>
-                <a href="https://csjrb.top/" target="_blank">每日资源</a>
+                <a href="https://t.hsya.top/" target="_blank">每日资源</a>
                 <a href="sim.html" target="_blank">流量卡</a>
                 <a href="/wechat.jpg" target="_blank">微信公众号</a>
                 <a href="https://beian.miit.gov.cn/" target="_blank">陕ICP备2021012221号-3</a>
@@ -819,13 +819,15 @@
     // ==================== 工具数据 ====================
     // 图标全部使用 Font Awesome 6.4.0 的 fas/fab 前缀
     var tools = [
-        { id:'toolbox',  name:'工具库',               desc:'博主自用工具集合，有需要的朋友自取',                      icon:'fa-solid fa-toolbox',           color:'blue',    cat:'dev',   url:'bank.html',             badge:'update',  featured:true, featuredSize:'lg', featuredTheme:'blue',    featuredTag:'工具箱'  },
+        { id:'toolbox',  name:'工具库',               desc:'博主自用工具集合，有需要的朋友自取',                      icon:'fa-solid fa-toolbox',           color:'blue',    cat:'tool',   url:'bank.html',             badge:'update',  featured:true, featuredSize:'lg', featuredTheme:'blue',    featuredTag:'工具箱'  },
+        { id:'teaTimes',  name:'TeaTimes',               desc:'每日分享有趣好玩的网站、软件资源',                      icon:'fas fa-calendar',           color:'rose',    cat:'tool',   url:'https://t.hsya.top/',             badge:'new',  featured:true, featuredSize:'sm', featuredTheme:'rose',    featuredTag:'每日分享'  },
         { id:'sim',      name:'大额流量卡',           desc:'移动、电信、联通、广电官方授权超值大额流量卡',               icon:'fas fa-sim-card',          color:'cyan',    cat:'life',  url:'sim.html',         badge:'new',     featured:true, featuredSize:'sm', featuredTheme:'violet',  featuredTag:'福利' },
         { id:'supergit', name:'SuperGit',      desc:'通过浏览器扩展方案，解决国内GitHub访问/下载缓慢问题',    icon:'fas fa-tachometer-alt',    color:'cyan',    cat:'dev',   url:'supergit.html',    badge:null,      featured:true , featuredSize:'sm', featuredTheme:'amber',   featuredTag:'Github' },
         { id:'github',   name:'GitHub 文件镜像下载', desc:'加速下载 GitHub 文件，自动选择最优镜像节点',               icon:'fab fa-github',            color:'indigo',  cat:'dev',   url:'github.html',      badge:null,      featured:true, featuredSize:'sm', featuredTheme:'indigo',   featuredTag:'Github'  },
         { id:'cat',      name:'圈小猫',             desc:'经典益智游戏，用策略围堵小猫，阻止它逃出包围圈',            icon:'fas fa-cat',               color:'amber',   cat:'game',  url:'car.html',         badge:null,      featured:false },
         { id:'cl-music',     name:'全平台音乐搜索',      desc:'聚合12个主流音乐平台资源，在线搜索、试听播放、歌词展示、高品质下载',   icon:'fas fa-music',              color:'blue',    cat:'media',  url:'/cl-music',            badge:'new',     featured:false},
         { id:'sri',     name:'性压抑指数计算器',      desc:'一个基于多个经过验证的心理测量量表的专业评估工具',   icon:'fas fa-heart',              color:'rose',    cat:'life',  url:'/sri',            badge:'new',     featured:false},
+        { id:'lieflat',     name:'躺平城市指南',      desc:'找到适合你的躺平城市',   icon:'fa fa-bed',              color:'amber',    cat:'life',  url:'lieflat.html',            badge:'new',     featured:false},
         { id:'city',     name:'工业城市模拟器',      desc:'2.5D 卡通城市放置建设，丰富 3D 模型，打造你的理想城市',   icon:'fas fa-city',              color:'blue',    cat:'game',  url:'/city',            badge:'new',     featured:false},
         { id:'space',    name:'Space-O',             desc:'太空策略游戏，在银河系建立帝国，研究科技，参与太空战斗',    icon:'fas fa-rocket',            color:'violet',  cat:'game',  url:'/space',           badge:'new',     featured:false },
         { id:'qq2006',   name:'QQ2006',              desc:'像素级复刻 80/90 后的青春记忆，还原经典 QQ 界面',          icon:'fab fa-qq',                color:'amber',   cat:'game',  url:'/qq2006',          badge:'new',     featured:false},
@@ -838,7 +840,7 @@
         // { id:'drama',    name:'短剧平台',             desc:'海量精彩短剧搜索与播放，支持历史记录与清晰度切换',           icon:'fas fa-film',              color:'rose',    cat:'media', url:'drama.html',       badge:'update',  featured:false },
         { id:'vip',      name:'VIP 视频解析',         desc:'爱奇艺、腾讯、优酷等全平台 VIP 影视解析，仅供学习',        icon:'fas fa-tv',                color:'amber',   cat:'media', url:'vip.html',         badge:null,      featured:false },
         { id:'mm',       name:'绅士视频',             desc:'多数据源美女视频，随机播放，闲暇之余的视觉享受',             icon:'fas fa-images',            color:'rose',    cat:'media', url:'mm.html',          badge:null,      featured:false },
-        { id:'hot',      name:'热榜聚合',             desc:'知乎、微博、百度等 30+ 平台热搜一站式浏览',                icon:'fas fa-fire-alt',          color:'amber',   cat:'life',  url:'hot.html',         badge:null,      featured:true , featuredSize:'sm', featuredTheme:'emerald', featuredTag:'新闻' },
+        { id:'hot',      name:'热榜聚合',             desc:'知乎、微博、百度等 30+ 平台热搜一站式浏览',                icon:'fas fa-fire-alt',          color:'amber',   cat:'life',  url:'hot.html',         badge:null,      featured:false },
         { id:'mao',      name:'毛主席足迹地图',        desc:'交互式展示 1893-1976 年伟人完整地理轨迹，含时间轴播放',     icon:'fas fa-map-marker-alt',    color:'emerald', cat:'life',  url:'mao.html',         badge:null,      featured:false },
     ];
 
