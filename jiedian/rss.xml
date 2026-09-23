@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+    <title>划水鸭 - 更新动态</title>
+    <link>https://hsya.top</link>
+    <description>划水鸭 - 免费在线趣味工具箱，收录游戏、工具、影音、开发、生活五大类实用资源，即开即用无需注册。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 24 Jun 2026 00:00:00 +0800</lastBuildDate>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 +0800</pubDate>
+    <ttl>1440</ttl>
+    <atom:link href="https://hsya.top/rss.xml" rel="self" type="application/rss+xml"/>
+    <image>
+        <url>https://hsya.top/logo.png</url>
+        <title>划水鸭</title>
+        <link>https://hsya.top</link>
+        <width>192</width>
+        <height>192</height>
+    </image>
+
+    <item>
+        <title>鸭鸭歌游记 - 陪伴宝宝唱遍世界儿歌</title>
+        <link>https://hsya.top/ducksong.html</link>
+        <guid>https://hsya.top/ducksong.html</guid>
+        <description>专为0-4岁宝宝设计的儿歌启蒙应用，汇集全球经典儿歌与童谣，支持中英文双语、背景播放、歌词显示、睡眠定时。永久免费。</description>
+        <pubDate>Wed, 24 Jun 2026 00:00:00 +0800</pubDate>
+        <category>影音</category>
+    </item>
+
+    <item>
+        <title>嘎嘎简历 - 让简历制作变得简单而智能</title>
+        <link>https://hsya.top/quackcv</link>
+        <guid>https://hsya.top/quackcv</guid>
+        <description>AI智能简历制作工具，无需注册，免费使用，数据安全存储。支持多模板、富文本编辑、PDF导出。</description>
+        <pubDate>Wed, 24 Jun 2026 00:00:00 +0800</pubDate>
+        <category>工具</category>
+    </item>
+
+    <item>
+        <title>躺平城市指南 - 找到适合你的躺平城市</title>
+        <link>https://hsya.top/lieflat.html</link>
+        <guid>https://hsya.top/lieflat.html</guid>
+        <description>基于薪资、房价、物价等多维度数据的城市宜居分析工具，帮你找到最适合躺平的城市。</description>
+        <pubDate>Mon, 08 Jun 2026 00:00:00 +0800</pubDate>
+        <category>生活</category>
+    </item>
+
+    <item>
+        <title>Avatar Play - 矢量风格头像生成器</title>
+        <link>https://hsya.top/avatar/index.html</link>
+        <guid>https://hsya.top/avatar/index.html</guid>
+        <description>自由搭配素材组件，导出个性化头像，多种风格可选。</description>
+        <pubDate>Sat, 04 Apr 2026 00:00:00 +0800</pubDate>
+        <category>工具</category>
+    </item>
+
+    <item>
+        <title>元素周期表 - 赛博朋克风格交互式周期表</title>
+        <link>https://hsya.top/periodic/index.html</link>
+        <guid>https://hsya.top/periodic/index.html</guid>
+        <description>3D原子模型与多维度数据热力图，交互式探索化学元素。</description>
+        <pubDate>Sat, 04 Apr 2026 00:00:00 +0800</pubDate>
+        <category>工具</category>
+    </item>
+
+    <item>
+        <title>QQ2006 - 像素级复刻经典QQ界面</title>
+        <link>https://hsya.top/qq2006/index.html</link>
+        <guid>https://hsya.top/qq2006/index.html</guid>
+        <description>还原80/90后的青春记忆，像素级复刻2006版QQ界面与交互体验。</description>
+        <pubDate>Sat, 04 Apr 2026 00:00:00 +0800</pubDate>
+        <category>游戏</category>
+    </item>
+
+    <item>
+        <title>Space-O 太空策略游戏</title>
+        <link>https://hsya.top/space/index.html</link>
+        <guid>https://hsya.top/space/index.html</guid>
+        <description>在银河系建立帝国，研究科技，参与太空战斗的策略游戏。</description>
+        <pubDate>Sat, 04 Apr 2026 00:00:00 +0800</pubDate>
+        <category>游戏</category>
+    </item>
+
+    <item>
+        <title>工业城市模拟器 - 2.5D卡通城市建设</title>
+        <link>https://hsya.top/city/index.html</link>
+        <guid>https://hsya.top/city/index.html</guid>
+        <description>丰富的3D模型，放置建设玩法，打造你的理想工业城市。</description>
+        <pubDate>Sat, 04 Apr 2026 00:00:00 +0800</pubDate>
+        <category>游戏</category>
+    </item>
+
+    <item>
+        <title>全平台音乐搜索 - 聚合12大音乐平台</title>
+        <link>https://hsya.top/cl-music/index.html</link>
+        <guid>https://hsya.top/cl-music/index.html</guid>
+        <description>免费音乐聚合工具，支持在线搜索、试听播放、歌词展示、高品质下载。</description>
+        <pubDate>Sat, 04 Apr 2026 00:00:00 +0800</pubDate>
+        <category>影音</category>
+    </item>
+
+    <item>
+        <title>性压抑指数计算器 - 专业心理评估工具</title>
+        <link>https://hsya.top/sri/index.html</link>
+        <guid>https://hsya.top/sri/index.html</guid>
+        <description>基于多个经过验证的心理测量量表的专业评估工具，匿名、科学、免费。</description>
+        <pubDate>Sat, 04 Apr 2026 00:00:00 +0800</pubDate>
+        <category>生活</category>
+    </item>
+
+    <item>
+        <title>短剧搜索与播放平台上线</title>
+        <link>https://hsya.top/drama.html</link>
+        <guid>https://hsya.top/drama.html</guid>
+        <description>海量精彩短剧搜索与播放，支持历史记录与清晰度切换，免费观看。</description>
+        <pubDate>Sat, 14 Mar 2026 00:00:00 +0800</pubDate>
+        <category>影音</category>
+    </item>
+
+    <item>
+        <title>SuperGit - GitHub访问加速浏览器扩展</title>
+        <link>https://hsya.top/supergit.html</link>
+        <guid>https://hsya.top/supergit.html</guid>
+        <description>通过浏览器扩展方案，解决国内GitHub访问与下载缓慢问题，支持多节点自动切换。</description>
+        <pubDate>Sat, 14 Mar 2026 00:00:00 +0800</pubDate>
+        <category>开发</category>
+    </item>
+
+</channel>
+</rss>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="划水鸭GitHub文件镜像下载工具帮助国内开发者解决GitHub下载速度慢的问题，支持一键将GitHub文件下载链接转换为国内镜像加速地址。适用于Release源码包、Raw原始文件、Archive压缩包等场景，无需安装任何插件，复制链接粘贴即可快速下载，让代码获取快如闪电。">
+    <meta name="keywords" content="GitHub, GitHub镜像站, 划水鸭">
+    <title>GitHub文件镜像下载工具 - 划水鸭</title>
+    <link rel="canonical" href="https://hsya.top/github.html">
+    <meta property="og:site_name" content="划水鸭">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GitHub文件镜像下载工具 - 划水鸭">
+    <meta property="og:description" content="划水鸭GitHub文件镜像下载工具帮助国内开发者解决GitHub下载速度慢的问题，支持一键将GitHub文件下载链接转换为国内镜像加速地址。">
+    <meta property="og:url" content="https://hsya.top/github.html">
+    <meta property="og:image" content="https://hsya.top/logo.png">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="GitHub文件镜像下载工具 - 划水鸭">
+    <meta name="twitter:description" content="一键将GitHub下载链接转换为国内镜像加速地址，无需安装插件。">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","name":"GitHub文件镜像下载","url":"https://hsya.top/github.html","description":"帮助国内开发者解决GitHub下载速度慢的问题，支持一键将GitHub文件下载链接转换为国内镜像加速地址。","applicationCategory":"DeveloperApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"inLanguage":"zh-CN","author":{"@type":"Organization","name":"划水鸭","url":"https://hsya.top"}}
+    </script>
+    <link rel="icon" href="logo.ico">
+    <link rel="apple-touch-icon" href="logo.ico">
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>LA.init({id:"LCYVsEpC841fOfML",ck:"LCYVsEpC841fOfML"})</script>
+    <link href="static/css/duck.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body:#f0f4f8;--bg-surface:#fff;--bg-subtle:#edf1f7;
+            --border-subtle:#e0e7ef;--border-medium:#c8d2de;
+            --text-primary:#0f172a;--text-secondary:#475569;--text-muted:#8896ab;
+            --accent-blue:#2563eb;--accent-blue-light:#3b82f6;--accent-violet:#7c3aed;
+            --accent-green:#059669;--accent-amber:#d97706;--accent-rose:#e11d48;
+            --gradient-primary:linear-gradient(135deg,#2563eb 0%,#7c3aed 100%);
+            --radius-sm:12px;--radius-md:16px;--radius-lg:20px;--radius-xl:24px;
+            --shadow-sm:0 1px 3px rgba(15,23,42,.04),0 1px 2px rgba(15,23,42,.06);
+            --shadow-md:0 4px 16px rgba(15,23,42,.06),0 1px 4px rgba(15,23,42,.04);
+            --shadow-lg:0 12px 40px rgba(15,23,42,.08),0 4px 12px rgba(15,23,42,.04);
+            --transition-fast:.2s cubic-bezier(.4,0,.2,1);--transition-smooth:.35s cubic-bezier(.4,0,.2,1);
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+        body{font-family:'DM Sans','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-body);color:var(--text-primary);min-height:100vh;line-height:1.6}
+
+        .atmosphere{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+        .atmosphere::before{content:'';position:absolute;top:-20%;right:-10%;width:55vw;height:55vw;background:radial-gradient(circle,rgba(37,99,235,.05) 0%,transparent 60%);animation:float1 30s ease-in-out infinite}
+        .atmosphere::after{content:'';position:absolute;bottom:-10%;left:-10%;width:45vw;height:45vw;background:radial-gradient(circle,rgba(124,58,237,.04) 0%,transparent 60%);animation:float2 25s ease-in-out infinite}
+        @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.05)}66%{transform:translate(-20px,30px) scale(.97)}}
+        @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,20px) scale(1.03)}}
+        @keyframes pulse-glow{0%,100%{opacity:.06;transform:scale(1)}50%{opacity:.1;transform:scale(1.05)}}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+        .page{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 24px}
+        .hidden{display:none!important}
+
+        .navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;margin:0 -24px 32px;background:rgba(240,244,248,.72);backdrop-filter:blur(16px) saturate(1.8);border-bottom:1px solid var(--border-subtle)}
+        .nav-logo{width:38px;height:38px;border-radius:var(--radius-sm);background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;flex-shrink:0;box-shadow:0 2px 10px rgba(37,99,235,.3)}
+        .nav-brand{font-weight:800;font-size:1.05rem;color:var(--text-primary);letter-spacing:-.02em}
+        .nav-actions{display:flex;gap:8px;align-items:center}
+        .nav-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);border:1px solid var(--border-subtle);background:var(--bg-surface);color:var(--text-secondary);font-size:.82rem;font-weight:600;text-decoration:none;transition:var(--transition-fast);box-shadow:var(--shadow-sm);cursor:pointer;font-family:inherit}
+        .nav-btn:hover{border-color:var(--accent-blue);color:var(--accent-blue);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+
+        .hero-section{text-align:center;margin-bottom:32px}
+        .hero-icon-wrap{width:72px;height:72px;border-radius:var(--radius-xl);background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border:1px solid #93c5fd;display:inline-flex;align-items:center;justify-content:center;font-size:1.8rem;color:var(--accent-blue);margin-bottom:20px;position:relative;box-shadow:0 4px 20px rgba(37,99,235,.12)}
+        .hero-icon-wrap::before{content:'';position:absolute;inset:-6px;border-radius:28px;background:var(--gradient-primary);opacity:.06;filter:blur(12px);animation:pulse-glow 4s ease-in-out infinite}
+        .hero-section h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.15;margin-bottom:12px}
+        .hero-section h1 .gradient-text{background:var(--gradient-primary);-webkit-background-clip:text;background-clip:text;color:transparent}
+        .hero-desc{color:var(--text-secondary);font-size:.95rem;max-width:520px;margin:0 auto;line-height:1.7}
+
+        .card{background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);margin-bottom:24px;overflow:hidden;animation:fadeUp .5s ease both}
+        .card-head{display:flex;align-items:center;gap:8px;padding:16px 22px;border-bottom:1px solid var(--border-subtle);font-size:.88rem;font-weight:700;color:var(--text-primary)}
+        .card-head i{font-size:.85rem;color:var(--accent-blue)}
+        .card-body{padding:20px 22px 22px}
+
+        .input-row{display:flex;gap:12px}
+        .url-input{flex:1;padding:12px 16px;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);background:var(--bg-surface);color:var(--text-primary);font-size:.88rem;font-family:inherit;transition:var(--transition-fast)}
+        .url-input:focus{outline:none;border-color:var(--accent-blue);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+        .url-input::placeholder{color:var(--text-muted)}
+        .btn{padding:12px 20px;border:none;border-radius:var(--radius-sm);font-size:.85rem;font-weight:700;font-family:inherit;cursor:pointer;transition:var(--transition-fast);display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
+        .btn-primary{background:var(--gradient-primary);color:#fff;box-shadow:0 4px 16px rgba(37,99,235,.25)}
+        .btn-primary:hover{box-shadow:0 6px 20px rgba(37,99,235,.35);transform:translateY(-1px)}
+        .btn-secondary{background:var(--bg-surface);color:var(--text-secondary);border:1px solid var(--border-subtle)}
+        .btn-secondary:hover{border-color:var(--accent-blue);color:var(--accent-blue);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+
+        .msg{padding:12px 16px;border-radius:var(--radius-sm);font-size:.85rem;font-weight:600;display:none;margin-top:12px}
+        .msg.error{background:#fef2f2;color:var(--accent-rose);border:1px solid #fecaca}
+        .msg.success{background:#ecfdf5;color:var(--accent-green);border:1px solid #a7f3d0}
+
+        .result-url{flex:1;padding:12px 16px;border-radius:var(--radius-sm);background:var(--bg-subtle);color:var(--text-primary);font-size:.85rem;overflow-x:auto;white-space:nowrap;font-family:'DM Sans',monospace;word-break:break-all}
+        .btn-group{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+        .nodes-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+        .nodes-stats{font-size:.82rem;font-weight:600;color:var(--text-muted);background:var(--bg-subtle);padding:6px 14px;border-radius:20px}
+        .nodes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+        .node-card{background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:16px;transition:var(--transition-fast);cursor:default}
+        .node-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+        .node-card.selected{border-color:var(--accent-blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+        .node-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
+        .node-url{font-weight:600;color:var(--accent-blue);font-size:.82rem;word-break:break-all;flex:1;min-width:0}
+        .node-latency{font-weight:700;padding:4px 12px;border-radius:20px;font-size:.8rem;white-space:nowrap;flex-shrink:0}
+        .latency-low{background:#ecfdf5;color:var(--accent-green)}
+        .latency-medium{background:#fffbeb;color:var(--accent-amber)}
+        .latency-high{background:#fef2f2;color:var(--accent-rose)}
+        .select-node-btn{width:100%;padding:10px;border:none;border-radius:var(--radius-sm);background:var(--bg-subtle);color:var(--text-secondary);font-size:.82rem;font-weight:600;cursor:pointer;transition:var(--transition-fast);font-family:inherit}
+        .select-node-btn:hover{background:var(--accent-blue);color:#fff}
+
+        .loading{text-align:center;padding:40px 0}
+        .spinner{width:40px;height:40px;border:4px solid var(--border-subtle);border-top:4px solid var(--accent-blue);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px}
+        .loading p{font-size:.88rem;color:var(--text-muted)}
+
+        .page-foot{text-align:center;padding:24px 0 16px;font-size:.78rem;color:var(--text-muted)}
+        .page-foot a{color:var(--accent-blue);text-decoration:none;font-weight:500}
+
+        @media(max-width:640px){
+            .page{padding:0 16px}
+            .navbar{margin:0 -16px 24px;padding:12px 16px}
+            .hero-section h1{font-size:1.6rem}
+            .input-row{flex-direction:column}
+            .btn-group{flex-direction:column}
+            .nodes-grid{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+<div class="atmosphere"></div>
+
+<div class="page">
+    <nav class="navbar">
+        <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit">
+            <div class="nav-logo"><i class="fas fa-water"></i></div>
+            <span class="nav-brand">划水鸭</span>
+        </a>
+        <div class="nav-actions">
+            <button class="nav-btn" id="refreshNodes"><i class="fas fa-sync-alt"></i> 刷新节点</button>
+            <a href="/supergit.html" target="_blank" class="nav-btn"><i class="fa-brands fa-github-alt"></i> 永久加速</a>
+            <a href="/" class="nav-btn"><i class="fas fa-home"></i> 首页</a>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <div class="hero-icon-wrap"><i class="fa-brands fa-github"></i></div>
+        <h1>GitHub文件<span class="gradient-text">镜像下载</span>工具</h1>
+        <p class="hero-desc">支持 Git Clone、Releases、Archive、Gist、Raw 文件加速访问，输入 URL 选择节点，一键生成加速链接</p>
+    </div>
+
+    <div class="card">
+        <div class="card-head"><i class="fas fa-link"></i> 输入 GitHub 文件链接</div>
+        <div class="card-body">
+            <div class="input-row">
+                <input type="text" id="githubUrl" class="url-input" placeholder="输入GitHub文件URL（例如：https://github.com/user/repo/file）">
+                <button id="generateBtn" class="btn btn-primary"><i class="fas fa-bolt"></i> 开始下载</button>
+            </div>
+            <div class="msg error" id="errorMessage"></div>
+            <div class="msg success" id="successMessage"></div>
+        </div>
+    </div>
+
+    <div class="card hidden" id="resultContainer">
+        <div class="card-head"><i class="fas fa-check-circle"></i> 生成的镜像下载链接</div>
+        <div class="card-body">
+            <div class="result-url" id="mirrorUrl">等待生成链接...</div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="copyBtn"><i class="fas fa-copy"></i> 复制链接</button>
+                <button class="btn btn-secondary" id="downloadBtn"><i class="fas fa-download"></i> 打开下载</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-head"><i class="fas fa-server"></i> 镜像节点列表</div>
+        <div class="card-body">
+            <div class="nodes-header">
+                <div class="card-head" style="border:none;padding:0"><i class="fas fa-globe"></i> 可用节点</div>
+                <div class="nodes-stats">总数 <span id="totalNodes">0</span> &middot; 可用 <span id="availableNodes">0</span></div>
+            </div>
+            <div class="loading" id="nodesLoading"><div class="spinner"></div><p>正在加载镜像节点...</p></div>
+            <div class="nodes-grid" id="nodesGrid"></div>
+        </div>
+    </div>
+
+    <footer class="page-foot">&copy; <span id="nowYear"></span> 划水鸭 &mdash; <a href="/">划水鸭</a> 出品</footer>
+</div>
+
+    <script src="static/js/super-git.js"></script>
+    <script>
+        document.getElementById("nowYear").innerHTML = new Date().getFullYear();
+        const githubUrlInput = document.getElementById('githubUrl');
+        const generateBtn = document.getElementById('generateBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const mirrorUrlElement = document.getElementById('mirrorUrl');
+        const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const nodesGrid = document.getElementById('nodesGrid');
+        const totalNodesElement = document.getElementById('totalNodes');
+        const availableNodesElement = document.getElementById('availableNodes');
+        const nodesLoading = document.getElementById('nodesLoading');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const refreshNodesBtn = document.getElementById('refreshNodes');
+
+        let mirrorNodes = [];
+        let selectedNode = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            generateBtn.addEventListener('click', generateMirrorUrl);
+            copyBtn.addEventListener('click', copyMirrorUrl);
+            downloadBtn.addEventListener('click', openDownloadLink);
+            refreshNodesBtn.addEventListener('click', fetchMirrorNodes);
+            fetchMirrorNodes();
+        });
+
+        async function fetchMirrorNodes() {
+            nodesLoading.style.display = 'block';
+            errorMessage.style.display = 'none';
+            nodesGrid.innerHTML = '';
+
+            // 并行发起远程请求和本地节点测速
+            const remotePromise = fetch('https://api.akams.cn/github').then(async function(res) {
+                if (!res.ok) throw new Error('HTTP错误! 状态: ' + res.status);
+                var data = await res.json();
+                if (data.code !== 200) throw new Error(data.msg || '获取镜像节点失败');
+                return data.data;
+            });
+
+            var localPromise = Promise.resolve(null);
+            if (typeof speedTester !== 'undefined' && speedTester.DEFAULT_NODES) {
+                localPromise = speedTester.testNodesSpeed(speedTester.DEFAULT_NODES).then(function(results) {
+                    var valid = results.filter(function(r) { return r.success; });
+                    return valid.length > 0 ? valid.map(function(r) { return { url: r.url, latency: r.latencyMs }; }) : null;
+                });
+            }
+
+            try {
+                mirrorNodes = await remotePromise;
+                if (mirrorNodes && mirrorNodes.length > 0) {
+                    mirrorNodes.sort(function(a, b) { return a.latency - b.latency; });
+                    renderNodesGrid();
+                    selectBestNode();
+                    updateNodesStats();
+                    return;
+                }
+                throw new Error('远程节点列表为空');
+            } catch (remoteError) {
+                console.warn('远程节点获取失败，使用本地节点:', remoteError);
+                try {
+                    var fallbackNodes = await localPromise;
+                    if (fallbackNodes && fallbackNodes.length > 0) {
+                        mirrorNodes = fallbackNodes;
+                        renderNodesGrid();
+                        selectBestNode();
+                        updateNodesStats();
+                        return;
+                    }
+                } catch (fallbackError) {
+                    console.error('本地节点也失败:', fallbackError);
+                }
+                showError('获取镜像节点失败: ' + remoteError.message);
+            } finally { nodesLoading.style.display = 'none'; }
+        }
+
+        function renderNodesGrid() {
+            nodesGrid.innerHTML = '';
+            mirrorNodes.forEach(node => {
+                const isSelected = selectedNode && selectedNode.url === node.url;
+                let latencyClass = '';
+                if (node.latency < 500) { latencyClass = 'latency-low'; }
+                else if (node.latency >= 500 && node.latency < 1000) { latencyClass = 'latency-medium'; }
+                else { latencyClass = 'latency-high'; }
+                const card = document.createElement('div');
+                card.className = `node-card ${isSelected ? 'selected' : ''}`;
+                card.innerHTML = `
+                    <div class="node-card-header">
+                        <div class="node-url">${node.url}</div>
+                        <div class="node-latency ${latencyClass}">${node.latency} ms</div>
+                    </div>
+                    <button class="select-node-btn" data-url="${node.url}">
+                        <span>${isSelected ? '<i class="fas fa-check"></i> 已选择' : '选择此节点'}</span>
+                    </button>
+                `;
+                nodesGrid.appendChild(card);
+            });
+            document.querySelectorAll('.select-node-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const nodeUrl = btn.getAttribute('data-url');
+                    selectNode(nodeUrl);
+                });
+            });
+        }
+
+        function selectBestNode() {
+            if (mirrorNodes.length === 0) return;
+            const validNodes = mirrorNodes.filter(node => node.latency > 0);
+            if (validNodes.length === 0) return;
+            const bestNode = [...validNodes].sort((a, b) => a.latency - b.latency)[0];
+            selectNode(bestNode.url);
+        }
+
+        function selectNode(nodeUrl) {
+            selectedNode = mirrorNodes.find(node => node.url === nodeUrl);
+            renderNodesGrid();
+            if (githubUrlInput.value.trim()) { generateMirrorUrl(); }
+        }
+
+        function updateNodesStats() {
+            totalNodesElement.textContent = mirrorNodes.length;
+            const availableCount = mirrorNodes.filter(node => node.latency > 0 && node.latency < 1500).length;
+            availableNodesElement.textContent = availableCount;
+        }
+
+        function generateMirrorUrl() {
+            let githubUrl = githubUrlInput.value.trim();
+            if (!githubUrl) { showError('请输入GitHub文件URL'); return; }
+            githubUrl = modifyGithubUrl(githubUrl)
+            if (!isValidGitHubUrl(githubUrl)) { showError('请输入有效的GitHub文件URL'); return; }
+            if (!selectedNode) { showError('请先选择镜像节点'); return; }
+            const mirrorUrl = selectedNode.url.replace(/\/+$/, '') + '/' + githubUrl;
+            mirrorUrlElement.textContent = mirrorUrl;
+            resultContainer.classList.remove('hidden');
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function isValidGitHubUrl(url) { const githubPattern = /^https?:\/\/github\.com\/.+/i; return githubPattern.test(url); }
+        function modifyGithubUrl(originalUrl) {
+            try { const url = new URL(originalUrl); if (url.hostname === 'bgithub.xyz') { url.hostname = 'github.com'; return url.toString(); } } catch (e) {} return originalUrl;
+        }
+        function copyMirrorUrl() { copyTextToClipboard(mirrorUrlElement.textContent); showSuccess('链接已复制到剪贴板！'); }
+        function copyTextToClipboard(text) {
+            const textArea = document.createElement('textarea'); textArea.value = text; document.body.appendChild(textArea); textArea.select();
+            try { document.execCommand('copy'); } catch (err) { console.error('复制失败:', err); }
+            document.body.removeChild(textArea);
+        }
+        function openDownloadLink() { window.open(mirrorUrlElement.textContent, '_blank'); }
+        function showError(message) { errorMessage.textContent = message; errorMessage.style.display = 'block'; successMessage.style.display = 'none'; setTimeout(() => { errorMessage.style.display = 'none'; }, 3000); }
+        function showSuccess(message) { successMessage.textContent = message; successMessage.style.display = 'block'; errorMessage.style.display = 'none'; setTimeout(() => { successMessage.style.display = 'none'; }, 3000); }
+    </script>
+    <script src="static/js/cache-updater.js"></script>
+    <script charset="UTF-8"  src="static/js/notice-260824.js"></script>
+</body>
+</html>
