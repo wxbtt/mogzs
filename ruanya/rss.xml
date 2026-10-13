@@ -7,8 +7,8 @@
     <link>https://hsya.top</link>
     <description>划水鸭 - 免费在线趣味工具箱，收录游戏、工具、影音、开发、生活五大类实用资源，即开即用无需注册。</description>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 24 Jun 2026 00:00:00 +0800</lastBuildDate>
-    <pubDate>Wed, 24 Jun 2026 00:00:00 +0800</pubDate>
+    <lastBuildDate>Mon, 12 Oct 2026 09:00:00 +0800</lastBuildDate>
+    <pubDate>Mon, 12 Oct 2026 09:00:00 +0800</pubDate>
     <ttl>1440</ttl>
     <atom:link href="https://hsya.top/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
@@ -18,6 +18,33 @@
         <width>192</width>
         <height>192</height>
     </image>
+
+    <item>
+        <title>短剧资源导航站上线 - 免费短剧平台一站直达</title>
+        <link>https://hsya.top/drama.html</link>
+        <guid>https://hsya.top/drama.html</guid>
+        <description>短剧页面全新改版为资源导航站，收录 MiniRee、红果短剧客户端、西瓜短剧、红果果、短剧网、五五短剧等免费平台，以及海外短剧 200+ 网盘合集与福利资源馆，点击卡片即可跳转。</description>
+        <pubDate>Mon, 12 Oct 2026 09:00:00 +0800</pubDate>
+        <category>影音</category>
+    </item>
+
+    <item>
+        <title>热榜聚合全新地址上线</title>
+        <link>https://resouya.pages.dev/</link>
+        <guid>https://resouya.pages.dev/</guid>
+        <description>热榜聚合页面已改版升级并迁移至 https://resouya.pages.dev/ ，聚合全网热点榜单，老地址会自动跳转，请更新收藏书签。</description>
+        <pubDate>Mon, 12 Oct 2026 09:00:00 +0800</pubDate>
+        <category>生活</category>
+    </item>
+
+    <item>
+        <title>懒人房贷计算器 - 七合一本地房贷计算工具</title>
+        <link>https://hsya.top/mortgage-calc.html</link>
+        <guid>https://hsya.top/mortgage-calc.html</guid>
+        <description>支持商业贷款、公积金贷款、组合贷款、提前还款、购房税费、贷款反算与利率变动分析，全部本地实时计算，无需联网，结果秒出。</description>
+        <pubDate>Thu, 13 Aug 2026 00:00:00 +0800</pubDate>
+        <category>工具</category>
+    </item>
 
     <item>
         <title>鸭鸭歌游记 - 陪伴宝宝唱遍世界儿歌</title>
@@ -107,15 +134,6 @@
         <description>基于多个经过验证的心理测量量表的专业评估工具，匿名、科学、免费。</description>
         <pubDate>Sat, 04 Apr 2026 00:00:00 +0800</pubDate>
         <category>生活</category>
-    </item>
-
-    <item>
-        <title>短剧搜索与播放平台上线</title>
-        <link>https://hsya.top/drama.html</link>
-        <guid>https://hsya.top/drama.html</guid>
-        <description>海量精彩短剧搜索与播放，支持历史记录与清晰度切换，免费观看。</description>
-        <pubDate>Sat, 14 Mar 2026 00:00:00 +0800</pubDate>
-        <category>影音</category>
     </item>
 
     <item>
